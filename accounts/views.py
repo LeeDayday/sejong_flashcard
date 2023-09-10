@@ -2,6 +2,8 @@ from .models import NewUserInfo
 from ..utils.crawler import get_user_info
 from django.contrib import messages
 from bcrypt import hashpw, gensalt
+from django.middleware.csrf import get_token
+
 
 def f_certify(request):
     # 입력 받은 id/pw 꺼낸다
@@ -36,6 +38,8 @@ def f_certify(request):
 
 
 def f_login(request):
+    # csrf token 확인
+    csrf_token = get_token(request)
     # 입력 받은 id/pw 꺼낸다
     user_id = request.POST.get('id')
     user_pw = request.POST.get('pw')

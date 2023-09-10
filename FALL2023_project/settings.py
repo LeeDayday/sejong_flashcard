@@ -125,3 +125,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_COOKIE_SECURE = True  # HTTPS 연결에서만 CSRF 쿠키 전송
+CSRF_COOKIE_SAMESITE = 'Strict'  # 쿠키를 동일 출처 요청에서만 전송
