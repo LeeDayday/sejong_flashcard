@@ -38,6 +38,20 @@
       </form>
     </div>
   </body>
+
+
+    <!-- 예외처리 -->
+    {% if messages %}
+    {% for m in messages %}
+    <!-- 로그인 오류 / 기타오류 발생시 -->
+    {% if m.tags == 'error' %}
+    <script>
+        alert('{{ m }}');
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
   <!--
   <style>
     * {

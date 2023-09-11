@@ -23,7 +23,8 @@ urlpatterns = [
 
     # 페이지 렌더링
     path('login/', r_login),
+    path('home/', r_home),
 
     # 함수 사용 렌더링
-    path('f_login/', f_login, name='f_login')
+    path('f_login/', f_login, name='f_login'),
 ]

@@ -1,7 +1,7 @@
 from .models import NewUserInfo
 from utils.crawler import get_user_info
 from django.contrib import messages
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, checkpw, gensalt
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect
 
@@ -61,8 +61,13 @@ def f_login(request):
         return redirect('/login/')
 
     # 입력받은 pw와 db에 저장된 pw 비교 (user_pw 암호화 후 비교)
-    # user_pw =
+    if not checkpw(user_pw.encode('utf-8'), user_row[0].password.encode('utf-8')): # 비밀번호가 일치하지 않는 경우
+        messages.error(request, "Please Graduate 비밀번호를 확인하세요")
+        return redirect('/login/')
 
+    # 로그인 성공
+    request.session['id'] = user_id
+    return redirect('/home/')
 
 
 
