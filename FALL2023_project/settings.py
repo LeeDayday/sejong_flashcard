@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # django app
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +120,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# 정적 파일 디렉터리 설정
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_COOKIE_SECURE = True  # HTTPS 연결에서만 CSRF 쿠키 전송
+CSRF_COOKIE_SAMESITE = 'Strict'  # 쿠키를 동일 출처 요청에서만 전송

@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from accounts.views import *
+from utils.rendering import *
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # 페이지 렌더링
+    path('login/', r_login),
+    path('home/', r_home),
+
+    # 함수 사용 렌더링
+    path('f_login/', f_login, name='f_login'),
 ]

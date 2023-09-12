@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-    <link rel="stylesheet" href="style.css" />
+      {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
   </head>
   <body>
     <header>
@@ -19,14 +20,15 @@
 
     <div class="center">
       <h1>Login</h1>
-      <form method="post">
+      <form method="post" action="{% url 'f_login' %}">
+          {% csrf_token %}
         <div class="txt_field">
-          <input type="text" required />
+          <input type="text" required id="id" name="id"/>
           <span></span>
           <label>Username</label>
         </div>
         <div class="txt_field">
-          <input type="password" required />
+          <input type="password" required id="pw" name="pw"/>
           <span></span>
           <label>Password</label>
         </div>
@@ -36,18 +38,19 @@
       </form>
     </div>
   </body>
-  <!--
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background-image: url('SEJONGUNIV.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      height: 100vh;
-    }
-  </style>
-  -->
+
+
+    <!-- 예외처리 -->
+    {% if messages %}
+    {% for m in messages %}
+    <!-- 로그인 오류 / 기타오류 발생시 -->
+    {% if m.tags == 'error' %}
+    <script>
+        alert('{{ m }}');
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+
 </html>
