@@ -57,9 +57,9 @@ def f_login(request):
         # 회원 가입 후 model에서 행 추출
         user_row = NewUserInfo.objects.filter(student_id=user_id)
 
-    # 대양 휴머니티 칼리지 인증 실패한 경우
-    if result is False:
-        return redirect('/login/')
+        # 대양 휴머니티 칼리지 인증 실패한 경우
+        if result is False:
+            return redirect('/login/')
 
     # 입력받은 pw와 db에 저장된 pw 비교 (user_pw 암호화 후 비교)
     if not checkpw(user_pw.encode('utf-8'), user_row[0].password.encode('utf-8')): # 비밀번호가 일치하지 않는 경우
