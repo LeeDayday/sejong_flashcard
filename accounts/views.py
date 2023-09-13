@@ -51,8 +51,9 @@ def f_login(request):
     user_row = NewUserInfo.objects.filter(student_id=user_id)
 
     # 처음 로그인한 경우 대양 휴머니티 인증 작업 진행
+    result = f_certify(request)
+
     if not user_row.exists():
-        result = f_certify(request)
         # 회원 가입 후 model에서 행 추출
         user_row = NewUserInfo.objects.filter(student_id=user_id)
 
