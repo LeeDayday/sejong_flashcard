@@ -133,5 +133,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_COOKIE_SECURE = False  # HTTPS 연결에서만 CSRF 쿠키 전송
+CSRF_COOKIE_SECURE = False  # HTTPS 연결에서만 CSRF 쿠키 전송 -> True
 CSRF_COOKIE_SAMESITE = 'Strict'  # 쿠키를 동일 출처 요청에서만 전송
