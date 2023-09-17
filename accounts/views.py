@@ -4,7 +4,9 @@ from django.contrib import messages
 from bcrypt import hashpw, checkpw, gensalt
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def f_certify(request):
     # 입력 받은 id/pw 꺼낸다
     user_id = request.POST.get('id')
@@ -41,6 +43,7 @@ def f_certify(request):
 
     # return redirect('/index/')
 
+@csrf_exempt
 def f_login(request):
     # csrf token 확인
     csrf_token = get_token(request)
