@@ -71,7 +71,7 @@ def f_login(request):
 
     # 로그인 성공
     request.session['id'] = user_id
-    return redirect('/home/')
+    return redirect('/home/{user_id}')
 
 
 

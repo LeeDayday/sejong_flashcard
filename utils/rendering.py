@@ -6,6 +6,6 @@ def r_login(request):
     return response
 
 def r_home(request):
-    response = render(request, "index.html")
+    response = render(request, "main_page/main_page.html")
     return response
 
