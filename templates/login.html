@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+{% block head_content %}
+    <title>Login</title>
+        {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+{% endblock %}
+
+{% block body_content %}
+    <div class="center">
+      <h1>Login</h1>
+      <form method="post" action="{% url 'f_login' %}">
+          {% csrf_token %}
+        <div class="txt_field">
+          <input type="text" required id="id" name="id"/>
+          <span></span>
+          <label>Username</label>
+        </div>
+        <div class="txt_field">
+          <input type="password" required id="pw" name="pw"/>
+          <span></span>
+          <label>Password</label>
+        </div>
+        <div class="pass">Forgot Password?</div>
+        <input type="submit" value="Login" />
+        <div class="signup_link">Not a member? <a href="#">Signup</a></div>
+      </form>
+    </div>
+{% endblock %}
