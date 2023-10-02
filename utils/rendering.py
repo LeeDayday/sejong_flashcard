@@ -9,3 +9,8 @@ def r_login(request):
 def r_home(request):
     response = render(request, "main.html")
     return response
+
+
+def r_quiz(request):
+    response = render(request, "myQuiz.html")
+    return response

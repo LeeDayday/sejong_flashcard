@@ -1,8 +1,8 @@
-{% extends 'index.html' %}\ {% block head_content %}
-<title>Main</title>
-{% load static %}
-<link rel="stylesheet" href="{% static 'home_style.css' %}" />
-{% endblock %} {% block body_content %} {% endblock %}
+{#{% extends 'index.html' %}\ {% block head_content %}#}
+{#<title>Main</title>#}
+{#{% load static %}#}
+{#<link rel="stylesheet" href="{% static 'home_style.css' %}" />#}
+{#{% endblock %} {% block body_content %} {% endblock %}#}
 
 <!--여기서 부터-->
 {% extends 'index.html' %}\ {% block head_content %}
@@ -13,7 +13,7 @@
 <!-- 사이드 메뉴바-->
 <aside class="sidebar">
   <div class="logo">
-    <img src="menu-line.png" alt="logo" />
+    <img src="{% static 'menu-line.png'%}" alt="logo" />
   </div>
   <ul class="links">
     <h4>Calendar</h4>
@@ -33,7 +33,7 @@
     <h4>Quiz</h4>
     <li>
       <span class="material-symbols-outlined">person</span>
-      <a href="#">내 퀴즈</a>
+      <a href=".">내 퀴즈</a>
     </li>
     <li>
       <span class="material-symbols-outlined">quiz</span>
