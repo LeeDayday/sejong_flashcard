@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from accounts.views import *
 from utils.rendering import *
 urlpatterns = [
@@ -27,4 +27,7 @@ urlpatterns = [
 
     # 함수 사용 렌더링
     path('f_login/', f_login, name='f_login'),
+
+    # 퀴즈 랜더링
+    path('home/quizzes/', include('quizzes.urls'))
 ]

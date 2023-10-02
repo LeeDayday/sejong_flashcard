@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # django app
     'accounts',
+    'quizzes.apps.QuizzesConfig',
 ]
 
 MIDDLEWARE = [
