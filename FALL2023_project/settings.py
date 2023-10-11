@@ -45,8 +45,16 @@ INSTALLED_APPS = [
     # django app
     'accounts',
     'quizzes.apps.QuizzesConfig',
+    # drf
+    'rest_framework',
+
 ]
 
+# rest_framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,  # 한 page 당 보여줄 개수
+}
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
