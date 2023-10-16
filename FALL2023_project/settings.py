@@ -52,8 +52,14 @@ INSTALLED_APPS = [
 
 # rest_framework
 REST_FRAMEWORK = {
+    # pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,  # 한 page 당 보여줄 개수
+    # authentication
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'accounts.views.CustomAuthentication',
+    ],
 }
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
