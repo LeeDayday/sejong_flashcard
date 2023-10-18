@@ -1,12 +1,13 @@
-from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from .models import Deck
 from .serializers import DeckSerializer
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from utils.get_obj import get_deck
+from utils.permission import IsOwnerOrReadOnly
 from rest_framework.generics import get_object_or_404
+
 
 class DeckView(APIView, PageNumberPagination):
     """
@@ -31,15 +32,32 @@ class DeckView(APIView, PageNumberPagination):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class DeckDetailView(APIView, PageNumberPagination):
+    permission_classes = [IsOwnerOrReadOnly]
     """
     Deck 상세 조회
     """
     def get(self, request, deck_id):
-        # 존재하지 않는 id를 검색한 경우, 404 반환
+        # 존재하지 않은 deck_id를 검색한 경우, 404 반환
         deck = get_object_or_404(Deck, id=deck_id)
         serializer = DeckSerializer(deck)
         return Response(serializer.data)
+    """
+    Deck 수정
+    """
+    def put(self, request, deck_id):
+        deck = get_deck(deck_id)
+        # 존재하지 않은 deck_id를 수정하려고 한 경우, 404 반환
+        deck = get_object_or_404(Deck, id=deck_id)
+        serializer = DeckSerializer(deck, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+    """
+    Deck 삭제
+    """
 
 
 
