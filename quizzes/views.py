@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from .models import Deck
 from .serializers import DeckSerializer
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from utils.get_obj import get_deck
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from utils.messages import msg_success
 from utils.permission import IsOwnerOrReadOnly
 from rest_framework.generics import get_object_or_404
 
@@ -45,7 +45,6 @@ class DeckDetailView(APIView, PageNumberPagination):
     Deck 수정
     """
     def put(self, request, deck_id):
-        deck = get_deck(deck_id)
         # 존재하지 않은 deck_id를 수정하려고 한 경우, 404 반환
         deck = get_object_or_404(Deck, id=deck_id)
         serializer = DeckSerializer(deck, data=request.data, partial=True)
@@ -58,7 +57,10 @@ class DeckDetailView(APIView, PageNumberPagination):
     """
     Deck 삭제
     """
-
+    def delete(self, request, deck_id):
+        deck = get_object_or_404(Deck, id=deck_id)
+        deck.delete()
+        return Response("삭제 성공", status=HTTP_204_NO_CONTENT)
 
 
 
