@@ -76,6 +76,10 @@ def f_login(request):
     print(request.session['id'])
     return redirect('/home/')
 
+def f_logout(request):
+    request.session.clear()
+    return redirect('/login/')
+
 class CustomAuthentication(BaseAuthentication):
     def authenticate(self, request):
         # login 성공시 저장된 session 가져온다
