@@ -67,7 +67,7 @@ def f_login(request):
 
     # 입력받은 pw와 db에 저장된 pw 비교 (user_pw 암호화 후 비교)
     if not checkpw(user_pw.encode('utf-8'), user_row[0].password.encode('utf-8')): # 비밀번호가 일치하지 않는 경우
-        messages.error(request, "Please Graduate 비밀번호를 확인하세요")
+        messages.error(request, "세종대학교 포털 비밀번호를 확인하세요")
         return redirect('/login/')
 
     # 로그인 성공
