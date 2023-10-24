@@ -23,7 +23,7 @@ class Flashcard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     vote = models.SmallIntegerField(default=0)
-    visible = models.BooleanField(default=False)
+    visible = models.BooleanField(default=True)
 
     def __str__(self):
         return self.question
