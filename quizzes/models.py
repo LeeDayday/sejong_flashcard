@@ -30,3 +30,4 @@ class Flashcard(models.Model):
 
     class Meta:
         db_table = "flashcard"
+        ordering = ['id']
