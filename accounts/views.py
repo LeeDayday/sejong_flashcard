@@ -1,10 +1,14 @@
 from .models import NewUserInfo
 from utils.crawler import get_user_info
 from django.contrib import messages
+from django.contrib.auth import get_user
 from bcrypt import hashpw, checkpw, gensalt
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+
+from rest_framework.authentication import BaseAuthentication
+from rest_framework.exceptions import AuthenticationFailed
 
 @csrf_exempt
 def f_certify(request):
@@ -40,9 +44,6 @@ def f_certify(request):
     new_user.major = user_info.get('major')
 
     new_user.save()
-
-    # return redirect('/index/')
-
 @csrf_exempt
 def f_login(request):
     # csrf token 확인
@@ -66,13 +67,30 @@ def f_login(request):
 
     # 입력받은 pw와 db에 저장된 pw 비교 (user_pw 암호화 후 비교)
     if not checkpw(user_pw.encode('utf-8'), user_row[0].password.encode('utf-8')): # 비밀번호가 일치하지 않는 경우
-        messages.error(request, "Please Graduate 비밀번호를 확인하세요")
+        messages.error(request, "세종대학교 포털 비밀번호를 확인하세요")
         return redirect('/login/')
 
     # 로그인 성공
     request.session['id'] = user_id
-    return redirect('/home/{user_id}')
+    print(request, request.session)
+    print(request.session['id'])
+    return redirect('/home/')
 
+def f_logout(request):
+    request.session.clear()
+    return redirect('/login/')
 
+class CustomAuthentication(BaseAuthentication):
+    def authenticate(self, request):
+        # login 성공시 저장된 session 가져온다
+        user_id = request.session.get('id')
+        print("authentication session", request.session.get('id'))
+
+        try:
+            user = NewUserInfo.objects.get(student_id__exact=user_id)
+        except NewUserInfo.DoesNotExist:
+            raise AuthenticationFailed('저장된 session 없음')
+
+        return user, None
 
 

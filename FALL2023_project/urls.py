@@ -23,10 +23,11 @@ urlpatterns = [
 
     # 페이지 렌더링
     path('login/', r_login),
-    path('home/{user_id}', r_home),
+    path('home/', r_home),
 
     # 함수 사용 렌더링
     path('f_login/', f_login, name='f_login'),
+    path('f_logout/', f_logout, name='f_logout'),
 
     # 퀴즈 랜더링
     path('home/quizzes/', include('quizzes.urls'))

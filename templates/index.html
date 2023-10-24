@@ -59,7 +59,7 @@
       </ul>
       <!-- 상단 왼쪽 메뉴바-->
       <div class="main">
-        <a href="#" class="logout">Logout</a>
+          <a href='javascript:logout()'>Logout</a>
       </div>
     </header>
 
@@ -91,5 +91,15 @@
     {% endfor %}
     {% endif %}
 
+    <script>
+    function logout() {
+        var back_head = confirm('✋ 정말 로그아웃 하시겠습니까? ✋');
+        if (back_head) {
+            location.href = '/f_logout/';
+        }
+    };
+
+
+</script>
 </html>
 
