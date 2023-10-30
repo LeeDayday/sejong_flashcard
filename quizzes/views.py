@@ -4,10 +4,9 @@ from rest_framework.pagination import PageNumberPagination
 from .models import Deck, Flashcard
 from .serializers import DeckSerializer, FlashcardSerializer
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from utils.messages import msg_success
+# from utils.messages import msg_success
 from utils.permission import IsOwnerOrReadOnly
 from rest_framework.generics import get_object_or_404
-
 
 class DeckView(APIView, PageNumberPagination):
     """
