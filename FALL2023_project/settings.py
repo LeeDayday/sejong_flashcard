@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # django app
     'accounts',
     'quizzes.apps.QuizzesConfig',
+    'cal.apps.CalConfig',
     # drf
     'rest_framework',
 
