@@ -1,0 +1,81 @@
+#공모전크롤링-링크/날짜 변경 완료 코드
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from google.colab import files
+uploaded = files.upload()
+
+import re
+
+file = open('2023_공모전크롤링_2.csv')
+data = pd.read_csv(file)
+data = data[1:]
+data['주최사'] = data['주최사'].str.replace('\n', '')
+data['접수 마감'] = data['접수 마감'].str.replace('\n', '')
+data['접수 마감'] = data['접수 마감'].str.replace('\t', '')
+data['제목/내용'] = data['제목/내용'].str.replace('\n', '')
+data['공모전 게시글 링크'] = ('https://www.wevity.com/'+data['공모전 게시글 링크'].str[9:59])
+# 원래는 처음 나오는 " " 사이의 string을 뽑아 df에 저장하고 싶었으나 생각대로 잘 되지 않아 다른 방향으로 작성
+# 링크 핵심 부분만 슬라이싱 --> 이 부분을 사이트 링크에 붙여서 df에 저장
+data['공모전 게시글 링크'] = data['공모전 게시글 링크'].str.replace('amp;', '')
+
+
+# data['공모전 게시글 링크'] = data['공모전 게시글 링크'].str[9:59]
+#data
+
+
+import datetime
+
+df = pd.DataFrame(data)
+
+# Extract numbers from the 'column_name' column using string manipulation and list comprehension
+df['numbers'] = df['접수 마감'].apply(lambda x: ''.join(filter(str.isdigit, str(x))))
+
+# Convert the extracted strings to integers
+df['numbers'] = df['numbers'].astype(int)
+df['접수 마감'] = df['numbers']
+df.drop(columns=['numbers'], inplace=True)
+
+
+#df
+
+date_series1=df['접수 마감']
+print(date_series1)
+
+# 그냥 데이트에 스트링 더하는게 안 돼서 먼저 시리즈 형태로 바꿔줌
+
+
+import pandas as pd
+import datetime
+
+# 바꿔둔 시리즈 형태를 불러옴
+data1 = date_series1
+
+# Specify a specific date
+#불러온 시리즈 형태에 저장된 dday 더해줄 날짜 지정 (크롤링 한 날짜로 지정해줘야 디데이가 알맞게 계산되겠지용)
+specific_date = datetime.datetime(2023, 9, 25)
+
+# Convert the integer values to timedelta objects (number of days)
+timedelta_values = data1.apply(lambda x: datetime.timedelta(days=x))
+
+# Add the timedelta values to the specific date to calculate new dates
+new_dates = specific_date + timedelta_values
+
+# Replace the original Series with the new dates
+data1 = new_dates
+
+
+df1 = pd.DataFrame(data1)
+
+#수정한 디데이를 데이터프레임 형식으로 다시 저장
+
+
+#df 접수마감 컬럼에 새롭게 저장한 데이트를 저장해서 출력 
+df['접수 마감'] = df1
+
+df
+
+html_table = df.to_html(classes='table table-striped', index=False)
+html_table
