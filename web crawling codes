@@ -88,3 +88,100 @@ import openpyxl
 wevity.to_excel(fx_name , index=False, engine='openpyxl')
 print(" xls 파일 저장 경로: %s" %fx_name) 
 
+
+
+
+###############################################
+#학사일정 크롤링 코드
+
+# 필요한 모듈과 라이브러리를 로딩
+# 크롤링 하기 위해서는 chromedriver download, 드라이버/구글 버전이 맞아야 코드가 돌아갑니다!
+
+from bs4 import BeautifulSoup
+from selenium import webdriver
+import time
+import sys       
+import math
+import pandas  as pd
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+import os
+
+#파일 이름 정하기
+fc_name='c:\\temp\\2023_학사일정크롤링_1.csv'
+fx_name='c:\\temp\\2023_학사일정크롤링_1.xls'
+
+#크롬 드라이버를 사용해서 웹 브라우저 실행
+s = Service("C:\py_temp\chromedriver.exe") 
+driver = webdriver.Chrome(service=s) 
+
+#세종대학교 학사일정 웹사이트 open
+driver.get('http://www.sejong.ac.kr/unilife/program_01.html?menu_id=1.1')
+time.sleep(2)
+
+
+#저장 목록을 만든 후 목록에 있는 내용을 파일에 저장
+
+no2 = [ ]       
+month2 = [ ]
+contents2 =[ ]
+
+
+
+no = 1
+
+print("\n")
+
+# 항목별 내용 추출하기
+html = driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+view_list = soup.select('#content > div.calendar_wrap')
+
+
+
+for i in view_list :
+    
+    no2.append(no)                            # 게시물 번호 리스트에 추가
+    print('1.번호:',no)
+    
+    all_title = i.find_all(['h4'])
+
+    title = all_title[0].get_text( )
+    date2.append(title)                      # 연도/월 리스트에 추가
+    print('2.년/월:',title)
+    month2.append(title)
+    
+
+    
+    
+# 달력 일정 뽑기
+    contents = i.find_all(['#div > calendar_list','ul','li'])   
+    contents3 = contents[0].get_text( )
+    contents2.append(contents3)             
+    print('3.달력 일정:',contents3)
+
+
+    print("\n")
+    no += 1
+
+# 출력 결과를 df 형태로 만들어 파일로 저장
+
+calendar = pd.DataFrame()
+calendar['번호'] = no2
+calendar['년/월'] = month2
+calendar['달력 일정'] = contents2
+
+
+# # csv 형태로 저장하기
+# calendar.to_csv(fc_name,encoding="utf-8-sig",index=False)
+# print(" csv 파일 저장 경로: %s" %fc_name) 
+
+
+# # 엑셀 형태로 저장하기
+# import openpyxl
+# calendar.to_excel(fx_name , index=False, engine='openpyxl')
+# print(" xls 파일 저장 경로: %s" %fx_name) 
+
+
+
