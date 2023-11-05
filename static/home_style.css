@@ -721,6 +721,87 @@ body {
     padding: 20px;
   }
 }
+/*팝업창 구현*/
+.Popup_box#blur.active {
+  pointer-events: none;
+  user-select: none;
+}
+.Popup_box .content {
+  position: relative;
+  max-width: 800px;
+}
+h2 {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+a {
+  position: relative;
+  padding: 5px;
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #000000;
+}
+#popup {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  padding: 40px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  background: #fff;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+}
+#popup.active {
+  top: 50%;
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
+}
+
+/*add-quiz 입력창 css*/
+.quiz-form h2{
+  text-align: center;
+  position: relative;
+  right: 450px;
+  bottom: 200px;
+}
+.form-container {
+  background-color: #ffd5d5;;
+  height: 300px;
+  padding: 50px;
+  margin-top: -200px;
+  border-radius: 10px;
+}
+.center-input {
+  font-family: arial;
+  font-size: 24px;
+}
+.center-input input {
+  width: 1000px; /* 입력 칸의 너비를 80%로 설정하여 양옆으로 확장 */
+  height: 50px;
+  font-size: 30px;
+  border: none; /* 모든 테두리를 없애기 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);; /* 밑에 테두리만 남기기 */
+  display: block;
+  margin: 0 auto; /* 수평 가운데 정렬 */
+}
+.form-container input[type="submit"] {
+  background-color: var(--primary-clr);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  position: relative; /* 위치 지정을 위해 position: relative; 설정 */
+  left: 900px;
+  margin-top: 80px;
+  border-radius: 5px;
+}
 /* <<저작권>>
 .credits {
   position: absolute;
