@@ -7,6 +7,7 @@ class DeckSerializer(serializers.ModelSerializer):
         model = Deck
         fields = '__all__'
 
+
 class DeckDetailSerializer(serializers.ModelSerializer):
     flashcards_count = serializers.SerializerMethodField()
     total_votes = serializers.SerializerMethodField()
@@ -22,6 +23,7 @@ class DeckDetailSerializer(serializers.ModelSerializer):
         flashcards = deck.flashcard_set.all()
         total_votes = sum([flashcard.vote for flashcard in flashcards])  # 해당 deck에 속하는 flashcards의 vote 총합
         return total_votes
+
 
 class FlashcardSerializer(serializers.ModelSerializer):
     class Meta:

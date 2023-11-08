@@ -9,7 +9,6 @@ from utils.permission import IsOwnerOrReadOnly
 from rest_framework.generics import get_object_or_404
 
 
-
 class DeckView(APIView, PageNumberPagination):
     """
     Deck 리스트 조회
@@ -35,6 +34,7 @@ class DeckView(APIView, PageNumberPagination):
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST, template_name='add_quiz(deck).html')
 
+
 class DeckDetailView(APIView, PageNumberPagination):
     permission_classes = [IsOwnerOrReadOnly]
     """
@@ -45,6 +45,7 @@ class DeckDetailView(APIView, PageNumberPagination):
         deck = get_object_or_404(Deck, id=deck_id)
         serializer = DeckDetailSerializer(deck)
         return Response(serializer.data, template_name='quiz_detail.html')
+
     """
     Deck 수정
     """

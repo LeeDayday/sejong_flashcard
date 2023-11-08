@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:deck_id>/', DeckDetailView.as_view(), name='deck-detail'),
     path('<int:deck_id>/cards/', FlashcardView.as_view(), name='card-list'),
     path('<int:deck_id>/cards/<int:flashcard_id>', FlashcardDetailView.as_view(), name='card-detail'),
+
 ]
