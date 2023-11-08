@@ -1,0 +1,40 @@
+{#main page html - 달력#}
+{% extends 'index_side.html' %}
+
+<!-- title, css, javascript 를 위한 block -->
+{% block head_content %}
+{#    title#}
+    <title>Quiz</title>
+    {% load static %}
+{#    css#}
+    <link rel="stylesheet" href="{% static 'Quiz_style.css' %}">
+{#    javscript#}
+    <script src="{% static 'js/script.js' %}" defer></script>
+{% endblock %}
+
+{# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
+{% load rest_framework %}
+{% block body_content %}
+    <div>
+        <span>과목: {{ subject }}</span>
+        <br>
+        <span>이름: {{ name }}</span>
+        <br>
+        <span>작성자: {{ owner }}</span>
+        <br>
+        <span>설명: {{ description }}</span>
+        <br>
+        <span>총 문제 개수: {{ flashcards_count }}</span>
+        <br>
+        <span>총 추천 수: {{ total_votes }}</span>
+    </div>
+    {% if user.student_id == owner %}
+        <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
+        <button onclick="location.href='{% url deck.id 'view-cards'  %}'">문제 추가</button>
+    {% endif %}
+        <!-- 누구든지 볼 수 있는 버튼: 문제 조회 버튼 -->
+        <button onclick="location.href='{% url deck.id 'view-cards'  %}'">문제 풀기</button>
+        <!-- 누구든지 볼 수 있는 버튼: 문제 풀기 버튼 -->
+{#        <button onclick="location.href='{% url 'attempt-quiz' deck.id %}'">문제 풀기</button>#}
+
+{% endblock %}

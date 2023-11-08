@@ -1,0 +1,108 @@
+{## 가장 기본이 되는 html. (nav bar 및 전반적인 layout 담당)#}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+   <link rel="stylesheet" type="text/css" href="/static/home_style.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!-- Linking Google font link for icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <!-- 박스 아이콘 CSS-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+    />
+
+    <!-- 구글 폰트 CSS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+      <!-- title, css, javascript 를 위한 block -->
+      {% block head_content %}
+      {% endblock %}
+
+  </head>
+
+  <body>
+    <header>
+      <!-- 왼쪽상단 로고표시-->
+      <a href="#" class="logo">
+        <i class="ri-school-fill"></i>
+        <span>FlashCards & Calendar for Sejong Univ</span>
+      </a>
+      <!-- 상단 중앙 메뉴바-->
+      <ul class="navbar">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Information</a></li>
+      </ul>
+      <!-- 상단 왼쪽 메뉴바-->
+      <div class="main">
+          <a href='javascript:logout()'>Logout</a>
+      </div>
+    </header>
+    <main>
+        {% block sidebar %}{% endblock %}
+        {% block body_content %}{% endblock %}
+
+    </main>
+
+
+    <!--저작권
+    <footer class="credits">
+      <p>
+        Crafted with ❤️ by
+        <a href="https://youtu.be/6EVgmpm4z5U" target="_blank">Open Source Coding</a>
+      </p>
+    </footer>
+    -->
+
+
+  </body>
+
+    <!-- 예외처리 -->
+    {% if messages %}
+    {% for m in messages %}
+    <!-- 로그인 오류 / 기타오류 발생시 -->
+    {% if m.tags == 'error' %}
+    <script>
+        alert('{{ m }}');
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <script>
+    function logout() {
+        var back_head = confirm('✋ 정말 로그아웃 하시겠습니까? ✋');
+        if (back_head) {
+            location.href = '/f_logout/';
+        }
+    };
+
+
+    </script>
+</html>

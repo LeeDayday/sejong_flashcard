@@ -19,4 +19,19 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # 페이지 렌더링
+    path('login/', r_login),
+    path('home/', r_home),
+    path('home/quizzes/', include('quizzes.urls')),
+    path('home/quizzes/add_deck', r_add_deck),
+
+    # 함수 사용 렌더링
+    path('f_login/', f_login, name='f_login'),
+    path('f_logout/', f_logout, name='f_logout'),
+
+    # 퀴즈 랜더링
+
+    # 캘린더 랜더링
+    ### path('home/cal', include('cal.urls')),
 ]
