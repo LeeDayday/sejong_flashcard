@@ -3,13 +3,20 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_2
 from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
-
 from utils.permission import IsOwnerOrReadOnly
 from .models import *
 from cal.serializers import CalenderSerializer, ContentSerializer
 
-# Create your views here.
 
+import calendar
+from django.shortcuts import render
+from .utils import Calendar2
+from django.utils.safestring import mark_safe
+from django.views import generic
+from datetime import datetime, timedelta, date
+
+
+# Create your views here.
 class CalendarView(APIView, PageNumberPagination):
 
     "Calendar 조회"
@@ -105,3 +112,28 @@ class ContentDetailView(APIView, PageNumberPagination):
         content = get_object_or_404(Content, id = content_id)
         content.delete()
         return Response("삭제되었습니다", status = HTTP_204_NO_CONTENT)
+
+class CalendarView2(generic.ListView):
+    model = Content
+    template_name = 'cal/calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # use today's date for the calendar
+        d = get_date(self.request.GET.get('day', None))
+
+        # Instantiate our calendar class with today's year and date
+        cal = Calendar2(d.year, d.month)
+
+        # Call the formatmonth method, which returns our calendar as a table
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendar'] = mark_safe(html_cal)
+        return context
+
+
+def get_date(req_day):
+    if req_day:
+        year, month = (int(x) for x in req_day.split('-'))
+        return date(year, month, day=1)
+    return datetime.today()

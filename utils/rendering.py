@@ -11,6 +11,15 @@ def r_home(request):
     return response
 
 
-def r_quiz(request):
+def r_myquiz(request):
     response = render(request, "myQuiz.html")
+    return response
+
+
+def r_newquiz(request):
+    response = render(request, "add_quiz(deck).html")
+    return response
+
+def r_solvequiz(request):
+    response = render(request, "attempt_quiz.html")
     return response
