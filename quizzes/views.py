@@ -13,15 +13,27 @@ class DeckView(APIView, PageNumberPagination):
     """
     Deck 리스트 조회
     """
-    renderer_classes = [TemplateHTMLRenderer]
     def get(self, request):
         all_decks = Deck.objects.all()
-        page = self.paginate_queryset(all_decks, request)
-        if page is not None:
-            serializer = self.get_paginated_response(DeckSerializer(page, many=True).data)
+        filter_by = request.GET.get('filter', '')
+        query = request.GET.get('query', '')
+        if filter_by == 'subject':
+            all_decks = all_decks.filter(subject__icontains=query)
+        elif filter_by == 'owner':
+            all_decks = all_decks.filter(owner__icontains=query)
         else:
-            serializer = DeckSerializer(page, many=True)
-        return Response(serializer.data, HTTP_200_OK, template_name='quizzes.html')
+            all_decks = Deck.objects.all()
+        all_decks = all_decks.order_by('-id')
+        page = self.paginate_queryset(all_decks, request)
+
+        if request.accepted_renderer.format == 'html':
+            # HTML 요청에 대한 응답
+            return Response({"results": page}, template_name='quizzes.html')
+
+        # JSON 요청에 대한 응답
+        serializer = DeckSerializer(page, many=True)
+        return Response(serializer.data, status=HTTP_200_OK)
+
     """
     Deck 생성
     """
@@ -32,7 +44,7 @@ class DeckView(APIView, PageNumberPagination):
         if serializer.is_valid():
             serializer.save()  # owner field를 채운 새로운 모델 인스턴스 생성 및 저장
             return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST, template_name='add_quiz(deck).html')
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class DeckDetailView(APIView, PageNumberPagination):
@@ -76,9 +88,11 @@ class FlashcardView(APIView, PageNumberPagination):
         deck = get_object_or_404(Deck, id=deck_id)
         all_flashcards = deck.flashcard_set.all()
         page = self.paginate_queryset(all_flashcards, request)
-        serializer = FlashcardSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
-
+        if page is not None:
+            serializer = self.get_paginated_response(FlashcardSerializer(page, many=True).data)
+        else:
+            serializer = FlashcardSerializer(page, many=True)
+        return Response(serializer.data, HTTP_200_OK, template_name='cards.html')
     """
     특정 Deck에 대한 Flashcard 생성
     """

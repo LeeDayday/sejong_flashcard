@@ -18,6 +18,10 @@
     <div class="containers">
     <!-- 검색창 -->
         <div class="search-box">
+            <select id="search-filter">
+                <option value="subject">과목명</option>
+                <option value="owner">작성자</option>
+            </select>
             <input type="text" id="search-input" placeholder="검색하기">
             <button id="search-button">검색</button>
         </div>
@@ -43,44 +47,56 @@
 <!-- 검색 관련 javascript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    $(document).ready(function () {
-        // 검색 버튼을 클릭할 때 검색 이벤트를 처리합니다.
-        $("#search-button").click(function () {
-            var query = $("#search-input").val(); // 입력된 검색어 가져오기
+        $(document).ready(function () {
+            // 검색 버튼을 클릭할 때 검색 이벤트를 처리합니다.
+            $("#search-button").click(function () {
+                var filter = $("#search-filter").val(); // 선택된 검색 필터 가져오기
+                var query = $("#search-input").val(); // 입력된 검색어 가져오기
 
-            // AJAX 요청을 보냅니다.
-            $.ajax({
-                type: "GET",
-                url: "/home/quizzes/?subject=" + query, // 서버 API 엔드포인트 및 검색어 전달
-                success: function (data) {
-                    // 성공적으로 결과를 받으면, 결과를 표시합니다.
-                    displaySearchResults(data);
-                },
-                error: function () {
-                    alert("검색 중 오류가 발생했습니다.");
-                },
-            });
-        });
-
-        // 검색 결과를 표시하는 함수
-        function displaySearchResults(results) {
-            var resultsContainer = $("#search-results");
-            resultsContainer.empty();
-
-            if (results.length === 0) {
-                resultsContainer.append("<p>검색 결과가 없습니다.</p>");
-            } else {
-                resultsContainer.append("<p>검색 결과:</p>");
-                var list = $("<ul></ul>");
-
-                results.forEach(function (result) {
-                    var listItem = $("<li><a href='/api/decks/" + result.id + "/'>" + result.name + "</a></li>");
-                    list.append(listItem);
+                // AJAX 요청을 보냅니다.
+                $.ajax({
+                    type: "GET",
+                    url: "/home/quizzes/",
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    data: {
+                        filter: filter,
+                        query: query,
+                    },
+                    success: function (data) {
+                        // 성공적으로 결과를 받으면, 결과를 표시합니다.
+                        displaySearchResults(data);
+                    },
+                    error: function () {
+                        alert("검색 중 오류가 발생했습니다.");
+                    },
                 });
+            });
 
-                resultsContainer.append(list);
+            // 검색 결과를 표시하는 함수
+            function displaySearchResults(data) {
+                var searchResultsContainer = $("#search-results");
+                searchResultsContainer.empty(); // 검색 결과를 초기화
+                console.log(data)
+                if (data) {
+                    var results = Array.isArray(data) ? data : [data];
+                    console.log(results)
+                    // 검색 결과가 있는 경우
+                    results.forEach(function (deck) {
+                        // 각 검색 결과를 동적으로 생성하여 추가
+                        var resultElement = $("<a>").attr("href", "/home/quizzes/" + deck.id).addClass("horizontal-box");
+                        resultElement.append($("<span>").text("과목: " + deck.subject));
+                        resultElement.append($("<br>"));
+                        resultElement.append($("<span>").text("이름: " + deck.name));
+
+                        searchResultsContainer.append(resultElement);
+                    });
+                } else {
+                    // 검색 결과가 없는 경우 메시지를 표시
+                    searchResultsContainer.text("검색 결과가 없습니다.");
+                }
             }
-        }
-    });
+        });
     </script>
 {% endblock %}
