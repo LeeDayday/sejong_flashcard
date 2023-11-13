@@ -7,31 +7,80 @@
     <title>Quiz</title>
     {% load static %}
 {#    css#}
-    <link rel="stylesheet" href="{% static 'Quiz_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
 {#    javscript#}
-    <script src="{% static 'js/modal.js' %}" defer></script>
 
 {% endblock %}
 
 {# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
 {% load rest_framework %}
 {% block body_content %}
+    <div class="containers">
+    <!-- 검색창 -->
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="검색하기">
+            <button id="search-button">검색</button>
+        </div>
+    <!-- deck 생성 버튼  -->
+        <button id="openModalButton">새로 추가하기</button>
+
     <section class="horizontal-boxes">
-<!-- 검색창 -->
-    <div class="search-box">
-        <input type="text" id="search-input" placeholder="검색하기">
-        <button id="search-button">검색</button>
-    </div>
-<!-- deck 생성 버튼  -->
-    <button id="openModalButton">새로 추가하기</button>
-<!--화면 중앙에 과목별 전체 퀴즈 항목-->
-        {% for deck in results %}
-            <a href="{% url 'deck-detail' deck.id %}" class="horizontal-box">
-            <span>과목: {{ deck.subject }}</span>
-                <br>
-            <span>이름: {{ deck.name }}</span>
-            </a>
-        {% endfor %}
+    <!--화면 중앙에 과목별 전체 퀴즈 항목-->
+        <div id="search-results">
+            {% for deck in results %}
+                <a href="{% url 'deck-detail' deck.id %}" class="horizontal-box">
+                <span>과목: {{ deck.subject }}</span>
+                    <br>
+                <span>이름: {{ deck.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+
     </section>
 
+    </div>
+
+<!-- 검색 관련 javascript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        // 검색 버튼을 클릭할 때 검색 이벤트를 처리합니다.
+        $("#search-button").click(function () {
+            var query = $("#search-input").val(); // 입력된 검색어 가져오기
+
+            // AJAX 요청을 보냅니다.
+            $.ajax({
+                type: "GET",
+                url: "/home/quizzes/?subject=" + query, // 서버 API 엔드포인트 및 검색어 전달
+                success: function (data) {
+                    // 성공적으로 결과를 받으면, 결과를 표시합니다.
+                    displaySearchResults(data);
+                },
+                error: function () {
+                    alert("검색 중 오류가 발생했습니다.");
+                },
+            });
+        });
+
+        // 검색 결과를 표시하는 함수
+        function displaySearchResults(results) {
+            var resultsContainer = $("#search-results");
+            resultsContainer.empty();
+
+            if (results.length === 0) {
+                resultsContainer.append("<p>검색 결과가 없습니다.</p>");
+            } else {
+                resultsContainer.append("<p>검색 결과:</p>");
+                var list = $("<ul></ul>");
+
+                results.forEach(function (result) {
+                    var listItem = $("<li><a href='/api/decks/" + result.id + "/'>" + result.name + "</a></li>");
+                    list.append(listItem);
+                });
+
+                resultsContainer.append(list);
+            }
+        }
+    });
+    </script>
 {% endblock %}

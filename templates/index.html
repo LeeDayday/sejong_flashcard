@@ -14,8 +14,6 @@
       referrerpolicy="no-referrer"
     />
 
-   <link rel="stylesheet" type="text/css" href="/static/home_style.css" />
-
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
       rel="stylesheet"
@@ -40,7 +38,12 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
       rel="stylesheet"
     />
+
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/index.css' %}">
       <!-- title, css, javascript 를 위한 block -->
+      {% block sidebar_head_content %}
+      {% endblock %}
       {% block head_content %}
       {% endblock %}
 

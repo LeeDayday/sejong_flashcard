@@ -2,13 +2,15 @@
 {% extends 'index.html' %}
 
 <!-- title, css, javascript 를 위한 block -->
-{% block head_content %}
+{% block sidebar_head_content %}
 {#    작성할 title 없음#}
     {% load static %}
-{#    css file#}
-    <link rel="stylesheet" href="{% static 'home_style.css' %}">
-{#    적용할 javascript file 없음#}
-{% endblock %}
+{#    css file #}
+        <link rel="stylesheet" href="{% static 'css/index_side.css' %}">
+
+{#    javascript file 없음#}
+
+{% endblock  %}
 
 {% block sidebar %}
     <!-- 사이드 메뉴바-->
