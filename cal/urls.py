@@ -7,7 +7,5 @@ urlpatterns = [
     path("<int:calendar_id>/", CalendarDetailView.as_view()),
     path("<int:calendar_id>/contents/", ContentView.as_view(), name="content"),
     path("<int:calendar_id>/contents/<int:content_id>/", ContentDetailView.as_view()),
-    path("mycal/", CalendarView2.as_view(), name = 'calendar'),
-    # path('', views.index, name = "index"),
-    # path('', views.CalendarView.as_view(), name ='calendar')
+    path("mycal/", CalendarView2.as_view(), name='calendar'),
 ]
