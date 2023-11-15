@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+   <link rel="stylesheet" type="text/css" href="contest_date.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!-- Linking Google font link for icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <!-- 박스 아이콘 CSS-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+    />
+
+    <!-- 구글 폰트 CSS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+      <!-- title, css 를 위한 block -->
+
+  </head>
+
+  <body>
+    <header>
+      <!-- 왼쪽상단 로고표시-->
+      <a href="#" class="logo">
+        <i class="ri-school-fill"></i>
+        <span>FlashCards & Calendar for Sejong Univ</span>
+      </a>
+      <!-- 상단 중앙 메뉴바-->
+      <ul class="navbar">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Contact</a></li>
+        <div class="Popup_box" id="blur">
+          <div class="content">
+            <li><a href="#" onclick="toggle()">Information</a></li>
+          </div>
+        </div>
+      </ul>
+      <div id="popup">
+        <h2>로렘 입숨(lorem ipsum; 줄여서 립숨, lipsum)</h2>
+        <p>
+          로렘 입숨은 출판이나 그래픽 디자인 분야에서 폰트, 타이포그래피, 레이아웃
+          같은 그래픽 요소나 시각적 연출을 보여줄 때 사용하는 표준 채우기
+          텍스트로, 최종 결과물에 들어가는 실제적인 문장 내용이 채워지기 전에 시각
+          디자인 프로젝트 모형의 채움 글로도 이용된다. 이런 용도로 사용할 때 로렘
+          입숨을 그리킹(greeking)이라고도 부르며, 때로 로렘 입숨은 공간만 차지하는
+          무언가를 지칭하는 용어로도 사용된다. 로렘 입숨은 전통 라틴어와 닮은 점
+          때문에 종종 호기심을 유발하기도 하지만 그 이상의 의미를 담지는 않는다.
+          문서에서 텍스트가 보이면 사람들은 전체적인 프레젠테이션보다는 텍스트에
+          담긴 뜻에 집중하는 경향이 있어서 출판사들은 서체나 디자인을 보일 때는
+          프레젠테이션 자체에 초점을 맞추기 위해 로렘 입숨을 사용한다. 로렘 입숨은
+          영어에서 사용하는 문자들의 전형적인 분포에 근접하다고도 하는데, 이 점
+          때문에 프레젠테이션으로 초점을 이동하는 데에도 도움을 준다.
+        </p>
+        <a href="#" onclick="toggle()">Close</a>
+      </div>
+      <script type="text/javascript">
+        function toggle() {
+          var blur = document.getElementById('blur');
+          blur.classList.toggle('active');
+          var blur = document.getElementById('popup');
+          popup.classList.toggle('active');
+        }
+      </script>
+      <!-- 상단 왼쪽 메뉴바-->
+      <div class="main">
+        <a href="#" class="logout">Logout</a>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+        <div class="logo">
+  
+          <img src="{% static "menu-line.png" %}" alt="logo" />
+        </div>
+        <ul class="links">
+          <h4>Calendar</h4>
+          <li>
+            <span class="material-symbols-outlined">calendar_month</span>
+            <a href="#">내 캘린더</a>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">edit_calendar</span>
+            <a href="#">캘린더 수정</a>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">note_add</span>
+            <a href="#">공모전</a>
+          </li>
+          <hr />
+          <h4>Quiz</h4>
+            <li>
+                <span class="material-symbols-outlined">person</span>
+                <a href="quizzes/myquiz/">내 퀴즈</a>
+            </li>
+          <li>
+            <span class="material-symbols-outlined">quiz</span>
+            <a href="#">퀴즈 풀기</a>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">upload</span>
+            <a href="#">퀴즈 출제</a>
+          </li>
+          <hr />
+          <h4>Account</h4>
+          <li>
+            <span class="material-symbols-outlined">rate_review</span>
+            <a href="#">의견제출</a>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">mail</span>
+            <a href="#">이메일</a>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">info</span>
+            <a href="#">사이트 안내</a>
+          </li>
+        </ul>
+    </aside>
+    <!--                                   =========================================  -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+     
+
+    <table border="1" class="dataframe table table-striped">
+      <thead>
+        <tr style="text-align: right;">
+          <th>번호</th>
+          <th>공모전 게시글 링크</th>
+          <th>제목/내용</th>
+          <th>주최사</th>
+          <th>접수 마감</th>
+        </tr>
+      </thead>
+      <tbody>
+
+<!-- 여기서부터 내가 잠깐 add 한거 -->
+<style>
+/* Define CSS for button positioning */
+#myButton {
+position: absolute;
+top: 200px; /* Adjust the top value to change the vertical position */
+left: 1620px; /* Adjust the left value to change the horizontal position */
+}
+</style>
+      <!-- 이거 주석 해제해 내가 추가한 주석 -->
+        <!-- <button id="myButton">추가</button> -->
+
+        <script>
+            // Define a JavaScript function to be executed when the button is clicked
+            function buttonClick() {
+                alert("해당 공모전을 달력에 추가하시겠습니까?");
+            }
+    
+            // Add an event listener to the button
+            document.getElementById("myButton").addEventListener("click", buttonClick);
+
+
+        </script>
+
+      <!--   내가 추가한거임!!!!!!!! -->
+      <ul id="elementList">
+
+        <tr>
+          <td>1</td>
+          <td> <a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81112"></a></td>
+          <td>[행정안전부] 2023 공공 마이데이터 홍보콘텐츠 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
+          <td>행정안전부</td>
+          <td>2023-10-31</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+<!-- <td><a href = ""></a></td> -->
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><a href ="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82267">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82267</a></td>
+          <td>2023 KDB산업은행 동영상 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 웹/모바일/IT, 대외활동/서포터즈, 기타</td>
+          <td>KDB산업은행</td>
+          <td>2023-11-24</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82231">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82231</a></td>
+          <td>23년 11월 삼성 금융멘토링 교육생 모집  SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 대외활동/서포터즈, 취업/창업, 기타</td>
+          <td>삼성금융네트웍스</td>
+          <td>2023-11-14</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82215">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82215</a></td>
+          <td>2023년 외국인인식개선을 위한 콘텐츠(영상, 웹툰) 제작 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
+          <td>인천외국인종합지원센터</td>
+          <td>2023-11-30</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82193">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82193</a></td>
+          <td>[미래에셋금융서비스] TAMS 글로벌 금융인 양성과정 11기 모집  SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 대외활동/서포터즈, 취업/창업, 기타</td>
+          <td>미래에셋금융서비스</td>
+          <td>2023-12-07</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82178">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82178</a></td>
+          <td>한국수력원자력 x 더나은세상 2024년 아인슈타인 클래스 15기 대학생 멘토 모집  SPECIAL 분류 : 논문/리포트, 과학/공학, 문학/글/시나리오, 예체능/미술/음악, 대외활동/서포터즈, 봉사활동</td>
+          <td>한국수력원자력</td>
+          <td>2023-11-12</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82172">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82172</a></td>
+          <td>[아모레퍼시픽/두리코스메틱등] 뷰티 대기업에서 마케팅/연구개발/MD '실무스펙' 한번에 쌓고 서류합격 확률 200%올리기  SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 예체능/미술/음악, 대외활동/서포터즈, 취업/창업, 기타</td>
+          <td>우먼센스</td>
+          <td>2023-11-05</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><a href ="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82137">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82137</a></td>
+          <td>버블탭 스토리 1화천금 공모전 PART2 (총 상금 5,000만 원!)  SPECIAL 분류 : 기획/아이디어, 디자인/캐릭터/웹툰, 웹/모바일/IT, 문학/글/시나리오, 대외활동/서포터즈</td>
+          <td>버블탭</td>
+          <td>2023-11-26</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><a href ="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82108">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82108</a></td>
+          <td>6주 만에 책 쓰기 프로젝트 [온라인 / 오프라인]  40기 모집  SPECIAL 분류 : 논문/리포트, 문학/글/시나리오, 예체능/미술/음악, 대외활동/서포터즈, 기타</td>
+          <td>글ego</td>
+          <td>2023-11-15</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82077">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82077</a></td>
+          <td>경주국제회의복합지구 슬로건 공모전  SPECIAL IDEA분류 : 기획/아이디어, 광고/마케팅, 문학/글/시나리오, 네이밍/슬로건, 기타</td>
+          <td>(재)경주화백컨벤션뷰로</td>
+          <td>2023-11-22</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82010">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82010</a></td>
+          <td>고용노동부 x 대한상공회의소 2023 미래내일 일경험사업 참가자 모집 (3차)  SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 논문/리포트, 대외활동/서포터즈, 취업/창업, 기타</td>
+          <td>고용노동부 x 대한상공회의소</td>
+          <td>2023-11-19</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><a href ="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82007">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82007</a></td>
+          <td>[신한카드] 참신한글판 문안 공모전 (2023년 겨울)   SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 문학/글/시나리오, 네이밍/슬로건</td>
+          <td>신한카드</td>
+          <td>2023-11-05</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81945">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81945</a></td>
+          <td>[인천국제공항공사] 우리동네 여행코스 대국민 공모전  SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 영상/UCC/사진, 예체능/미술/음악, 대외활동/서포터즈</td>
+          <td>인천국제공항공사</td>
+          <td>2023-11-09</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81865">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81865</a></td>
+          <td>2023 ABB Hackathon (AI, 빅데이터, 블록체인 해커톤)  SPECIAL 분류 : 기획/아이디어, 논문/리포트, 웹/모바일/IT, 게임/소프트웨어, 과학/공학, 대외활동/서포터즈</td>
+          <td>대구광역시</td>
+          <td>2023-11-06</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81830">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81830</a></td>
+          <td>세가더 쇼츠 영상 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 예체능/미술/음악, 대외활동/서포터즈</td>
+          <td>포스코홀딩스</td>
+          <td>2023-11-20</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81786">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81786</a></td>
+          <td>[대한민국시도지사협의회] 지방시대 사진·영상 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 웹/모바일/IT, 예체능/미술/음악, 대외활동/서포터즈</td>
+          <td>대한민국시도지사협의회</td>
+          <td>2023-11-03</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81741">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81741</a></td>
+          <td>[국가철도공단] 2023 KR 철도 영상 시나리오 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 웹/모바일/IT, 문학/글/시나리오, 예체능/미술/음악</td>
+          <td>국가철도공단</td>
+          <td>2023-11-12</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81646">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81646</a></td>
+          <td>2023 정선 30초 광고제  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 웹/모바일/IT, 예체능/미술/음악, 대외활동/서포터즈</td>
+          <td>정선군</td>
+          <td>2023-11-05</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81588">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81588</a></td>
+          <td>세종특별자치시 2023 일자리 아이디어(정책) 공모전  SPECIAL IDEA분류 : 기획/아이디어, 광고/마케팅, 논문/리포트, 대외활동/서포터즈, 취업/창업</td>
+          <td>세종특별자치시, 고용노동부</td>
+          <td>2023-11-10</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81546">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81546</a></td>
+          <td>한국수력원자력 2023 유튜브 영상 공모전  SPECIAL IDEA분류 : 광고/마케팅, 영상/UCC/사진, 웹/모바일/IT, 과학/공학, 예체능/미술/음악</td>
+          <td>한국수력원자력(주)</td>
+          <td>2023-11-15</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81545">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81545</a></td>
+          <td>2023 한국수력원자력 기업이미지 공모전  SPECIAL 분류 : 광고/마케팅, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악, 기타</td>
+          <td>한국수력원자력(주)</td>
+          <td>2023-11-15</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>22</td>
+          <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81310">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81310</a></td>
+          <td>2024 제2회 ChunMan Art for Young 공모전 (시각예술 전 분야)  SPECIAL 분류 : 영상/UCC/사진, 웹/모바일/IT, 예체능/미술/음악, 기타</td>
+          <td>재단법인 천만장학회</td>
+          <td>2023-12-16</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>23</td>
+          <td>https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=80950</td>
+          <td>제25회 이데일리 아이디어 유니버시아드 대회  SPECIAL 분류 : 기획/아이디어, 광고/마케팅, 논문/리포트, 대외활동/서포터즈, 기타</td>
+          <td>이데일리</td>
+          <td>2023-11-06</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>24</td>
+          <td>https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=80830</td>
+          <td>전라북도 자치경찰위원회 웹툰 공모전  SPECIAL 분류 : 광고/마케팅, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악, 기타</td>
+          <td>전라북도 자치경찰위원회</td>
+          <td>2023-11-03</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>25</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82300">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82300</a></td>
+          <td>서울 도시브랜드(SEOUL, MY SOUL) 굿즈 디자인 공모전 신규 분류 : 디자인/캐릭터/웹툰</td>
+          <td>서울특별시</td>
+          <td>2023-11-22</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+        <tr>
+          <td>26</td>
+          <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82298">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82298</a></td>
+          <td>제5회 강릉 청소년문학상 공모 신규 분류 : 문학/글/시나리오</td>
+          <td>강릉시</td>
+          <td>2023-11-16</td>
+          <td><button onclick="buttonClick()">추가하기</button></td>
+
+        </tr>
+     
+      </ul>   
+      <!-- 내가 추가한거임 위에 /ul -->
+
+
+    <script>
+        // Get the current date
+        var currentDate = new Date();
+
+        // Get all rows in the table
+        var rows = document.querySelectorAll("table.dataframe tbody tr");
+
+        // Iterate through each row and compare the date in the last column (접수 마감) with the current date
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var dateCell = row.cells[row.cells.length - 2];
+            var tableDate = new Date(dateCell.textContent);
+
+            if (tableDate <= currentDate) {
+                // Date has passed, hide the row
+                row.style.display = "none";
+            }
+        }
+
+    </script>
+</tbody>
+</table>
+      <!--    {{ table_data | safe }}-->
+
+      <script src="contest.js"></script>
+  </body>
+
+</html>
