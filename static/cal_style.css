@@ -1,3 +1,5 @@
+/* cal_style.css or your custom CSS file */
+
 .calendar {
   width: 98%;
   margin: auto;
@@ -36,6 +38,7 @@ ul {
 a {
   color: #17a2b8;
 }
+
 .left {
   float: left;
 }

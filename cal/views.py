@@ -1,66 +1,70 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.generics import get_object_or_404
+# from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from utils.permission import IsOwnerOrReadOnly
 from .models import *
-from cal.serializers import CalenderSerializer, ContentSerializer
-
-
+from cal.serializers import *
+from django.shortcuts import get_object_or_404, redirect
 import calendar
+from django.urls import reverse
 from django.shortcuts import render
 from .utils import Calendar2
 from django.utils.safestring import mark_safe
 from django.views import generic
 from datetime import datetime, timedelta, date
+from .forms import ContentForm
+from django.contrib import messages
 
 
 # Create your views here.
-class CalendarView(APIView, PageNumberPagination):
-
-    "Calendar 조회"
-    def get(self, request):
-        all_cal = Calendar.objects.all()
-        page = self.paginate_queryset(all_cal, request)
-        serializer = CalenderSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
-
-    "Calendar 생성"
-    def post(self, request):
-        info = request.data
-        info['owner'] = request.user.student_id
-        serializer = CalenderSerializer(data = info)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-
-class CalendarDetailView(APIView, PageNumberPagination):
-
-    "Calendar 상세조회"
-
-    def get(self, request, calendar_id):
-        cal = get_object_or_404(Calendar, id = calendar_id)
-        serializer = CalenderSerializer(cal)
-        return Response(serializer.data)
-
-    "Calendar 수정"
-    def put(self, request, calendar_id):
-        cal = get_object_or_404(Calendar, id=calendar_id)
-        serializer = CalenderSerializer(cal, data = request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-    "Calendar 삭제"
-    def delete(self, request, calendar_id):
-        cal = get_object_or_404(Calendar, id=calendar_id)
-        cal.delete()
-        return Response("삭제 되었습니다.", status=HTTP_204_NO_CONTENT)
+# class CalendarView(APIView, PageNumberPagination):
+#
+#     "Calendar 조회"
+#     def get(self, request):
+#         all_cal = Calendar.objects.all()
+#         page = self.paginate_queryset(all_cal, request)
+#         serializer = CalenderSerializer(page, many=True)
+#         return self.get_paginated_response(serializer.data)
+#
+#     "Calendar 생성"
+#     def post(self, request):
+#         info = request.data
+#         info['owner'] = request.user.student_id
+#         serializer = CalenderSerializer(data = info)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=HTTP_201_CREATED)
+#         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+#
+#
+# class CalendarDetailView(APIView, PageNumberPagination):
+#
+#     "Calendar 상세조회"
+#
+#     def get(self, request, calendar_id):
+#         cal = get_object_or_404(Calendar, id = calendar_id)
+#         serializer = CalenderSerializer(cal)
+#         return Response(serializer.data)
+#
+#     "Calendar 수정"
+#     def put(self, request, calendar_id):
+#         cal = get_object_or_404(Calendar, id=calendar_id)
+#         serializer = CalenderSerializer(cal, data = request.data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=HTTP_200_OK)
+#         else:
+#             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+#
+#     "Calendar 삭제"
+#     def delete(self, request, calendar_id):
+#         cal = get_object_or_404(Calendar, id=calendar_id)
+#         cal.delete()
+#         return Response("삭제 되었습니다.", status=HTTP_204_NO_CONTENT)
 
 
 
@@ -119,7 +123,6 @@ class CalendarView2(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         # use today's date for the calendar
         d = get_date(self.request.GET.get('day', None))
 
@@ -129,7 +132,6 @@ class CalendarView2(generic.ListView):
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
-
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         return context
@@ -156,3 +158,23 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     a = 'day=' + str(next_month.year) + '-' + str(next_month.month) + '-' + str(next_month.day)
     return a
+
+
+@login_required
+def content(request, content_id=None):
+    instance = Content()
+    if content_id:
+        instance = get_object_or_404(Content, pk=content_id)
+    else:
+        instance = Content()
+    instance.owner = request.GET.get(NewUserInfo)
+    form = ContentForm(request.POST or None, instance=instance)
+    if request.POST and form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('cal:calendar'))
+
+    return render(request, 'cal/content.html', {'form': form})
+
+
+
+
