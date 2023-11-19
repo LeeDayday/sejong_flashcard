@@ -167,14 +167,23 @@ def content(request, content_id=None):
         instance = get_object_or_404(Content, pk=content_id)
     else:
         instance = Content()
-    instance.owner = request.GET.get(NewUserInfo)
     form = ContentForm(request.POST or None, instance=instance)
-    if request.POST and form.is_valid():
+    if request.POST and form.is_valid() and form.owner == request.GET.get(NewUserInfo):
         form.save()
         return HttpResponseRedirect(reverse('cal:calendar'))
 
-    return render(request, 'cal/content.html', {'form': form})
+    return render(request, 'cal/content.html', {'form': form, 'instance':instance})
 
 
-
+def content_delete(request, content_id=None):
+    instance = Content()
+    if content_id:
+        instance = get_object_or_404(Content, pk=content_id)
+    else:
+        instance = Content()
+    if request.method == 'POST':
+        instance.delete()
+        messages.success(request, '성공적으로 삭제하였습니다.')
+        return HttpResponseRedirect(reverse('cal:calendar'))
+    return render(request, 'cal/delete.html', {'instance': instance})
 

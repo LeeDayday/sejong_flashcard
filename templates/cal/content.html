@@ -13,8 +13,10 @@ Content
   {% csrf_token %}
   <table class="form form-table">
     {{ form }}
-    <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
+    <td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td>
   </table>
 </form>
-{#    <a href="{% url 'cal:content_delete' instance.content_id %}" class="btn btn-danger"> Delete </a>#}
+    {% if instance.id %}
+        <p><a href="{% url 'cal:content_delete' instance.id %}" class="btn btn-info bottom-left"> Delete </a></p>
+    {% endif %}
 {% endblock %}
