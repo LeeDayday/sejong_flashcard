@@ -168,10 +168,9 @@ def content(request, content_id=None):
     else:
         instance = Content()
     form = ContentForm(request.POST or None, instance=instance)
-    if request.POST and form.is_valid() and form.owner == request.GET.get(NewUserInfo):
+    if request.POST and form.is_valid():
         form.save()
         return HttpResponseRedirect(reverse('cal:calendar'))
-
     return render(request, 'cal/content.html', {'form': form, 'instance':instance})
 
 
