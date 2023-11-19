@@ -15,6 +15,9 @@ def r_myquiz(request):
     response = render(request, "myQuiz.html")
     return response
 
+def r_contest(request):
+    response = render(request, "cal/contest_date.html")
+    return response
 
 def r_newquiz(request):
     response = render(request, "add_quiz(deck).html")

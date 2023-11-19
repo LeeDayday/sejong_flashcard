@@ -33,5 +33,5 @@ urlpatterns = [
     path('home/quizzes/', include('quizzes.urls')),
 
     # 캘린더 랜더링
-    path('home/cal', include('cal.urls')),
+    path('cal/', include('cal.urls')),
 ]
