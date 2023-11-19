@@ -58,51 +58,26 @@
         </div>
         <button class="btn-open-modal">새로 추가하기</button>
 
-    <section class="horizontal-boxes">
-    <!--화면 중앙에 과목별 전체 퀴즈 항목-->
-        <div id="search-results">
-            {% for deck in results %}
-                <a href="{% url 'deck-detail' deck.id %}" class="horizontal-box">
-                <span>과목: {{ deck.subject }}</span>
-                    <br>
-                <span>이름: {{ deck.name }}</span>
-                </a>
-            {% endfor %}
-        </div>
+        <section class="horizontal-boxes">
+            <!--화면 중앙에 과목별 전체 퀴즈 항목-->
+            <div id="search-results">
+                {% for deck in results %}
+                    <a href="{% url 'deck-detail' deck.id %}" class="horizontal-box">
+                    <span>과목: {{ deck.subject }}</span>
+                        <br>
+                    <span>이름: {{ deck.name }}</span>
+                    </a>
+                {% endfor %}
+            </div>
 
+            <!--paginatinon link-->
+            <div class="pagination">
+              <span class="step-links">
+                {% include 'pagination_links.html' %}
+              </span>
+            </div>
 
-    <div class="pagination">
-      <span class="step-links">
-{% load mathfilters %}
-{% load custom_filters %}
-
-{% with total_pages=count|div:5|add:1 %}
-    {% with previous_page=previous|extract_page_number|default_if_none:"1" %}
-        {% with next_page=next|extract_page_number|default_if_none:total_pages %}
-            {% with current_page=request.get_full_path|extract_page_number|default_if_none:"1" %}
-                {% if previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ previous_page }}">previous</a>
-                {% endif %}
-
-                <span class="current">
-                    Page {{ current_page }} of {{ total_pages }}.
-                </span>
-
-                {% if next %}
-                    <a href="?page={{ next_page }}">next</a>
-                    <a href="?page={{ total_pages }}">last &raquo;</a>
-                {% endif %}
-
-            {% endwith %}
-        {% endwith %}
-    {% endwith %}
-{% endwith %}
-
-
-      </span>
-    </div>
-    </section>
+        </section>
 
     </div>
 
