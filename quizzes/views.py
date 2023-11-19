@@ -4,7 +4,7 @@ from rest_framework.pagination import PageNumberPagination
 from .models import Deck, Flashcard
 from .serializers import DeckSerializer, DeckDetailSerializer, FlashcardSerializer
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from utils.permission import IsOwnerOrReadOnly
 from rest_framework.generics import get_object_or_404
 
@@ -13,6 +13,9 @@ class DeckView(APIView, PageNumberPagination):
     """
     Deck 리스트 조회
     """
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    serializer_class = DeckSerializer
+
     def get(self, request):
         all_decks = Deck.objects.all()
         filter_by = request.GET.get('filter', '')
@@ -23,22 +26,23 @@ class DeckView(APIView, PageNumberPagination):
             all_decks = all_decks.filter(owner__icontains=query)
         else:
             all_decks = Deck.objects.all()
+
         all_decks = all_decks.order_by('-id')
         page = self.paginate_queryset(all_decks, request)
 
-        if request.accepted_renderer.format == 'html':
-            # HTML 요청에 대한 응답
-            return Response({"results": page}, template_name='quizzes.html')
-
-        # JSON 요청에 대한 응답
-        serializer = DeckSerializer(page, many=True)
-        return Response(serializer.data, status=HTTP_200_OK)
+        if page is not None:
+            serializer = self.get_paginated_response(DeckSerializer(page, many=True).data)
+        else:
+            serializer = DeckSerializer(all_decks, many=True)
+        return Response(serializer.data, template_name='quizzes.html', status=HTTP_200_OK)
 
     """
     Deck 생성
     """
     def post(self, request):
+        self.renderer_classes = [JSONRenderer]  # post 메서드에서만 TemplateHTMLRenderer 없이 사용
         data = request.data.copy()
+        print(data)
         data['owner'] = request.user.student_id
         serializer = DeckSerializer(data=data)
         if serializer.is_valid():

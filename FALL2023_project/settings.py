@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'accounts',
     'quizzes.apps.QuizzesConfig',
     # 'cal.apps.CalConfig',
+    'mathfilters',
 
     # drf
     'rest_framework',
@@ -57,16 +58,13 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     # pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,  # 한 page 당 보여줄 개수
+    'PAGE_SIZE': 5,  # 한 page 당 보여줄 개수
     # authentication
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'accounts.views.CustomAuthentication',
     ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.TemplateHTMLRenderer',
-        'rest_framework.renderers.JSONRenderer',
-    ]
+
 
 }
 MIDDLEWARE = [
