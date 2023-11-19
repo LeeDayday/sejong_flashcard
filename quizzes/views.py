@@ -42,7 +42,6 @@ class DeckView(APIView, PageNumberPagination):
     def post(self, request):
         self.renderer_classes = [JSONRenderer]  # post 메서드에서만 TemplateHTMLRenderer 없이 사용
         data = request.data.copy()
-        print(data)
         data['owner'] = request.user.student_id
         serializer = DeckSerializer(data=data)
         if serializer.is_valid():
@@ -86,6 +85,7 @@ class DeckDetailView(APIView, PageNumberPagination):
 
 
 class FlashcardView(APIView, PageNumberPagination):
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
     """
     특정 Deck에 대한 Flashcard 리스트 조회
     """

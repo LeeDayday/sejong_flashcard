@@ -1,0 +1,46 @@
+{#cards page html#}
+{% extends 'index_side.html' %}
+
+<!-- title, css, javascript 를 위한 block -->
+{% block head_content %}
+{#    title#}
+    <title>Quiz</title>
+    {% load static %}
+{#    css#}
+{#    <link rel="stylesheet" href="{% static 'home_style.css' %}">#}
+{#    javscript#}
+
+{% endblock %}
+
+{# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
+{% load rest_framework %}
+{% block body_content %}
+    <section class="horizontal-boxes">
+        {% for card in results %}
+            {{ card }}
+            <p>User ID: {{ user.student_id }}</p>
+            <p>Owner ID: {{ card.owner }}</p>
+        {% endfor %}
+
+        {% if user.student_id == owner %}
+            <!-- Debugging output -->
+            <p>Hi</p>
+
+            <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
+           {# <button onclick="location.href='{% url 'card-create' %}'">문제 추가</button>#}
+        {% endif %}
+        <!--화면 중앙에 과목별 전체 퀴즈 항목-->
+        {% if results %}
+            {% for card in results %}
+                <span>문제: {{ card.question }}</span>
+                    <br>
+                <span>정답: {{ card.answer }}</span>
+                    <br>
+            {% endfor %}
+
+        {% else %}
+            <span>문제 없음</span>
+        {% endif %}
+    </section>
+
+{% endblock %}

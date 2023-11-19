@@ -11,10 +11,3 @@ def r_home(request):
     return response
 
 
-def r_quiz(request):
-    response = render(request, "add_quiz(deck).html")
-    return response
-
-def r_add_deck(request):
-    response = render(request, "add_quiz(deck).html")
-    return response
