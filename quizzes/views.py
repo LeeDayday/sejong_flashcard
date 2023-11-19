@@ -23,7 +23,7 @@ class DeckView(APIView, PageNumberPagination):
         if filter_by == 'subject':
             all_decks = all_decks.filter(subject__icontains=query)
         elif filter_by == 'owner':
-            all_decks = all_decks.filter(owner__icontains=query)
+            all_decks = all_decks.filter(owner=query)
         else:
             all_decks = Deck.objects.all()
 
@@ -53,6 +53,7 @@ class DeckView(APIView, PageNumberPagination):
 
 class DeckDetailView(APIView, PageNumberPagination):
     permission_classes = [IsOwnerOrReadOnly]
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
     """
     Deck 상세 조회
     """

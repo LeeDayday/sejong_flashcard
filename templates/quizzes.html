@@ -116,9 +116,11 @@
                 var searchResultsContainer = $("#search-results");
                 searchResultsContainer.empty(); // 검색 결과를 초기화
                 console.log(data)
-                if (data) {
-                    var results = Array.isArray(data) ? data : [data];
+                console.log(data.count)
+                if (data.count) {
+                    var results = data.results;
                     console.log(results)
+
                     // 검색 결과가 있는 경우
                     results.forEach(function (deck) {
                         // 각 검색 결과를 동적으로 생성하여 추가
