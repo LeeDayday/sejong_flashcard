@@ -1,3 +1,4 @@
+"""
 import datetime
 
 from django.db import models
@@ -7,7 +8,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Calendar(models.Model):
-    owner = models.ForeignKey(NewUserInfo, on_delete=models.CASCADE)
+    owner = models.ForeignKey('NewUserInfo', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
 
@@ -29,3 +30,5 @@ class Content(models.Model):
 
     class Meta:
         db_table = "content"
+
+"""
