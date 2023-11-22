@@ -31,6 +31,7 @@
         <!--여기서 부터 modal창 구현코드-->
         <div class="modal"> <!--모달창-->
             <div class="modal_body"> <!--모달창 버튼을 눌렀을 때-->
+                <button class="btn-close-modal">X</button> <!--누르면 모달창이 꺼지는 버튼-->
                 <div class="quiz-form">
                     <h2>퀴즈 형식 작성</h2>
                         {% csrf_token %}
@@ -144,9 +145,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             const modal = document.querySelector('.modal');
             const btnOpenModal = document.querySelector('.btn-open-modal');
+            const btnCloseModal = document.querySelector('.btn-close-modal');
 
             btnOpenModal.addEventListener("click", () => {
-                modal.style.display = "flex";
+            modal.style.display = "flex";
+            });
+            btnCloseModal.addEventListener("click", () => {
+            modal.style.display = "none";
             });
 
             const form = document.querySelector('.quiz-form form');
