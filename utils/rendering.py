@@ -11,3 +11,6 @@ def r_home(request):
     return response
 
 
+def r_attempt_quizz(request):
+    response = render(request, "attempt_quiz.html")
+    return response

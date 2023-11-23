@@ -102,6 +102,7 @@ class FlashcardView(APIView, PageNumberPagination):
     특정 Deck에 대한 Flashcard 생성
     """
     def post(self, request, deck_id):
+        self.renderer_classes = [JSONRenderer]  # post 메서드에서만 TemplateHTMLRenderer 없이 사용
         data = request.data.copy()
         data['owner'] = request.user.student_id
         data['deck'] = deck_id
@@ -113,6 +114,7 @@ class FlashcardView(APIView, PageNumberPagination):
 
 class FlashcardDetailView(APIView, PageNumberPagination):
     permission_classes = [IsOwnerOrReadOnly]
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
     """
     Flashcard 상세 조회
     """
@@ -120,7 +122,7 @@ class FlashcardDetailView(APIView, PageNumberPagination):
         # 존재하지 않은 flashcard_id를 검색한 경우, 404 반환
         flashcard = get_object_or_404(Flashcard, id=flashcard_id)
         serializer = FlashcardSerializer(flashcard)
-        return Response(serializer.data)
+        return Response(serializer.data, template_name='attempt_quiz.html')
     """
     Flashcard 수정
     """
