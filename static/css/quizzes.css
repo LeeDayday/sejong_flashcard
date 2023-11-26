@@ -1,32 +1,12 @@
-.containers {
-  display: flex; /* 부모 컨테이너를 Flex Container로 설정 */
-  flex-direction: column; /* 세로 방향으로 정렬 (기본값) */
-  align-items: center; /* 수직 정렬을 중앙으로 설정 */
-
-  /* 원하는 가로 여백을 설정하세요 */
-  padding: 20px;
-
-  box-sizing: border-box;
-}
 .search-and-button-container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 버튼을 검색 옆에 위치하도록 설정 */
+    justify-content: center; /* Center the content horizontally */
     margin-bottom: 0px;
 }
-
-#search-filter,
-#search-input,
-#search-button {
+#search-filter, #search-input, #search-button {
   margin-right: 10px;
-}
-
-#search-filter {
-  padding: 8px;
-}
-
-#search-input {
-  padding: 8px;
+    padding: 8px;
   flex: 1;
 }
 
@@ -58,7 +38,16 @@
   border-color: #883a3a;
   transition: background-color 0.3s;
 }
+/*-------------------------------------- 상단 검색창 css*/
+.containers .horizontal-boxes {
+  display: flex; /* 부모 컨테이너를 Flex Container로 설정 */
+  flex-direction: column; /* 세로 방향으로 정렬 (기본값) */
+  align-items: center; /* 수직 정렬을 중앙으로 설정 */
 
+  /* 원하는 가로 여백을 설정하세요 */
+  padding: 20px;
+  box-sizing: border-box;
+}
 /*검색 결과*/
 #search-results {
   display: flex; /* 내부 컨테이너를 Flex Container로 설정 */
@@ -66,7 +55,7 @@
   justify-content: center; /* 수평 정렬을 중앙으로 설정 */
 
   /* 원하는 가로 여백을 설정하세요 */
-  gap: 20px;
+  gap: 15px;
 }
 
 /* deck 생성 버튼에 대한 스타일 */
@@ -88,7 +77,7 @@
 
 .horizontal-box {
   display: block;
-  width: 90%; /* 이 부분 수정 */
+  width: 100%; /* 이 부분 수정 */
   color: var(--text-color);
   background-color: #f0f0f0;
   padding: 20px;
