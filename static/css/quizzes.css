@@ -8,14 +8,55 @@
 
   box-sizing: border-box;
 }
+.search-and-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 버튼을 검색 옆에 위치하도록 설정 */
+    margin-bottom: 0px;
+}
 
-/*검색 창*/
-.search-box {
-  display: flex; /* 내부 컨테이너를 Flex Container로 설정 */
-  align-items: center; /* 수직 정렬을 중앙으로 설정 */
+#search-filter,
+#search-input,
+#search-button {
+  margin-right: 10px;
+}
 
-  /* 원하는 가로 여백을 설정하세요 */
-  margin-bottom: 20px;
+#search-filter {
+  padding: 8px;
+}
+
+#search-input {
+  padding: 8px;
+  flex: 1;
+}
+
+#search-button {
+  padding: 8px 15px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#search-button:hover {
+  background-color: #f0f0f0;
+  border-color: #883a3a;
+  transition: background-color 0.3s;
+}
+
+/* "새로 추가하기" 버튼 스타일 */
+.btn-open-modal {
+  padding: 8px 15px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-open-modal:hover {
+  background-color: #f0f0f0;
+  border-color: #883a3a;
+  transition: background-color 0.3s;
 }
 
 /*검색 결과*/
