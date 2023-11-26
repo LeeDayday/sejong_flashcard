@@ -1,0 +1,27 @@
+/* Pagination container styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.pagination a {
+  color: #007bff;
+  padding: 6px 12px;
+  font-size: 14px;
+  text-decoration: none;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  margin: 0 4px;
+  transition: background-color 0.3s;
+}
+.pagination .current {
+  background-color: #6da3e2;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 0 4px;
+  transition: background-color 0.3s;
+}
+.pagination a:hover:not(.current) {
+  background-color: #f0f0f0;
+}
