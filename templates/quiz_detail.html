@@ -96,11 +96,18 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const deleteButton = document.querySelector('.btn-delete-deck');
 
     deleteButton.addEventListener("click", async () => {
         try {
+            // Ask for user confirmation
+            const userConfirmed = confirm("정말로 삭제하시겠습니까?");
+
+            if (!userConfirmed) {
+                return; // If the user cancels, do nothing
+            }
+
             const deckId = window.location.pathname.split('/').slice(-2, -1)[0];
 
             // Check if the csrfmiddlewaretoken element exists
@@ -116,18 +123,23 @@
             });
 
             if (response.ok) {
-                // If the request was successful, reload the page or perform other actions
-                location.href = '/home/quizzes/'; // Example: Redirect to the deck list page
+                // If the request was successful, go back to the quizzes page and reload it
+                window.location.href = "/home/quizzes/";
             } else {
                 // If there was an error, handle it accordingly
                 console.error('Failed to delete the deck:', response.statusText);
+
+                // Optionally, display an error message to the user
+                alert('Failed to delete the deck. Please try again.');
             }
         } catch (error) {
             console.error('An error occurred during the DELETE request:', error);
+
+            // Optionally, display an error message to the user
+            alert('An error occurred. Please try again.');
         }
     });
 });
-
     </script>
 
 
