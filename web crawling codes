@@ -1,8 +1,9 @@
 ##### 크롤링 하기 위해서는 chromedriver download, 드라이버/구글 버전이 맞아야 코드가 돌아갑니다!
 #jupyter 사용하였음
 
-
 # 필요한 모듈과 라이브러리를 로딩
+# 크롤링 하기 위해서는 chromedriver download, 드라이버/구글 버전이 맞아야 코드가 돌아갑니다!
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
@@ -16,8 +17,8 @@ from selenium.webdriver.chrome.service import Service
 import os
 
 #파일 이름 정하기
-fc_name='c:\\temp\\2023_공모전크롤링_1.csv'
-fx_name='c:\\temp\\2023_공모전크롤링_1.xls'
+fc_name='c:\\temp\\2023_공모전크롤링_2.csv'
+fx_name='c:\\temp\\2023_공모전크롤링_2.xls'
 
 #크롬 드라이버를 사용해서 웹 브라우저 실행
 s = Service("C:\py_temp\chromedriver.exe") 
@@ -34,6 +35,7 @@ no2 = [ ]           # 게시글 번호 컬럼
 title2 = [ ]        # 게시물 제목/내용 컬럼
 contents2 = [ ]     # 주최사 컬럼
 ddate2 = [ ]        # 마감 일자 컬럼
+link2 = [ ]         # 공모전 게시글 링크 
 
 
 no = 1
@@ -63,20 +65,34 @@ for i in view_list :
     print('3.주최사:',contents3)
 #접수 마감일
     ddate = i.find_all(['div','day'])         # 접수 마감일
-    ddate3 = ddate[3].get_text()
+    ddate3 = ddate[3].get_text( )
     ddate2.append(ddate3)                     # 접수 마감일 리스트에 추가
     print('4.접수 마감:',ddate3)
-    print("\n")
+    #print("\n")
 
+
+
+### 파이썬으로 " " 사이에 있는 내용만 뽑아서 https://www.wevity.com/ 이거 뒤에 붙여서 링크 제작할 수 있도록 코드 뚱땅이 해야함. 
+#크롤링으로 따오면서 동시에 링크 연결하는건 불가능할듯.
+
+
+    link3 = ['https://www.wevity.com/']
+    link = i.find_all(['div','tit','a','href'])         # 공모전 게시글 링크
+    link3 = link[1]
+    link2.append(link3)                     # 리스트에 공모전 게시글 링크 추가
+    print('5.공모전 게시글 링크:',link3)
+    print("\n")
     no += 1
 
 # 출력 결과를 df 형태로 만들어 파일로 저장
 
 wevity = pd.DataFrame()
 wevity['번호'] = no2
+wevity['공모전 게시글 링크'] = link2
 wevity['제목/내용'] = title2
 wevity['주최사'] = contents2
 wevity['접수 마감'] = ddate2
+# wevity['공모전 게시글 링크'] = link2
 
 # csv 형태로 저장하기
 wevity.to_csv(fc_name,encoding="utf-8-sig",index=False)
@@ -87,6 +103,8 @@ print(" csv 파일 저장 경로: %s" %fc_name)
 import openpyxl
 wevity.to_excel(fx_name , index=False, engine='openpyxl')
 print(" xls 파일 저장 경로: %s" %fx_name) 
+
+
 
 
 
