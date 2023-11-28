@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load static %}
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,7 +14,7 @@
       referrerpolicy="no-referrer"
     />
 
-   <link rel="stylesheet" type="text/css" href="contest_date.css" />
+   <link rel="stylesheet" type="text/css" href="{% static 'contest_date.css' %}" />
 
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
@@ -170,13 +172,13 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
 
 
         <script>
-            // Define a JavaScript function to be executed when the button is clicked
-            function buttonClick() {
-                alert("해당 공모전을 달력에 추가하시겠습니까?");
-            }
-    
-            // Add an event listener to the button
-            document.getElementById("myButton").addEventListener("click", buttonClick);
+            {#// Define a JavaScript function to be executed when the button is clicked#}
+            {#function buttonClick() {#}
+            {#    alert("해당 공모전을 달력에 추가하시겠습니까?");#}
+            {#}#}
+            {##}
+            {#// Add an event listener to the button#}
+            {#document.getElementById("myButton").addEventListener("click", buttonClick);#}
 
 
         </script>
@@ -186,10 +188,10 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
 
         <tr>
           <td> <a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=81112"></a></td>
-          <td>[행정안전부] 2023 공공 마이데이터 홍보콘텐츠 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
-          <td>행정안전부</td>
-          <td>2023-10-31</td>
-          <td><button onclick="buttonClick()">추가하기</button></td>
+          <td id = "content">[행정안전부] 2023 공공 마이데이터 홍보콘텐츠 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
+          <td id = "title">행정안전부</td>
+          <td id = "date">2023-10-31</td>
+          <td><button onclick="saveData()">추가하기</button></td>
 
 <!-- <td><a href = ""></a></td> -->
         </tr>
@@ -212,10 +214,10 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
         </tr>
         <tr>
           <td><a href = "https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82215">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82215</a></td>
-          <td>2023년 외국인인식개선을 위한 콘텐츠(영상, 웹툰) 제작 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
-          <td>인천외국인종합지원센터</td>
-          <td>2023-11-30</td>
-          <td><button onclick="buttonClick()">추가하기</button></td>
+          <td id = "content">2023년 외국인인식개선을 위한 콘텐츠(영상, 웹툰) 제작 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
+          <td id = "title">인천외국인종합지원센터</td>
+          <td id = "date">2023-11-30</td>
+          <td><button onclick="saveData()">추가하기</button></td>
 
         </tr>
         <tr>
@@ -440,10 +442,10 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
     </tr>
     <tr>
       <td><a href="https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82215">https://www.wevity.com/?c=find&amp;s=1&amp;gbn=view&amp;gp=1&amp;ix=82215</a></td>
-      <td>2023년 외국인인식개선을 위한 콘텐츠(영상, 웹툰) 제작 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
-      <td>인천외국인종합지원센터</td>
-      <td>2023-11-30</td>
-      <td><button onclick="buttonClick()">추가하기</button></td>
+      <td id = "content">2023년 외국인인식개선을 위한 콘텐츠(영상, 웹툰) 제작 공모전  SPECIAL 분류 : 광고/마케팅, 영상/UCC/사진, 디자인/캐릭터/웹툰, 웹/모바일/IT, 예체능/미술/음악</td>
+      <td id = "title">인천외국인종합지원센터</td>
+      <td id = "date">2023-11-30</td>
+      <td><button onclick="saveData()">추가하기</button></td>
 
     </tr>
     <tr>
@@ -585,7 +587,22 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
                 row.style.display = "none";
             }
         }
+        // save data
+            function saveData() {
+            var data = $('#dataCell').text();
 
+            $.ajax({
+                type: 'POST',
+                url: 'localhost:8000/cal/contest/save',
+                data: { content: data },
+                success: function(response) {
+                    alert('Data saved successfully!');
+                },
+                error: function(error) {
+                    alert('Error saving data: ' + error);
+                }
+            });
+        }
     </script>
 </tbody>
 </table>

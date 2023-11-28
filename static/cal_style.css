@@ -1,5 +1,3 @@
-/* cal_style.css or your custom CSS file */
-
 .calendar {
   width: 98%;
   margin: auto;
@@ -17,8 +15,8 @@
 }
 
 .calendar td {
-  width: 200px;
-  height: 150px;
+  width: 200px; /*캘린더 상자의 넓이 조절*/
+  height: 150px; /*캘린더 상자의 높이 조절*/
   padding: 20px 0px 0px 5px;
 }
 
@@ -52,6 +50,7 @@ a {
   color: black;
   background-color: transparent;
   box-shadow: 0 0 0 0;
+  margin: 3px;
 }
 
 .clearfix {

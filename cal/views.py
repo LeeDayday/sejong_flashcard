@@ -1,24 +1,20 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.views import APIView
-# from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from utils.permission import IsOwnerOrReadOnly
-from .models import *
 from cal.serializers import *
 from django.shortcuts import get_object_or_404, redirect
 import calendar
 from django.urls import reverse
 from django.shortcuts import render
-from .utils import Calendar2
+from .utils import *
 from django.utils.safestring import mark_safe
 from django.views import generic
 from datetime import datetime, timedelta, date
 from .forms import ContentForm
 from django.contrib import messages
-
 
 # Create your views here.
 # class CalendarView(APIView, PageNumberPagination):
@@ -118,6 +114,7 @@ class ContentDetailView(APIView, PageNumberPagination):
         return Response("삭제되었습니다", status = HTTP_204_NO_CONTENT)
 
 class CalendarView2(generic.ListView):
+    permission_classes = [IsOwnerOrReadOnly]
     model = Content
     template_name = 'cal/calendar.html'
 
@@ -128,7 +125,6 @@ class CalendarView2(generic.ListView):
 
         # Instantiate our calendar class with today's year and date
         cal = Calendar2(d.year, d.month)
-
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
@@ -160,7 +156,6 @@ def next_month(d):
     return a
 
 
-@login_required
 def content(request, content_id=None):
     instance = Content()
     if content_id:
@@ -186,3 +181,24 @@ def content_delete(request, content_id=None):
         return HttpResponseRedirect(reverse('cal:calendar'))
     return render(request, 'cal/delete.html', {'instance': instance})
 
+
+def contest_data(request):
+    data = contest_crawling()
+
+    return render(request, 'cal/example.html', {'data': data})
+
+
+def save_contest_data(request):
+    owner = NewUserInfo.objects.last()
+    if request.method == "POST":
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        date_ = request.POST.get('date')
+        y,m,d = map(int, str(date_).split('-'))
+        x = Content(owner = owner,
+                    title = title,
+                    content = content,
+                    start_time = date(y,m,d),
+                    end_time = date(y,m,d)).save()
+        return HttpResponseRedirect(reverse('cal:contest_data'))
+    return render(request, 'cal/example.html')
