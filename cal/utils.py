@@ -74,5 +74,5 @@ def contest_crawling():
                     'content': title2,
                     'date': time_d}
         result.append(item_obj)
-
+    result.sort(key = lambda x:x['date'])
     return result
