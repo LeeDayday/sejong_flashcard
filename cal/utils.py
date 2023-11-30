@@ -43,36 +43,37 @@ class Calendar2(HTMLCalendar):
 
 def contest_crawling():
     result = []
-    url = 'https://www.wevity.com/'
-    response = requests.get(url)
-    html = response.text
-    soup = BeautifulSoup(html, 'html.parser')
-    view_list = soup.find('ul', 'list').find_all(['li'])
-    for i in view_list:
-        all_title = i.find_all(['div', 'tit'])
-        if "공모전명" in all_title[0].get_text():
-            continue
-        title = all_title[0].get_text()
-        title2 = title.replace('\n', '')
+    for i in range(1, 3):
+        url = f'https://www.wevity.com/?c=find&s=1&gp={i}'
+        response = requests.get(url)
+        html = response.text
+        soup = BeautifulSoup(html, 'html.parser')
+        view_list = soup.find('ul', 'list').find_all(['li'])
+        for i in view_list:
+            all_title = i.find_all(['div', 'tit'])
+            if "공모전명" in all_title[0].get_text():
+                continue
+            title = all_title[0].get_text()
+            title2 = title.replace('\n', '')
 
-        contents = i.find_all(['div', 'organ'])
-        contents3 = contents[2].get_text().replace('\n', '')
+            contents = i.find_all(['div', 'organ'])
+            contents3 = contents[2].get_text().replace('\n', '')
 
-        ddate = i.find_all(['div', 'day'])
-        ddate3 = ddate[3].get_text().replace('\n', '')
-        ddate3 = ddate3.replace('\t', '')
-        ddate3 = ddate3.replace('\r', '')
+            ddate = i.find_all(['div', 'day'])
+            ddate3 = ddate[3].get_text().replace('\n', '')
+            ddate3 = ddate3.replace('\t', '')
+            ddate3 = ddate3.replace('\r', '')
 
-        ddate3 = "".join(filter(str.isdigit, str(ddate3)))
-        ddate3 = int(ddate3)-1
-        today = datetime.date.today()
-        time_d = datetime.timedelta(ddate3)
+            ddate3 = "".join(filter(str.isdigit, str(ddate3)))
+            ddate3 = int(ddate3)-1
+            today = datetime.date.today()
+            time_d = datetime.timedelta(ddate3)
 
-        time_d += today
+            time_d += today
 
-        item_obj = {'title': contents3,
-                    'content': title2,
-                    'date': time_d}
-        result.append(item_obj)
+            item_obj = {'title': contents3,
+                        'content': title2,
+                        'date': time_d}
+            result.append(item_obj)
     result.sort(key = lambda x:x['date'])
     return result

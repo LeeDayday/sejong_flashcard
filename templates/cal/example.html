@@ -170,8 +170,14 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
                         <td>{{data.title}}<input type="hidden" name="title" value="{{ data.title }}"></td>
                         <td>{{ data.content }}<input type="hidden" name="content" value="{{ data.content }}"></td>
                         <td>{{ data.date }}<input type="hidden" name="date" value="{{data.date|date:"Y-m-d" }}"></td>
-                        <td><input type = submit value = "추가하기"/></td>
+                        <td><input onclick = "buttonClick()" type = submit value = "추가하기"/></td>
                     </form>
+                    <script>
+                        // Define a JavaScript function to be executed when the button is clicked
+                        function buttonClick() {
+                            alert("해당 공모전을 달력에 추가하시겠습니까?");
+                        }
+                    </script>
                 </tr>
             {% endfor %}
         </ul>
