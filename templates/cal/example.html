@@ -149,6 +149,7 @@
           <!-- <th></th> -->
           <th>주최사</th>
           <th>내용</th>
+            <th>URL</th>
           <th>접수 마감</th>
           <th> </th>
         </tr>
@@ -169,6 +170,7 @@ left: 1620px; /* Adjust the left value to change the horizontal position */
                         {% csrf_token %}
                         <td>{{data.title}}<input type="hidden" name="title" value="{{ data.title }}"></td>
                         <td>{{ data.content }}<input type="hidden" name="content" value="{{ data.content }}"></td>
+                        <td><a href="{{ data.link }}"> url </a> <input type="hidden" name="link" value="{{ data.link }}"></td>
                         <td>{{ data.date }}<input type="hidden" name="date" value="{{data.date|date:"Y-m-d" }}"></td>
                         <td><input onclick = "buttonClick()" type = submit value = "추가하기"/></td>
                     </form>

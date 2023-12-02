@@ -43,8 +43,8 @@ class Calendar2(HTMLCalendar):
 
 def contest_crawling():
     result = []
-    for i in range(1, 3):
-        url = f'https://www.wevity.com/?c=find&s=1&gp={i}'
+    for page in range(1, 3):
+        url = f'https://www.wevity.com/?c=find&s=1&gp={page}'
         response = requests.get(url)
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
@@ -68,12 +68,69 @@ def contest_crawling():
             ddate3 = int(ddate3)-1
             today = datetime.date.today()
             time_d = datetime.timedelta(ddate3)
-
             time_d += today
 
+            link = i.find_all(['div','tit','a','href'])
+            link = 'https://www.wevity.com/' + str(link)[28:78]
+            link = link.replace('amp;', '')
             item_obj = {'title': contents3,
                         'content': title2,
-                        'date': time_d}
+                        'date': time_d,
+                        'link':link}
             result.append(item_obj)
     result.sort(key = lambda x:x['date'])
     return result
+
+def school_cal_crawling():
+    result = []
+    url = 'http://www.sejong.ac.kr/unilife/program_01.html?menu_id=1.1'
+    response = requests.get(url)
+    html = response.text
+    soup = BeautifulSoup(html, 'html.parser')
+    view_list = soup.select('#content > div.calendar_wrap')
+
+    for i in view_list:
+        all_title = i.find_all(['h4'])
+
+        ym = all_title[0].get_text()
+        y, m = ym.index("년"), ym.index("월")
+        year = int(ym[:y])
+        month = int(ym[y+1:m])
+
+        # 달력 일정 뽑기
+        contents = i.find_all(['#div > calendar_list', 'ul', 'li'])
+        contents3 = contents[0].get_text().split('\n')[1:-1]
+        for j in contents3:
+            if j[0].isdigit() and j[1].isdigit():
+                x = check(j, 5)
+            else:
+                x = check(j, 4)
+            title, content = j[x:], j[x:]
+
+            tmp = j[:x]
+            day, st = [], ""
+            for k in tmp:
+                if k.isdigit():
+                    st += k
+                else:
+                    if st:day.append(int(st))
+                    st = ""
+            cal_day = []
+            # if len(day) == 3:
+            #     for d in range(day[0], 32):
+
+            date = str(year)+"/"+str(month)
+            item_obj = {'date': date,
+                        'content': j}
+            result.append(item_obj)
+    return result
+def check(j, t):
+    tmp = j[t:]
+    if ')' in tmp:
+        x = j[t:].index(')') + t+1
+        z = 14 if t == 5 else 13
+        if x > z:
+            x = t
+    else:
+        x = t
+    return t

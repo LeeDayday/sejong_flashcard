@@ -184,7 +184,6 @@ def content_delete(request, content_id=None):
 
 def contest_data(request):
     data = contest_crawling()
-
     return render(request, 'cal/example.html', {'data': data})
 
 
@@ -195,10 +194,82 @@ def save_contest_data(request):
         content = request.POST.get('content')
         date_ = request.POST.get('date')
         y,m,d = map(int, str(date_).split('-'))
-        x = Content(owner = owner,
-                    title = title,
-                    content = content,
-                    start_time = date(y,m,d),
-                    end_time = date(y,m,d)).save()
+        Content(owner = owner,
+                title = title,
+                content = content,
+                start_time = date(y,m,d),
+                end_time = date(y,m,d)).save()
         return HttpResponseRedirect(reverse('cal:contest_data'))
     return render(request, 'cal/example.html')
+
+
+def school_cal_data(request):
+    data = school_cal_crawling()
+    return render(request, 'cal/example2.html', {'data': data})
+
+
+def save_school_cal_data(request):
+    owner = NewUserInfo.objects.last()
+    if request.method == "POST":
+        content = request.POST.get('content')
+        date = request.POST.get('date')
+        year, month = map(int, date.split('/'))
+
+        if content[0].isdigit() and content[1].isdigit():
+            x = check(content, 5)
+        else:
+            x = check(content, 4)
+
+        info = content[x:]
+        tmp = content[:x]
+        day, st = [], ""
+        for k in tmp:
+            if k.isdigit():
+                st += k
+            else:
+                if st: day.append(int(st))
+                st = ""
+        if len(day) == 3:
+            m = check_month(month)
+            for d in range(day[0], m + 1):
+                save_content(owner, info, info, year, month, d)
+            if day[1] < month:
+                k = 1
+            else:
+                k = 0
+            for d in range(1, day[2] + 1):
+                save_content(owner, info, info, year + k, day[1], d)
+        elif len(day) == 2:
+            for d in range(day[0], day[1] + 1):
+                save_content(owner, info, info, year, month, d)
+        else:
+            save_content(owner, info, info, year, month, day[0])
+        return HttpResponseRedirect(reverse('cal:school_cal_data'))
+
+    return render(request, 'cal/example2.html')
+
+
+def check(j, t):
+    tmp = j[t:]
+    if ')' in tmp:
+        x = j[t:].index(')') + t+1
+        z = 14 if t == 5 else 13
+        if x > z:
+            x = t
+    else:
+        x = t
+    return x
+
+def check_month(x):
+    m30 = [4, 6, 9, 11]
+    if x == 2:return 28
+    elif x in m30:return 30
+    else:
+        return 31
+
+def save_content(owner, title, content, y,m,d):
+    Content(owner=owner,
+            title=title,
+            content=content,
+            start_time=date(y, m, d),
+            end_time=date(y, m, d)).save()

@@ -15,5 +15,7 @@ urlpatterns = [
 
     # path('contest/', r_contest, name='r_contest'),
     path('contest/', contest_data, name = "contest_data"),
-    path('contest/save/', save_contest_data, name = "save_contest_data")
+    path('contest/save/', save_contest_data, name = "save_contest_data"),
+    path('school/', school_cal_data, name="school_cal_data"),
+    path('school/save/', save_school_cal_data, name="save_school_cal_data"),
 ]
