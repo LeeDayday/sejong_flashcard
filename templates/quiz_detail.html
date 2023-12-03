@@ -1,0 +1,55 @@
+{#main page html - 달력#}
+{% extends 'index_side.html' %}
+
+<!-- title, css, javascript 를 위한 block -->
+{% block head_content %}
+{#    title#}
+    <title>Quiz</title>
+    {% load static %}
+{#    css#}
+<link rel="stylesheet" href="{% static 'css/quizz_detail.css' %}">
+
+{#    javscript#}
+{% endblock %}
+
+{# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
+{% load rest_framework %}
+{% block body_content %}
+<div class="quiz-info">
+    <span class="label">과목:</span>
+    <span class="info">{{ subject }}</span>
+    <br>
+    <span class="label">이름:</span>
+    <span class="info">{{ name }}</span>
+    <br>
+
+    <span class="label">작성자:</span>
+    <span class="info">{{ owner }}</span>
+    <br>
+
+    <span class="label">설명:</span>
+    <span class="info">{{ description }}</span>
+    <br>
+
+    <span class="label">총 문제 개수:</span>
+    <span class="info">{{ flashcards_count }}</span>
+    <br>
+
+    <span class="label">총 추천 수:</span>
+    <span class="info">{{ total_votes }}</span>
+
+    <br>
+    <br>
+{#    {% if user.student_id == owner %}#}
+        <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
+{#        <button onclick="location.href='{% url 'card-create' deck.id  %}'">문제 추가</button>#}
+{#    {% endif %}#}
+        <!-- 누구든지 볼 수 있는 버튼: 문제 조회 버튼 -->
+        <button onclick="location.href= '{{ request.path|escapejs }}cards/'">문제 조회</button>
+        <!-- 누구든지 볼 수 있는 버튼: 문제 풀기 버튼 -->
+{#        <button onclick="location.href='{% url 'attempt-quiz' deck.id %}'">문제 풀기</button>#}
+</div>
+
+
+
+{% endblock %}

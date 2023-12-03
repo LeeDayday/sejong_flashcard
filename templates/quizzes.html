@@ -1,0 +1,185 @@
+{#quizzes page html#}
+{% extends 'index_side.html' %}
+
+<!-- title, css, javascript 를 위한 block -->
+{% block head_content %}
+{#    title#}
+    <title>Quiz</title>
+    {% load static %}
+{#    css#}
+    <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+
+{#    javscript#}
+
+{% endblock %}
+
+{# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
+{% load rest_framework %}
+{% block body_content %}
+    <div class="containers">
+        <!-- 검색창 -->
+        <div class="search-box">
+            <select id="search-filter">
+                <option value="subject">과목명</option>
+                <option value="owner">작성자</option>
+            </select>
+            <input type="text" id="search-input" placeholder="검색하기">
+            <button id="search-button">검색</button>
+        </div>
+        <!-- deck 생성 버튼  -->
+        <!--여기서 부터 modal창 구현코드-->
+        <div class="modal"> <!--모달창-->
+            <div class="modal_body"> <!--모달창 버튼을 눌렀을 때-->
+                <div class="quiz-form">
+                    <h2>퀴즈 형식 작성</h2>
+                        {% csrf_token %}
+                        <form method="POST" action="'/home/quizzes/'">
+                            <div class="form-container"> <!-- 상자를 감싸는 부모 요소 -->
+                                <div class="center-input"> <!-- 입력 요소를 가운데 정렬하기 위한 부모 요소 -->
+                                    <label for="subject">과목:</label>
+                                    <input type="text" id="subject" name="subject" required>
+                                    <br>
+                                    <label for="name">퀴즈 이름:</label>
+                                    <input type="text" id="name" name="name">
+                                    <br>
+                                    <label for="description">설명:</label>
+                                    <input type="text" id="description" name="description">
+                                </div>
+                                <input type="submit" value="형식 생성">
+                            </div>
+                        </form>
+                    </div>
+                  <!--입력 방법 알려주는 텍스트-->
+                  <h3> </h3>
+                  <h3>*과목명을 입력할 때는 세종대학교 학사정보 시스템의 과목명과 똑같이 작성해 주기 바랍니다.</h3>
+                  <h3>단, 띄어쓰기 없이 작성해 주기 바랍니다.</h3>
+            </div>
+        </div>
+        <button class="btn-open-modal">새로 추가하기</button>
+
+        <section class="horizontal-boxes">
+            <!--화면 중앙에 과목별 전체 퀴즈 항목-->
+            <div id="search-results">
+                {% for deck in results %}
+                    <a href="{% url 'deck-detail' deck.id %}" class="horizontal-box">
+                    <span>과목: {{ deck.subject }}</span>
+                        <br>
+                    <span>이름: {{ deck.name }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!--paginatinon link-->
+            <div class="pagination">
+              <span class="step-links">
+                {% include 'pagination_links.html' %}
+              </span>
+            </div>
+
+        </section>
+
+    </div>
+
+<!-- 검색 관련 javascript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 검색 버튼을 클릭할 때 검색 이벤트를 처리합니다.
+            $("#search-button").click(function () {
+                var filter = $("#search-filter").val(); // 선택된 검색 필터 가져오기
+                var query = $("#search-input").val(); // 입력된 검색어 가져오기
+
+                // AJAX 요청을 보냅니다.
+                $.ajax({
+                    type: "GET",
+                    url: "/home/quizzes/",
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    data: {
+                        filter: filter,
+                        query: query,
+                    },
+                    success: function (data) {
+                        // 성공적으로 결과를 받으면, 결과를 표시합니다.
+                        displaySearchResults(data);
+                    },
+                    error: function () {
+                        alert("검색 중 오류가 발생했습니다.");
+                    },
+                });
+            });
+
+            // 검색 결과를 표시하는 함수
+            function displaySearchResults(data) {
+                var searchResultsContainer = $("#search-results");
+                searchResultsContainer.empty(); // 검색 결과를 초기화
+                console.log(data)
+                console.log(data.count)
+                if (data.count) {
+                    var results = data.results;
+                    console.log(results)
+
+                    // 검색 결과가 있는 경우
+                    results.forEach(function (deck) {
+                        // 각 검색 결과를 동적으로 생성하여 추가
+                        var resultElement = $("<a>").attr("href", "/home/quizzes/" + deck.id).addClass("horizontal-box");
+                        resultElement.append($("<span>").text("과목: " + deck.subject));
+                        resultElement.append($("<br>"));
+                        resultElement.append($("<span>").text("이름: " + deck.name));
+
+                        searchResultsContainer.append(resultElement);
+                    });
+                } else {
+                    // 검색 결과가 없는 경우 메시지를 표시
+                    searchResultsContainer.text("검색 결과가 없습니다.");
+                }
+            }
+        });
+    </script>
+
+    <!-- 모달 창 관련 javascript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.querySelector('.modal');
+            const btnOpenModal = document.querySelector('.btn-open-modal');
+
+            btnOpenModal.addEventListener("click", () => {
+                modal.style.display = "flex";
+            });
+
+            const form = document.querySelector('.quiz-form form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // 폼 기본 동작 방지
+                try {
+                    // Get form data using FormData
+                    const formData = new FormData(form);
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Make a POST request using fetch
+                    const response = await fetch('/home/quizzes/', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        // If the request was successful, hide the modal and reload the page
+                        modal.style.display = "none";
+                        location.reload(); // Reload the page
+                    } else {
+                        // If there was an error, handle it accordingly
+                        console.error('Failed to create a new deck:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('An error occurred during the POST request:', error);
+                }
+            });
+        });
+    </script>
+{% endblock %}

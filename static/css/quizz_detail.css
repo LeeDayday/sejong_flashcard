@@ -1,0 +1,17 @@
+.quiz-info {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px;
+    max-width: 400px; /* 내용이 너무 길어질 경우 최대 너비 설정 */
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.info {
+    color: #333;
+}
