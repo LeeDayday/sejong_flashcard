@@ -1,0 +1,39 @@
+/*add-quiz 입력창 css================================================================*/
+.quiz-form h2{
+  text-align: center;
+  position: relative;
+  right: 430px;
+  bottom: 200px;
+}
+.form-container {
+  background-color: #ffd5d5;;
+  height: 350px;
+  padding: 50px;
+  margin-top: -200px;
+  border-radius: 10px;
+}
+.center-input {
+  font-family: arial;
+  font-size: 24px;
+}
+.center-input input {
+  width: 1000px; /* 입력 칸의 너비를 80%로 설정하여 양옆으로 확장 */
+  height: 50px;
+  font-size: 30px;
+  border: none; /* 모든 테두리를 없애기 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);; /* 밑에 테두리만 남기기 */
+  display: block;
+  margin: 0 auto; /* 수평 가운데 정렬 */
+}
+.form-container input[type="submit"] {
+  background-color: var(--primary-clr);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  position: relative; /* 위치 지정을 위해 position: relative; 설정 */
+  left: 900px;
+  margin-top: 30px;
+  border-radius: 5px;
+}
