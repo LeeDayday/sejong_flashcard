@@ -9,5 +9,3 @@ def r_login(request):
 def r_home(request):
     response = render(request, "main.html")
     return response
-
-

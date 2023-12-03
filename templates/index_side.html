@@ -23,21 +23,22 @@
         <h4>Calendar</h4>
         <li>
           <span class="material-symbols-outlined">calendar_month</span>
-          <a href="#">내 캘린더</a>
+          <a href="{% url "cal:calendar" %}">내 캘린더</a>
         </li>
         <li>
           <span class="material-symbols-outlined">edit_calendar</span>
-          <a href="#">캘린더 수정</a>
+          <a href="{% url "cal:school_cal_data" %}">학사일정</a>
         </li>
         <li>
           <span class="material-symbols-outlined">note_add</span>
-          <a href="#">공모전</a>
+          <a href="{% url "cal:contest_data" %}">공모전</a>
         </li>
         <hr />
         <h4>Quiz</h4>
           <li>
-              <span class="material-symbols-outlined">person</span>
-              <a href="{% url 'deck-list' %}">퀴즈 조회</a>
+          <span class="material-symbols-outlined">person</span>
+          <a href="{% url 'deck-list' %}">퀴즈 조회</a>
+
           </li>
         <li>
           <span class="material-symbols-outlined">quiz</span>
