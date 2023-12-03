@@ -112,6 +112,7 @@ class FlashcardView(APIView, PageNumberPagination):
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+
 class FlashcardDetailView(APIView, PageNumberPagination):
     permission_classes = [IsOwnerOrReadOnly]
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
@@ -120,9 +121,23 @@ class FlashcardDetailView(APIView, PageNumberPagination):
     """
     def get(self, request, deck_id, flashcard_id):
         # 존재하지 않은 flashcard_id를 검색한 경우, 404 반환
+        deck = get_object_or_404(Deck, id=deck_id)
         flashcard = get_object_or_404(Flashcard, id=flashcard_id)
         serializer = FlashcardSerializer(flashcard)
-        return Response(serializer.data, template_name='attempt_quiz.html')
+
+        next_flashcard = self.get_next_flashcard(flashcard_id)
+        return Response({'deck': DeckSerializer(deck).data,
+                         'flashcard': serializer.data,
+                        'next_flashcard': next_flashcard
+                         },
+                        template_name='attempt_quiz.html'
+                        )
+    """
+    다음 Flashcard 상세 조회
+    """
+    def get_next_flashcard(self, current_flashcard_id):
+        next_flashcard = Flashcard.objects.filter(id__gt=current_flashcard_id).order_by('id').first()
+        return FlashcardSerializer(next_flashcard).data if next_flashcard else None
     """
     Flashcard 수정
     """
