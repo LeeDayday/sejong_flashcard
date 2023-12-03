@@ -15,7 +15,7 @@ from django.views import generic
 from datetime import datetime, timedelta, date
 from .forms import ContentForm
 from django.contrib import messages
-
+from .models import NewUserInfo
 # Create your views here.
 # class CalendarView(APIView, PageNumberPagination):
 #
@@ -184,7 +184,7 @@ def content_delete(request, content_id=None):
 
 def contest_data(request):
     data = contest_crawling()
-    return render(request, 'cal/example.html', {'data': data})
+    return render(request, 'cal/contest_data.html', {'data': data})
 
 
 def save_contest_data(request):
@@ -200,12 +200,12 @@ def save_contest_data(request):
                 start_time = date(y,m,d),
                 end_time = date(y,m,d)).save()
         return HttpResponseRedirect(reverse('cal:contest_data'))
-    return render(request, 'cal/example.html')
+    return render(request, 'cal/contest_data.html')
 
 
 def school_cal_data(request):
     data = school_cal_crawling()
-    return render(request, 'cal/example2.html', {'data': data})
+    return render(request, 'cal/school_cal_data.html', {'data': data})
 
 
 def save_school_cal_data(request):
@@ -246,7 +246,7 @@ def save_school_cal_data(request):
             save_content(owner, info, info, year, month, day[0])
         return HttpResponseRedirect(reverse('cal:school_cal_data'))
 
-    return render(request, 'cal/example2.html')
+    return render(request, 'cal/school_cal_data.html')
 
 
 def check(j, t):

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # django app
     'accounts',
     'quizzes.apps.QuizzesConfig',
-    # 'cal.apps.CalConfig',
+    'cal.apps.CalConfig',
     'mathfilters',
 
     # drf

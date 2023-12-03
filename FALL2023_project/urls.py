@@ -35,3 +35,4 @@ urlpatterns = [
 
     # 캘린더 랜더링
     path('cal/', include('cal.urls')),
+]
