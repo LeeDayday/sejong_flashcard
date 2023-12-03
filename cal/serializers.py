@@ -1,3 +1,4 @@
+"""
 from rest_framework import serializers
 from .models import *
 
@@ -11,3 +12,4 @@ class ContentSerializer(serializers.ModelSerializer):
         model = Content
         fields = '__all__'
 
+"""

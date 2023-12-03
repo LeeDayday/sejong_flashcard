@@ -13,7 +13,6 @@ urlpatterns = [
     path("mycal/content/edit/<int:content_id>/", content, name = "content_edit"),
     path("mycal/content/edit/<int:content_id>/delete/", content_delete, name="content_delete"),
 
-    # path('contest/', r_contest, name='r_contest'),
     path('contest/', contest_data, name = "contest_data"),
     path('contest/save/', save_contest_data, name = "save_contest_data"),
     path('school/', school_cal_data, name="school_cal_data"),
