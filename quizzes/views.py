@@ -158,3 +158,25 @@ class FlashcardDetailView(APIView, PageNumberPagination):
         flashcard = get_object_or_404(Flashcard, id=flashcard_id)
         flashcard.delete()
         return Response("삭제 성공", status=HTTP_204_NO_CONTENT)
+
+"""
+flashcard 추천 기능
+"""
+
+class VoteFlashcardView(APIView):
+    renderer_classes = [JSONRenderer]
+    def post(self, request, deck_id, flashcard_id):
+        vote_type = request.data.get('vote_type')
+
+        try:
+            flashcard = Flashcard.objects.get(id=flashcard_id)
+        except Flashcard.DoesNotExist:
+            return Response({'error': 'Flashcard not found'}, status=HTTP_404_NOT_FOUND)
+
+        if vote_type == 'up':
+            flashcard.vote += 1
+        elif vote_type == 'down':
+            flashcard.vote -= 1
+        flashcard.save()
+
+        return Response({'success': True, 'new_vote_count': flashcard.vote}, status=HTTP_200_OK)

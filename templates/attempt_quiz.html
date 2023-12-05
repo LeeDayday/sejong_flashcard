@@ -27,7 +27,7 @@
 
         <div class="quiz-box">
           <!-- 이곳에 현재 풀고있는 퀴즈의 문제를 플래시카드에서 호출(미구현)-->
-          <h3 class="question-text">{{ flashcard.question }} next: {{ next_flashcard.id }}</h3>
+          <h3 class="question-text">{{ flashcard.question }}</h3>
           <h3 class="answer-text">{{ flashcard.answer }}</h3>
         </div>
         <div class="quiz-buttons">
@@ -37,8 +37,10 @@
             {% else %}
                 <button class="button-next" onclick="location.href='/home/quizzes/{{ deck.id }}/cards/{{ next_flashcard.id }}'">next quiz</button>
             {% endif %}
-          <button class="button-good"><span class="material-symbols-outlined">thumb_up</span></button>
-          <button class="button-bad"><span class="material-symbols-outlined">thumb_down</span></button>
+          <button class="button-good" onclick="voteFlashcard({{ flashcard.id }}, 'up')"><span class="material-symbols-outlined">thumb_up</span></button>
+            <span id="vote-count-{{ flashcard.id }}">{{ flashcard.vote }}</span>
+
+          <button class="button-bad" onclick="voteFlashcard({{ flashcard.id }}, 'down')"><span class="material-symbols-outlined">thumb_down</span></button>
         </div>
         <div class="quiz-initial">
           Quiz for Sejong Univ Students
@@ -62,4 +64,33 @@
     });
   </script>
 
+    // 추천 수 관련 기능
+    <script>
+        function voteFlashcard(flashcardId, voteType) {
+            // Ajax를 사용하여 서버에 투표 정보 전송
+            $.ajax({
+                type: 'POST',
+                url: '/home/quizzes/{{ deck.id }}/cards/{{ flashcard.id }}/vote/',
+                data: {
+                    'flashcard_id': flashcardId,
+                    'vote_type': voteType,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'  // CSRF 토큰 추가 (Django에서 필요)
+                },
+                success: function(response) {
+                    // 서버에서 성공적으로 응답이 오면 화면 업데이트
+                    if (response.success) {
+                        // 예를 들어, 현재 투표수를 새로운 값으로 업데이트
+                        // response.new_vote_count를 서버에서 전송하는 투표수로 가정
+                        alert('투표가 반영되었습니다. 새로운 투표수: ' + response.new_vote_count);
+                    } else {
+                        alert('투표 처리 중 오류가 발생했습니다.');
+                    }
+                },
+                error: function() {
+                    console.log({{ deck.id }}, {{ flashcard.id }})
+                    alert('서버와 통신 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    </script>
 {% endblock %}
