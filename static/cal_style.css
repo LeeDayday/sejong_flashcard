@@ -1,22 +1,21 @@
 .calendar {
-  width: 98%;
-  margin: auto;
+  margin-left: -400px;
   font-size: 13px;
 }
 
-.calendar tr, .calendar td {
+.calendar tr, .calendar td { /*캘린더 테두리*/
   border: 1px solid black;
 }
 
-.calendar th {
+.calendar th { /*캘린더 제목*/
   padding: 10px;
   text-align: center;
   font-size: 18px;
 }
 
 .calendar td {
-  width: 200px; /*캘린더 상자의 넓이 조절*/
-  height: 150px; /*캘린더 상자의 높이 조절*/
+  width: 190px; /*캘린더 상자의 넓이 조절*/
+  height: 120px; /*캘린더 상자의 높이 조절*/
   padding: 20px 0px 0px 5px;
 }
 
@@ -33,15 +32,15 @@ ul {
   padding: 0px 5px 0px 20px;
 }
 
-a {
+a { /*글씨 색감*/
   color: #17a2b8;
 }
 
-.left {
+.left { /*버튼 위치*/
   float: left;
 }
 
-.right {
+.right {/*버튼 위치*/
   float: right;
 }
 
@@ -54,5 +53,6 @@ a {
 }
 
 .clearfix {
-  margin: 15px;
+  margin-top: -770px;
+  margin-left: 100px;
 }
