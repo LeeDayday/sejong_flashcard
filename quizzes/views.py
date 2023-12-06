@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
-from .models import Deck, Flashcard
-from .serializers import DeckSerializer, DeckDetailSerializer, FlashcardSerializer
+from .models import Deck, Flashcard, UserVote
+from .serializers import DeckSerializer, DeckDetailSerializer, FlashcardSerializer, UserVoteSerializer
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from utils.permission import IsOwnerOrReadOnly
@@ -159,24 +159,37 @@ class FlashcardDetailView(APIView, PageNumberPagination):
         flashcard.delete()
         return Response("삭제 성공", status=HTTP_204_NO_CONTENT)
 
+
 """
 flashcard 추천 기능
 """
-
 class VoteFlashcardView(APIView):
     renderer_classes = [JSONRenderer]
+
     def post(self, request, deck_id, flashcard_id):
-        vote_type = request.data.get('vote_type')
+        flashcard = get_object_or_404(Flashcard, id=flashcard_id)
 
-        try:
-            flashcard = Flashcard.objects.get(id=flashcard_id)
-        except Flashcard.DoesNotExist:
-            return Response({'error': 'Flashcard not found'}, status=HTTP_404_NOT_FOUND)
+        # 사용자가 이미 해당 Flashcard에 투표한 경우
+        if UserVote.objects.filter(user=request.user, flashcard=flashcard).exists():
+            return Response({'error': 'You have already voted for this Flashcard.'}, status=HTTP_400_BAD_REQUEST)
 
-        if vote_type == 'up':
+        # 사용자가 투표한 기록 저장
+        user_vote = UserVote(user=request.user, flashcard=flashcard, vote_type=request.data.get('vote_type'))
+        user_vote.save()
+
+        # 투표 처리 및 결과 반환
+        if request.data.get('vote_type') == 'up':
             flashcard.vote += 1
-        elif vote_type == 'down':
+        elif request.data.get('vote_type') == 'down':
             flashcard.vote -= 1
         flashcard.save()
 
         return Response({'success': True, 'new_vote_count': flashcard.vote}, status=HTTP_200_OK)
+
+
+class UserVotedFlashcardsView(APIView):
+    def get(self, request):
+        # 현재 사용자가 추천한 Flashcard 목록을 가져오기
+        user_votes = UserVote.objects.filter(user=request.user)
+        serializer = UserVoteSerializer(user_votes, many=True)
+        return Response(serializer.data)
