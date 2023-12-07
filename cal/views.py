@@ -157,11 +157,12 @@ def next_month(d):
 
 
 def content(request, content_id=None):
+    owner = NewUserInfo.objects.latest('updated_at')
     instance = Content()
     if content_id:
-        instance = get_object_or_404(Content, pk=content_id)
+        instance = get_object_or_404(Content, pk=content_id, owner=owner)
     else:
-        instance = Content()
+        instance = Content(owner=owner)
     form = ContentForm(request.POST or None, instance=instance)
     if request.POST and form.is_valid():
         form.save()
@@ -251,8 +252,13 @@ def save_school_cal_data(request):
 
 def check(j, t):
     tmp = j[t:]
+    if tmp[0] == ')':
+        t += 1
+        tmp = j[t:]
+    print(tmp)
     if ')' in tmp:
         x = j[t:].index(')') + t+1
+        print(x)
         z = 14 if t == 5 else 13
         if x > z:
             x = t
