@@ -251,8 +251,13 @@ def save_school_cal_data(request):
 
 def check(j, t):
     tmp = j[t:]
+    if tmp[0] == ')':
+        t += 1
+        tmp = j[t:]
+    print(tmp)
     if ')' in tmp:
         x = j[t:].index(')') + t+1
+        print(x)
         z = 14 if t == 5 else 13
         if x > z:
             x = t
