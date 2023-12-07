@@ -7,4 +7,4 @@ class NewUserInfo(models.Model):
     name = models.CharField(max_length=50)
     year = models.IntegerField()
     major = models.CharField(max_length=50)
-
+    updated_at = models.DateTimeField(auto_now=True)

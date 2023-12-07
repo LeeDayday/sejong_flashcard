@@ -17,7 +17,6 @@ class Calendar(models.Model):
 
 
 class Content(models.Model):
-    # calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
     owner = models.ForeignKey(NewUserInfo, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -29,7 +28,7 @@ class Content(models.Model):
 
     class Meta:
         db_table = "content"
-        ordering = ['start_time']
+        ordering = ['end_time']
 
     @property
     def get_html_url(self):

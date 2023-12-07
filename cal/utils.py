@@ -1,5 +1,5 @@
 from calendar import HTMLCalendar
-from .models import Content
+from .models import Content, NewUserInfo
 import os, requests
 from bs4 import BeautifulSoup
 
@@ -32,7 +32,8 @@ class Calendar2(HTMLCalendar):
     # formats a month as a table
     # filter events by year and month
     def formatmonth(self, withyear=True):
-        contents = Content.objects.filter(start_time__year=self.year, start_time__month=self.month)
+        owner = NewUserInfo.objects.latest("updated_at")
+        contents = Content.objects.filter(start_time__year=self.year, start_time__month=self.month, owner=owner)
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
@@ -48,7 +49,8 @@ def contest_crawling():
         response = requests.get(url)
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
-        view_list = soup.find('ul', 'list').find_all(['li'])
+        view_list = soup.find('ul', 'list').find_all('li')
+        print(view_list)
         for i in view_list:
             all_title = i.find_all(['div', 'tit'])
             if "공모전명" in all_title[0].get_text():
@@ -101,24 +103,6 @@ def school_cal_crawling():
         contents = i.find_all(['#div > calendar_list', 'ul', 'li'])
         contents3 = contents[0].get_text().split('\n')[1:-1]
         for j in contents3:
-            if j[0].isdigit() and j[1].isdigit():
-                x = check(j, 5)
-            else:
-                x = check(j, 4)
-            title, content = j[x:], j[x:]
-
-            tmp = j[:x]
-            day, st = [], ""
-            for k in tmp:
-                if k.isdigit():
-                    st += k
-                else:
-                    if st:day.append(int(st))
-                    st = ""
-            cal_day = []
-            # if len(day) == 3:
-            #     for d in range(day[0], 32):
-
             date = str(year)+"/"+str(month)
             item_obj = {'date': date,
                         'content': j}

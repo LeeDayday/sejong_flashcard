@@ -188,7 +188,7 @@ def contest_data(request):
 
 
 def save_contest_data(request):
-    owner = NewUserInfo.objects.last()
+    owner = NewUserInfo.objects.latest('updated_at')
     if request.method == "POST":
         title = request.POST.get('title')
         content = request.POST.get('content')
@@ -209,7 +209,7 @@ def school_cal_data(request):
 
 
 def save_school_cal_data(request):
-    owner = NewUserInfo.objects.last()
+    owner = NewUserInfo.objects.latest('updated_at')
     if request.method == "POST":
         content = request.POST.get('content')
         date = request.POST.get('date')
