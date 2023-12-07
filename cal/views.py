@@ -157,11 +157,12 @@ def next_month(d):
 
 
 def content(request, content_id=None):
+    owner = NewUserInfo.objects.latest('updated_at')
     instance = Content()
     if content_id:
-        instance = get_object_or_404(Content, pk=content_id)
+        instance = get_object_or_404(Content, pk=content_id, owner=owner)
     else:
-        instance = Content()
+        instance = Content(owner=owner)
     form = ContentForm(request.POST or None, instance=instance)
     if request.POST and form.is_valid():
         form.save()
