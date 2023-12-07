@@ -1,6 +1,8 @@
 .calendar {
   margin-left: -400px;
+  /*margin-top: 190px;*/
   font-size: 13px;
+  z-index: 1001;
 }
 
 .calendar tr, .calendar td { /*캘린더 테두리*/
@@ -14,8 +16,8 @@
 }
 
 .calendar td {
-  width: 190px; /*캘린더 상자의 넓이 조절*/
-  height: 120px; /*캘린더 상자의 높이 조절*/
+  width: 170px; /*캘린더 상자의 넓이 조절*/
+  height: 100px; /*캘린더 상자의 높이 조절*/
   padding: 20px 0px 0px 5px;
 }
 
@@ -53,6 +55,8 @@ a { /*글씨 색감*/
 }
 
 .clearfix {
-  margin-top: -770px;
+  margin-top: -550px;
   margin-left: 100px;
+  z-index: 1002;
+
 }

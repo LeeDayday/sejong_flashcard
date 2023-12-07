@@ -74,7 +74,7 @@ def f_login(request):
     request.session['id'] = user_id
     print(request, request.session)
     print(request.session['id'])
-    return redirect('/home/')
+    return redirect('/cal/mycal/')
 
 def f_logout(request):
     request.session.clear()
