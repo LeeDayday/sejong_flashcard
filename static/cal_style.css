@@ -60,3 +60,9 @@ a { /*글씨 색감*/
   z-index: 1002;
 
 }
+
+.sidebar {
+    backdrop-filter: blur(17px);
+  --webkit-backdrop-filter: blur(17px);
+  z-index: 1005;
+}
