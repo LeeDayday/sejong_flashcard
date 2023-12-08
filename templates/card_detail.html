@@ -1,44 +1,53 @@
-{#cards page html#}
+{# card detail page html - flashcard 상세 정보 조회 및 삭제/ 업데이트 구현#}
 {% extends 'index_side.html' %}
 
 <!-- title, css, javascript 를 위한 block -->
 {% block head_content %}
 {#    title#}
-    <title>문제 조회</title>
+    <title>Quiz</title>
     {% load static %}
 {#    css#}
-    <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/quizz_detail.css' %}">
     <link rel="stylesheet" href="{% static 'css/modal.css' %}">
-    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
-    {#    javscript#}
 
+{#    javscript#}
 {% endblock %}
 
 {# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
 {% load rest_framework %}
 {% block body_content %}
-    <section class="horizontal-boxes">
-        <!--화면 중앙에 과목별 전체 퀴즈 항목-->
-        {% if user.student_id == owner %}
-            <button class="btn-open-modal">새로 추가하기</button>
+    <!-- deck 정보  -->
+    <div class="quiz-info">
+        <!-- 작성자만 볼 수 있는 버튼: 수정/삭제 추가 버튼  -->
+        {% if user.student_id == deck.owner %}
+            <button class="btn-open-modal">수정하기</button>
+            <button class="btn-open-modal">삭제하기</button>
+
         {% endif %}
+        <br>
+        <br>
+        <!-- quiz 상세 정보  -->
+        <span class="label">문제:</span>
 
-        <div id="search-results">
-            {% for card in data.results %}
-                <a href="{% url 'card-detail' card.deck card.id %}" class="horizontal-box">
-                    <span>문제: {{ card.question }}</span>
-                    <br>
-                </a>
-            {% endfor %}
-        </div>
+        <span class="info">{{ flashcard.question }}</span>
+        <br>
+        <span class="label">정답:</span>
+        <span class="info">{{ flashcard.answer }}</span>
+        <br>
 
-   <div class="modal"> <!--모달창-->
+        <span class="label">추천 수:</span>
+        <span class="info">{{ flashcard.vote }}</span>
+        <br>
+
+    </div>
+
+    <div class="modal"> <!--모달창-->
             <div class="modal_body"> <!--모달창 버튼을 눌렀을 때-->
                 <button class="btn-close-modal">X</button> <!--누르면 모달창이 꺼지는 버튼-->
                 <div class="quiz-form">
-                    <h2>Flashcard 추가</h2>
+                    <h2>Flashcard 수정</h2>
                         {% csrf_token %}
-                        <form method="POST" action="/home/quizzes/{{ deck_id }}/cards/">
+                        <form method="PUT" action="/home/quizzes/{{ deck.id }}/cards/{{ flashcard.id }}">
                             <div class="form-container"> <!-- 상자를 감싸는 부모 요소 -->
                                 <div class="center-input"> <!-- 입력 요소를 가운데 정렬하기 위한 부모 요소 -->
                                     <label for="name">문제:</label>
@@ -49,24 +58,36 @@
                                     <br>
                                     <textarea type="text" id="answer" name="answer" rows="4" cols="70">{{ flashcard.answer }}</textarea>
                                 </div>
-                                <input type="submit" value="flashcard 추가">
+                                <input type="submit" value="flashcard 수정">
                             </div>
                         </form>
                     </div>
 
             </div>
         </div>
-        <!--paginatinon link-->
-        <div class="pagination">
-          <span class="step-links">
-            {% include 'pagination_links.html' %}
-          </span>
-        </div>
+    <!-- 버튼 관련 javascript -->
+    <script>
+        console.log("Deck flashcard ID:", {{ flashcard_ids }});
+        // 동일한 동작을 수행하는 이벤트 리스너를 함수로 정의
+        function handleMouseOver() {
+        if ({{ flashcards_count }} === 0) {
+          alert("문제가 존재하지 않습니다.");
+        }
+        }
+        // 두 개의 버튼에 대해 동일한 이벤트 리스너 등록
+        var buttons = document.querySelectorAll('#quizButton, #attemptQuizButton');
 
-    </section>
+        buttons.forEach(function(button) {
+        button.addEventListener('mouseover', handleMouseOver);
+        });
+
+        function redirectToUrl(url) {
+          location.href = url;
+        }
+    </script>
 
 
-    <!-- 추가 - 모달 창 관련 javascript -->
+    <!-- 수정 - 모달 창 관련 javascript -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const modal = document.querySelector('.modal');
@@ -90,8 +111,8 @@
                     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
                     // Make a POST request using fetch
-                    const response = await fetch('/home/quizzes/{{ deck_id }}/cards/', {
-                        method: 'POST',
+                    const response = await fetch('/home/quizzes/{{ deck.id }}/cards/{{ flashcard.id }}', {
+                        method: 'PUT',
                         headers: {
                             'Accept': 'application/json',
                             'X-CSRFToken': csrfToken,
