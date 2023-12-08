@@ -61,10 +61,11 @@
         <!-- 누구든지 볼 수 있는 버튼: 문제 풀기 버튼 -->
         <button
                 id="attemptQuizButton"
-                onclick="location.href='{% url 'card-attempt' deck_id=id flashcard_id=flashcard_ids.0 %}'"
+                onclick=redirectToUrl('{{ request.path|escapejs }}cards/attempt/{{ flashcard_ids.0 }}')
                 {% if flashcards_count == 0 %}disabled{% endif %}>
                 문제 풀기
         </button>
+
         <br>
         <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
         {% if user.student_id == owner %}
