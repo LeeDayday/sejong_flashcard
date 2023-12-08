@@ -1,4 +1,4 @@
-{#main page html - 달력#}
+{# card detail page html - flashcard 상세 정보 조회 및 삭제/ 업데이트 구현#}
 {% extends 'index_side.html' %}
 
 <!-- title, css, javascript 를 위한 block -->
@@ -19,58 +19,25 @@
     <!-- deck 정보  -->
     <div class="quiz-info">
         <!-- 작성자만 볼 수 있는 버튼: 수정/삭제 추가 버튼  -->
-        {% if user.student_id == owner %}
+        {% if user.student_id == deck.owner %}
             <button class="btn-open-modal">수정하기</button>
             <button class="btn-open-modal">삭제하기</button>
+
         {% endif %}
         <br>
         <br>
-        <!-- deck 상세 정보  -->
-        <span class="label">과목:</span>
-        <span class="info">{{ subject }}</span>
+        <!-- quiz 상세 정보  -->
+        <span class="label">문제:</span>
+
+        <span class="info">{{ flashcard.question }}</span>
         <br>
-        <span class="label">이름:</span>
-        <span class="info">{{ name }}</span>
+        <span class="label">정답:</span>
+        <span class="info">{{ flashcard.answer }}</span>
         <br>
 
-        <span class="label">작성자:</span>
-        <span class="info">{{ owner }}</span>
+        <span class="label">추천 수:</span>
+        <span class="info">{{ flashcard.vote }}</span>
         <br>
-
-        <span class="label">설명:</span>
-        <span class="info">{{ description }}</span>
-        <br>
-
-        <span class="label">총 문제 개수:</span>
-        <span class="info">{{ flashcards_count }}</span>
-        <br>
-
-        <span class="label">총 추천 수:</span>
-        <span class="info">{{ total_votes }}</span>
-
-        <br>
-        <br>
-        <!-- 누구든지 볼 수 있는 버튼: 문제 조회 버튼 -->
-        <button
-                id="quizButton"
-                onclick=redirectToUrl('{{ request.path|escapejs }}cards/')
-                {% if flashcards_count == 0 %}disabled{% endif %}>
-        문제 조회
-        </button>
-
-        <!-- 누구든지 볼 수 있는 버튼: 문제 풀기 버튼 -->
-        <button
-                id="attemptQuizButton"
-                onclick="location.href='{% url 'card-attempt' deck_id=id flashcard_id=flashcard_ids.0 %}'"
-                {% if flashcards_count == 0 %}disabled{% endif %}>
-                문제 풀기
-        </button>
-        <br>
-        <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
-        {% if user.student_id == owner %}
-            <button class="btn-open-modal">문제 추가하기</button>
-        {% endif %}
-
 
     </div>
 
@@ -78,32 +45,29 @@
             <div class="modal_body"> <!--모달창 버튼을 눌렀을 때-->
                 <button class="btn-close-modal">X</button> <!--누르면 모달창이 꺼지는 버튼-->
                 <div class="quiz-form">
-                    <h2>Deck 수정</h2>
+                    <h2>Flashcard 수정</h2>
                         {% csrf_token %}
-                        <form method="PUT" action="/home/quizzes/{{ deck_id }}">
+                        <form method="PUT" action="/home/quizzes/{{ deck.id }}/cards/{{ flashcard.id }}">
                             <div class="form-container"> <!-- 상자를 감싸는 부모 요소 -->
                                 <div class="center-input"> <!-- 입력 요소를 가운데 정렬하기 위한 부모 요소 -->
-                                    <label for="subject">과목:</label>
-                                    <input type="text" id="subject" name="subject" value="{{ subject }}" required>
+                                    <label for="name">문제:</label>
                                     <br>
-                                    <label for="name">퀴즈 이름:</label>
-                                    <input type="text" id="name" name="name" value="{{ name }}">
+                                    <textarea type="text" id="question" name="question" rows="4" cols="70">{{ flashcard.question }}</textarea>
                                     <br>
-                                    <label for="description">설명:</label>
-                                    <input type="text" id="description" name="description" value="{{ description }}">
+                                    <label for="description">정답:</label>
+                                    <br>
+                                    <textarea type="text" id="answer" name="answer" rows="4" cols="70">{{ flashcard.answer }}</textarea>
                                 </div>
-                                <input type="submit" value="deck 수정">
+                                <input type="submit" value="flashcard 수정">
                             </div>
                         </form>
                     </div>
-                  <!--입력 방법 알려주는 텍스트-->
-                  <h3> </h3>
-                  <h3>*과목명을 입력할 때는 세종대학교 학사정보 시스템의 과목명과 똑같이 작성해 주기 바랍니다.</h3>
-                  <h3>단, 띄어쓰기 없이 작성해 주기 바랍니다.</h3>
+
             </div>
         </div>
     <!-- 버튼 관련 javascript -->
     <script>
+        console.log("Deck flashcard ID:", {{ flashcard_ids }});
         // 동일한 동작을 수행하는 이벤트 리스너를 함수로 정의
         function handleMouseOver() {
         if ({{ flashcards_count }} === 0) {
@@ -147,7 +111,7 @@
                     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
                     // Make a POST request using fetch
-                    const response = await fetch('/home/quizzes/{{ id }}/', {
+                    const response = await fetch('/home/quizzes/{{ deck.id }}/cards/{{ flashcard.id }}', {
                         method: 'PUT',
                         headers: {
                             'Accept': 'application/json',

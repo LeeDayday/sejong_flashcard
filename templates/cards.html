@@ -8,7 +8,9 @@
     {% load static %}
 {#    css#}
     <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
-{#    javscript#}
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+    {#    javscript#}
 
 {% endblock %}
 
@@ -16,20 +18,24 @@
 {% load rest_framework %}
 {% block body_content %}
     <section class="horizontal-boxes">
-    <div id="search-results">
         <!--화면 중앙에 과목별 전체 퀴즈 항목-->
-        {% if results %}
+        <div id="search-results">
             {% for card in results %}
-                <span>문제: {{ card.question }}</span>
+                <a href="{% url 'card-detail' card.deck card.id %}" class="horizontal-box">
+                    <span>문제: {{ card.question }}</span>
                     <br>
-                <span>정답: {{ card.answer }}</span>
-                    <br>
+                </a>
             {% endfor %}
-        {% else %}
-            <span>문제 없음</span>
-        {% endif %}
-    </div>
+        </div>
+
+        <!--paginatinon link-->
+        <div class="pagination">
+          <span class="step-links">
+            {% include 'pagination_links.html' %}
+          </span>
+        </div>
 
     </section>
+
 
 {% endblock %}

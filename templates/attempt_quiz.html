@@ -26,7 +26,7 @@
         </div>
 
         <div class="quiz-box">
-          <!-- 이곳에 현재 풀고있는 퀴즈의 문제를 플래시카드에서 호출(미구현)-->
+          <!-- 이곳에 현재 풀고있는 퀴즈의 문제를 플래시카드에서 호출-->
           <h3 class="question-text">{{ flashcard.question }}</h3>
           <h3 class="answer-text">{{ flashcard.answer }}</h3>
         </div>
@@ -35,7 +35,7 @@
             {% if next_flashcard is None %}
                 <button class="button-next" onclick="location.href='/home/quizzes/{{ deck.id }}/'">finish</button>
             {% else %}
-                <button class="button-next" onclick="location.href='/home/quizzes/{{ deck.id }}/cards/{{ next_flashcard.id }}'">next quiz</button>
+                <button class="button-next" onclick="location.href='/home/quizzes/{{ deck.id }}/cards/attempt/{{ next_flashcard.id }}'">next quiz</button>
             {% endif %}
           <button class="button-good" onclick="voteFlashcard({{ flashcard.id }}, 'up')"><span class="material-symbols-outlined">thumb_up</span></button>
             <span id="vote-count-{{ flashcard.id }}">{{ flashcard.vote }}</span>
@@ -64,7 +64,6 @@
     });
   </script>
 
-    // 추천 수 관련 기능
     {% csrf_token %}
     <script>
         function voteFlashcard(flashcardId, voteType) {

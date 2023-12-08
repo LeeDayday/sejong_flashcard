@@ -116,28 +116,18 @@ class FlashcardView(APIView, PageNumberPagination):
 class FlashcardDetailView(APIView, PageNumberPagination):
     permission_classes = [IsOwnerOrReadOnly]
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
-    """
-    Flashcard 상세 조회
-    """
+    """ Flashcard 상세 조회"""
     def get(self, request, deck_id, flashcard_id):
         # 존재하지 않은 flashcard_id를 검색한 경우, 404 반환
         deck = get_object_or_404(Deck, id=deck_id)
         flashcard = get_object_or_404(Flashcard, id=flashcard_id)
         serializer = FlashcardSerializer(flashcard)
 
-        next_flashcard = self.get_next_flashcard(flashcard_id)
         return Response({'deck': DeckSerializer(deck).data,
                          'flashcard': serializer.data,
-                        'next_flashcard': next_flashcard
                          },
-                        template_name='attempt_quiz.html'
+                        template_name='card_detail.html'
                         )
-    """
-    다음 Flashcard 상세 조회
-    """
-    def get_next_flashcard(self, current_flashcard_id):
-        next_flashcard = Flashcard.objects.filter(id__gt=current_flashcard_id).order_by('id').first()
-        return FlashcardSerializer(next_flashcard).data if next_flashcard else None
     """
     Flashcard 수정
     """
@@ -159,6 +149,47 @@ class FlashcardDetailView(APIView, PageNumberPagination):
         flashcard.delete()
         return Response("삭제 성공", status=HTTP_204_NO_CONTENT)
 
+
+class FlashcardAttemptView(APIView, PageNumberPagination):
+    permission_classes = [IsOwnerOrReadOnly]
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    """
+    Flashcard 문제 풀이
+    """
+    def get(self, request, deck_id, flashcard_id):
+        # 존재하지 않은 flashcard_id를 검색한 경우, 404 반환
+        deck = get_object_or_404(Deck, id=deck_id)
+        flashcard = get_object_or_404(Flashcard, id=flashcard_id)
+        serializer = FlashcardSerializer(flashcard)
+
+        next_flashcard = self.get_next_flashcard(deck, flashcard_id)
+        return Response({'deck': DeckSerializer(deck).data,
+                         'flashcard': serializer.data,
+                        'next_flashcard': next_flashcard
+                         },
+                        template_name='attempt_quiz.html'
+                        )
+    """
+    다음 Flashcard 상세 조회
+    """
+    def get_next_flashcard(self, deck, current_flashcard_id):
+        current_deck = DeckDetailSerializer(deck).data
+        flashcard_ids = current_deck.get('flashcard_ids', [])
+
+        # flashcard_ids가 비어 있거나 current_flashcard_id가 flashcard_ids에 없는 경우
+        if not flashcard_ids or current_flashcard_id not in flashcard_ids:
+            return None
+
+        # 현재 flashcard_id의 인덱스를 찾아서 다음 flashcard_id를 가져옵니다.
+        current_index = flashcard_ids.index(current_flashcard_id)
+
+        # 다음 flashcard_id가 flashcard_ids 범위 내에 있는지 확인합니다.
+        if current_index + 1 < len(flashcard_ids):
+            next_flashcard_id = flashcard_ids[current_index + 1]
+            next_flashcard = Flashcard.objects.filter(id=next_flashcard_id).first()
+            return FlashcardSerializer(next_flashcard).data
+
+        return None
 
 """
 flashcard 추천 기능
