@@ -50,7 +50,6 @@ def contest_crawling():
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
         view_list = soup.select('ul.list li')
-        print(view_list)
         for i in view_list:
             all_title = i.find_all(['div', 'tit'])
             if "공모전명" in all_title[0].get_text():
