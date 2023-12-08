@@ -97,7 +97,11 @@ class FlashcardView(APIView, PageNumberPagination):
             serializer = self.get_paginated_response(FlashcardSerializer(page, many=True).data)
         else:
             serializer = FlashcardSerializer(page, many=True)
-        return Response(serializer.data, HTTP_200_OK, template_name='cards.html')
+        return Response({"data": serializer.data,
+                         "owner": request.user.student_id,
+                         "deck_id": deck_id},
+                        status=HTTP_200_OK,
+                        template_name='cards.html')
     """
     특정 Deck에 대한 Flashcard 생성
     """
