@@ -21,7 +21,7 @@
         <!-- 작성자만 볼 수 있는 버튼: 수정/삭제 추가 버튼  -->
         {% if user.student_id == deck.owner %}
             <button class="btn-open-modal">수정하기</button>
-            <button class="btn-open-modal">삭제하기</button>
+            <button class="btn-delete-deck">삭제하기</button>
 
         {% endif %}
         <br>
@@ -65,27 +65,53 @@
 
             </div>
         </div>
-    <!-- 버튼 관련 javascript -->
+
+
     <script>
-        console.log("Deck flashcard ID:", {{ flashcard_ids }});
-        // 동일한 동작을 수행하는 이벤트 리스너를 함수로 정의
-        function handleMouseOver() {
-        if ({{ flashcards_count }} === 0) {
-          alert("문제가 존재하지 않습니다.");
-        }
-        }
-        // 두 개의 버튼에 대해 동일한 이벤트 리스너 등록
-        var buttons = document.querySelectorAll('#quizButton, #attemptQuizButton');
+        document.addEventListener("DOMContentLoaded", () => {
+            const deleteButton = document.querySelector('.btn-delete-deck');
 
-        buttons.forEach(function(button) {
-        button.addEventListener('mouseover', handleMouseOver);
+            deleteButton.addEventListener("click", async () => {
+                try {
+                    // Ask for user confirmation
+                    const userConfirmed = confirm("정말로 삭제하시겠습니까?");
+
+                    if (!userConfirmed) {
+                        return; // If the user cancels, do nothing
+                    }
+                    const deckId = {{ deck.id}};
+                    const flashcardId = {{ flashcard.id }}
+                    // Check if the csrfmiddlewaretoken element exists
+                    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+                    const csrfToken = csrfTokenElement ? csrfTokenElement.value : '';
+                    console.log(csrfToken)
+                    const response = await fetch(`/home/quizzes/${deckId}/cards/${flashcardId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                    });
+                    console.log(response)
+                    if (response.ok) {
+                        // If the request was successful, go back to the quizzes page and reload it
+                        window.location.href = `/home/quizzes/${deckId}/cards/`;
+                    } else {
+                        // If there was an error, handle it accordingly
+                        console.error('Failed to delete the deck:', response.statusText);
+
+                        // Optionally, display an error message to the user
+                        alert('Failed to delete the deck. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('An error occurred during the DELETE request:', error);
+
+                    // Optionally, display an error message to the user
+                    alert('An error occurred. Please try again.');
+                }
+            });
         });
-
-        function redirectToUrl(url) {
-          location.href = url;
-        }
     </script>
-
 
     <!-- 수정 - 모달 창 관련 javascript -->
     <script>

@@ -158,9 +158,17 @@ class FlashcardDetailView(APIView, PageNumberPagination):
     Flashcard 삭제
     """
     def delete(self, request, deck_id, flashcard_id):
-        flashcard = get_object_or_404(Flashcard, id=flashcard_id)
-        flashcard.delete()
-        return Response("삭제 성공", status=HTTP_204_NO_CONTENT)
+        try:
+            flashcard = get_object_or_404(Flashcard, id=flashcard_id)
+            flashcard.delete()
+            return JsonResponse({'message': 'Deck deleted successfully'}, status=HTTP_204_NO_CONTENT)
+        except Exception as e:
+            # 디버깅을 위해 예외를 로그에 기록
+            print(f"An error occurred: {str(e)}")
+
+            # 적절한 오류 응답을 반환
+            return JsonResponse({'error': 'Internal Server Error'}, status=500)
+
 
 
 class FlashcardAttemptView(APIView, PageNumberPagination):
