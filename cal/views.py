@@ -16,52 +16,7 @@ from datetime import datetime, timedelta, date
 from .forms import ContentForm
 from django.contrib import messages
 from .models import NewUserInfo
-# Create your views here.
-# class CalendarView(APIView, PageNumberPagination):
-#
-#     "Calendar 조회"
-#     def get(self, request):
-#         all_cal = Calendar.objects.all()
-#         page = self.paginate_queryset(all_cal, request)
-#         serializer = CalenderSerializer(page, many=True)
-#         return self.get_paginated_response(serializer.data)
-#
-#     "Calendar 생성"
-#     def post(self, request):
-#         info = request.data
-#         info['owner'] = request.user.student_id
-#         serializer = CalenderSerializer(data = info)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=HTTP_201_CREATED)
-#         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-#
-#
-# class CalendarDetailView(APIView, PageNumberPagination):
-#
-#     "Calendar 상세조회"
-#
-#     def get(self, request, calendar_id):
-#         cal = get_object_or_404(Calendar, id = calendar_id)
-#         serializer = CalenderSerializer(cal)
-#         return Response(serializer.data)
-#
-#     "Calendar 수정"
-#     def put(self, request, calendar_id):
-#         cal = get_object_or_404(Calendar, id=calendar_id)
-#         serializer = CalenderSerializer(cal, data = request.data, partial=True)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=HTTP_200_OK)
-#         else:
-#             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-#
-#     "Calendar 삭제"
-#     def delete(self, request, calendar_id):
-#         cal = get_object_or_404(Calendar, id=calendar_id)
-#         cal.delete()
-#         return Response("삭제 되었습니다.", status=HTTP_204_NO_CONTENT)
-
+from .data import contest_data_list
 
 
 class ContentView(APIView, PageNumberPagination):
@@ -184,7 +139,7 @@ def content_delete(request, content_id=None):
 
 
 def contest_data(request):
-    data = contest_crawling()
+    data = contest_data_list()
     return render(request, 'cal/contest_data.html', {'data': data})
 
 
