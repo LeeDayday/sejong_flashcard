@@ -54,7 +54,7 @@
         <button
                 id="quizButton"
                 onclick=redirectToUrl('{{ request.path|escapejs }}cards/')
-                {% if flashcards_count == 0 %}disabled{% endif %}>
+                >
         문제 조회
         </button>
 
@@ -112,7 +112,7 @@
         }
         }
         // 두 개의 버튼에 대해 동일한 이벤트 리스너 등록
-        var buttons = document.querySelectorAll('#quizButton, #attemptQuizButton');
+        var buttons = document.querySelectorAll('#attemptQuizButton');
 
         buttons.forEach(function(button) {
         button.addEventListener('mouseover', handleMouseOver);
