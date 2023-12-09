@@ -58,10 +58,14 @@ a { /*글씨 색감*/
   margin-top: -650px;
   margin-left: 100px;
   z-index: 1002;
-
 }
 
+.sidebar {
+    backdrop-filter: blur(17px);
+  --webkit-backdrop-filter: blur(17px);
+  z-index: 1005;
+    margin: 0;
+}
 .sidebar ul {
   padding: 0;
 }
-

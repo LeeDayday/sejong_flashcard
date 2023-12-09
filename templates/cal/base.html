@@ -13,98 +13,153 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-    <!--해당 html 페이지 css-->
+    <!-- 해당 html 페이지 css -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/index_side.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'cal_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/popup.css' %}">
     <title>메인 페이지</title>
     <!-- title, css 를 위한 block -->
-      {% block head_content %}
-      {% endblock %}
+    {% block head_content %}
+    {% endblock %}
 </head>
 <body>
-{#    상단 메뉴바#}
+    {# 상단 메뉴바 #}
     <header>
-      <!-- 왼쪽상단 로고표시-->
-      <a href="#" class="logo">
-        <i class="ri-school-fill"></i>
-        <span>FlashCards & Calendar for Sejong Univ</span>
-      </a>
-      <!-- 상단 중앙 메뉴바-->
-      <ul class="navbar">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Information</a></li>
-      </ul>
-      <!-- 상단 왼쪽 메뉴바-->
-      <div class="main">
-          <a href='javascript:logout()'>Logout</a>
-      </div>
+        <!-- 왼쪽상단 로고표시 -->
+        <a href="#" class="logo">
+            <i class="ri-school-fill"></i>
+            <span>FlashCards & Calendar for Sejong Univ</span>
+        </a>
+        <!-- 상단 중앙 메뉴바 -->
+        <ul class="navbar">
+            <li><a href="#">Home</a></li>
+            <li>
+                <div class="Popup_box" id="blur">
+                    <div class="content">
+                        <a href="#" onclick="togglePopup('popup2')">Contact</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="Popup_box" id="blur">
+                    <div class="content">
+                        <a href="#" onclick="togglePopup('popup')">Information</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- 상단 왼쪽 메뉴바 -->
+        <div class="main">
+            <a href='javascript:logout()'>Logout</a>
+        </div>
     </header>
 
-{#    사이드바#}
-
+    {# 사이드바 #}
     <aside class="sidebar">
-      <div class="logo">
-        <img src="{% static "menu-line.png" %}" alt="logo" />
-      </div>
-      <ul class="links">
-        <h4>Calendar</h4>
-        <li>
-          <span class="material-symbols-outlined">edit_calendar</span>
-          <a href="{% url "cal:school_cal_data" %}">학사일정</a>
-        </li>
-        <li>
-          <span class="material-symbols-outlined">note_add</span>
-          <a href="{% url "cal:contest_data" %}">공모전</a>
-        </li>
-        <hr />
-        <h4>Quiz</h4>
-          <li>
-              <span class="material-symbols-outlined">person</span>
-              <a href="http://localhost:8000/home/quizzes/myquiz/">내 퀴즈</a>
-          </li>
-        <li>
-          <span class="material-symbols-outlined">quiz</span>
-          <a href="quizzes/solvequiz/">퀴즈 조회</a>
-        </li>
-      </ul>
+        <div class="logo">
+            <img src="{% static "menu-line.png" %}" alt="logo" />
+        </div>
+        <ul class="links">
+            <h4>Calendar</h4>
+            <li>
+                <span class="material-symbols-outlined">edit_calendar</span>
+                <a href="{% url "cal:school_cal_data" %}">학사일정</a>
+            </li>
+            <li>
+                <span class="material-symbols-outlined">note_add</span>
+                <a href="{% url "cal:contest_data" %}">공모전</a>
+            </li>
+            <hr />
+            <h4>Quiz</h4>
+            <li>
+                <span class="material-symbols-outlined">person</span>
+                <a href="http://localhost:8000/home/quizzes/myquiz/">내 퀴즈</a>
+            </li>
+            <li>
+                <span class="material-symbols-outlined">quiz</span>
+                <a href="quizzes/solvequiz/">퀴즈 조회</a>
+            </li>
+        </ul>
     </aside>
+        <!-- 팝업1 -->
+    <div class="popup" id="popup">
+        <h2>Information</h2>
+        <p>
+            <br><br>
+            이 웹사이트는 세종대 학생들의 학업 증진을 지원하기 위해 개발된 플랫폼입니다.
+            홈 화면의 캘린더를 통해 사용자는 자신만의 개인 일정, 학사 일정, 그리고 공모전
+            일정을 손쉽게 기록할 수 있습니다. 또한, 측면 메뉴의 '퀴즈' 섹션은 학생들이
+            시험 대비를 위해 서로 문제를 출제하고 풀어볼 수 있는 특별한 공간입니다.
+            여기에서 학문적인 지식을 공유하고 함께 성장하는 커뮤니티를 형성할 수 있습니다.
+            우리는 세종대 학생들의 학업 경험을 더욱 풍요롭게 만들기 위해 노력하고 있습니다.
+            함께 공부하고, 소통하며, 발전해 나가는 공간으로 환영합니다.
+        </p>
+        <a href="#" onclick="togglePopup('popup')">Close</a>
+    </div>
 
-{#    캘린더#}
-  {% block content %}
-  {% endblock %}
+    <!-- 팝업2 -->
+     <div class="popup" id="popup2">
+        <h2>Contact</h2>
+        <p>
+           질문이나 제안이 있으시면 언제든지 연락해주세요:
+            <br><br>
+            GitHub: <a href="https://github.com/Haneul-Joo/FALL2023_project" target="_blank">https://github.com/Haneul-Joo/FALL2023_project</a>
+            <br>
+            Email: firepool77@gmail.com
+        </p>
+        <a href="#" onclick="togglePopup('popup2')">Close</a>
+     </div>
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script src="{% static 'js/script.js' %}"></script>
-  {% block script %}
-  {% endblock %}
-  </body>
+    {# 캘린더 #}
+    {% block content %}
+    {% endblock %}
 
-    <!-- 예외처리 -->
-    {% if messages %}
-    {% for m in messages %}
-    <!-- 로그인 오류 / 기타오류 발생시 -->
-    {% if m.tags == 'error' %}
-    <script>
-        alert('{{ m }}');
-    </script>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-    <script>
-    function logout() {
-        var back_head = confirm('✋ 정말 로그아웃 하시겠습니까? ✋');
-        if (back_head) {
-            location.href = '/f_logout/';
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    {% block script %}
+    {% endblock %}
+</body>
+
+<!-- 예외처리 -->
+{% if messages %}
+{% for m in messages %}
+<!-- 로그인 오류 / 기타오류 발생시 -->
+{% if m.tags == 'error' %}
+<script>
+    alert('{{ m }}');
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+<script>
+function logout() {
+    var back_head = confirm('✋ 정말 로그아웃 하시겠습니까? ✋');
+    if (back_head) {
+        location.href = '/f_logout/';
+    }
+};
+</script>
+<script type="text/javascript">
+    function togglePopup(popupId) {
+        var popup = document.getElementById(popupId);
+        popup.classList.toggle('active');
+        var isActive = popup.classList.contains('active');
+        if (isActive) {
+            document.body.appendChild(popup);
+        } else {
+            originalParent.appendChild(popup);
         }
-    };
-    </script>
+    }
+</script>
 </html>

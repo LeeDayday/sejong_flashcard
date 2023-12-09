@@ -26,7 +26,6 @@ urlpatterns = [
     path('login/', r_login),
     path('home/', r_home),
     path('home/quizzes/', include('quizzes.urls')),
-
     # 함수 사용 렌더링
     path('f_login/', f_login, name='f_login'),
     path('f_logout/', f_logout, name='f_logout'),

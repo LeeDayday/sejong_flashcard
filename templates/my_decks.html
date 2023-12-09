@@ -1,0 +1,109 @@
+{#cards page html#}
+{% extends 'index_side.html' %}
+
+<!-- title, css, javascript 를 위한 block -->
+{% block head_content %}
+{#    title#}
+    <title>My Quizzes</title>
+    {% load static %}
+{#    css#}
+    <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+{#    javscript#}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+{% endblock %}
+
+
+{# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
+{% load rest_framework %}
+{% block body_content %}
+    <div class="containers">
+        <section class="horizontal-boxes">
+            <select id="options" onchange="showDecks(this.value);">
+              <option class="my-decks" value="?option=my_decks">내가 만든 퀴즈</option>
+              <option class="voted_decks" value="?option=voted_decks">내가 투표한 퀴즈</option>
+            </select>
+            <div id="search-results">
+            {% for my_deck in results %}
+                    <a href="{% url 'quizzes:deck-detail' my_deck.id %}" class="horizontal-box">
+                    <span>과목: {{ my_deck.subject }}</span>
+                        <br>
+                    <span>이름: {{ my_deck.name }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!-- paginatinon link -->
+            <div class="pagination">
+                 <span class="step-links">
+                  {% include 'pagination_links.html' %}
+                 </span>
+            </div>
+
+        </section>
+    </div>
+
+    <script>
+        function showDecks(deckType) {
+            // Fetch the URL for the corresponding deck type using Django's url template tag
+            const url = "{% url 'quizzes:my-quiz' %}?deck_type=" + deckType;
+            console.log(deckType)
+            // Fetch the decks from the server using AJAX
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the existing content in the container
+                    document.getElementById('search-results').innerHTML = '';
+
+                    // Loop through the fetched decks and append them to the container
+                    for (const deck of data.results) {
+                        const deckElement = document.createElement('a');
+                        deckElement.href = "{% url 'quizzes:deck-detail' 0 %}".replace('0', deck.id);
+                        deckElement.className = 'horizontal-box';
+                        deckElement.innerHTML = `
+                            <span>과목: ${deck.subject}</span><br>
+                            <span>이름: ${deck.name}</span>
+                        `;
+                        document.getElementById('search-results').appendChild(deckElement);
+                    }
+                })
+                .catch(error => console.error('Error fetching decks:', error));
+        }
+    </script>
+    <script>
+        // get url query string
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        // 페이지 로드 시 실행
+        $(document).ready(function(){
+            // URL에서 option 값 가져오기
+            var option = getUrlParameter('option');
+
+            // 해당하는 옵션을 선택 상태로 만들기
+            if (option == 'my_decks') {
+                $('#options').val('?option=my_decks');
+            } else if (option == 'voted_decks') {
+                $('#options').val('?option=voted_decks');
+            }
+        });
+
+        // select 변경 시 페이지 이동
+        $('#options').on('change', function() {
+            location = this.value;
+        });
+    </script>
+{% endblock %}

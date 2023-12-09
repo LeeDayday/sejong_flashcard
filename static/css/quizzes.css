@@ -1,23 +1,53 @@
-.containers {
+.search-and-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the content horizontally */
+    margin-bottom: 0px;
+}
+#search-filter, #search-input, #search-button {
+  margin-right: 10px;
+    padding: 8px;
+  flex: 1;
+}
+
+#search-button {
+  padding: 8px 15px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#search-button:hover {
+  background-color: #f0f0f0;
+  border-color: #883a3a;
+  transition: background-color 0.3s;
+}
+
+/* "새로 추가하기" 버튼 스타일 */
+.btn-open-modal {
+  padding: 8px 15px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-open-modal:hover {
+  background-color: #f0f0f0;
+  border-color: #883a3a;
+  transition: background-color 0.3s;
+}
+/*-------------------------------------- 상단 검색창 css*/
+.containers .horizontal-boxes {
   display: flex; /* 부모 컨테이너를 Flex Container로 설정 */
   flex-direction: column; /* 세로 방향으로 정렬 (기본값) */
   align-items: center; /* 수직 정렬을 중앙으로 설정 */
 
   /* 원하는 가로 여백을 설정하세요 */
   padding: 20px;
-
   box-sizing: border-box;
 }
-
-/*검색 창*/
-.search-box {
-  display: flex; /* 내부 컨테이너를 Flex Container로 설정 */
-  align-items: center; /* 수직 정렬을 중앙으로 설정 */
-
-  /* 원하는 가로 여백을 설정하세요 */
-  margin-bottom: 20px;
-}
-
 /*검색 결과*/
 #search-results {
   display: flex; /* 내부 컨테이너를 Flex Container로 설정 */
@@ -25,7 +55,7 @@
   justify-content: center; /* 수평 정렬을 중앙으로 설정 */
 
   /* 원하는 가로 여백을 설정하세요 */
-  gap: 20px;
+  gap: 15px;
 }
 
 /* deck 생성 버튼에 대한 스타일 */
@@ -41,13 +71,15 @@
 /*과목별 퀴즈 바*/
 .horizontal-boxes {
   display: flex;
-  flex-direction: column;
-  padding: 20px; /* 원하는 패딩 값 설정 */
+  flex-wrap: wrap; /* 줄 바꿈이 가능하도록 설정 */
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .horizontal-box {
   display: block;
-  width: 90%; /* 이 부분 수정 */
+  width: 1200px; /* 원하는 크기로 조절 */
   color: var(--text-color);
   background-color: #f0f0f0;
   padding: 20px;
@@ -63,4 +95,49 @@
 
 .horizontal-box:hover {
   background-color: #ffa7a7;
+}
+
+/* select 요소 스타일링 */
+#options {
+  position: relative;
+  margin-bottom: 30px;
+  left: 5%;
+  transform: translateX(-50%);
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+#options option {
+  padding: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#options:hover,
+#options:focus {
+  border-color: #883a3a;
+}
+
+#options option:checked {
+  background-color: #f0f0f0;
+}
+
+/* "새로 추가하기" 플래시카드 버튼 스타일 */
+.btn-open-modal2 {
+  margin-bottom: 30px;
+  padding: 8px 15px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-open-modal2:hover {
+  background-color: #f0f0f0;
+  border-color: #883a3a;
+  transition: background-color 0.3s;
 }
