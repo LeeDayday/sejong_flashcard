@@ -7,7 +7,8 @@
     <title>Quiz</title>
     {% load static %}
 {#    css#}
-<link rel="stylesheet" href="{% static 'css/quizz_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/quizz_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
 
 {#    javscript#}
 {% endblock %}
@@ -15,41 +16,203 @@
 {# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
 {% load rest_framework %}
 {% block body_content %}
-<div class="quiz-info">
-    <span class="label">과목:</span>
-    <span class="info">{{ subject }}</span>
-    <br>
-    <span class="label">이름:</span>
-    <span class="info">{{ name }}</span>
-    <br>
+    <!-- deck 정보  -->
+    <div class="quiz-info">
+        <!-- 작성자만 볼 수 있는 버튼: 수정/삭제 추가 버튼  -->
+        {% if user.student_id == owner %}
+            <button class="btn-open-modal">수정하기</button>
+            <button class="btn-open-modal btn-delete-deck" data-deck-id="{{ deck.id }}">삭제하기</button> <!--현재 구현 할 부분-->
+        {% endif %}
+        <br>
+        <br>
+        <!-- deck 상세 정보  -->
+        <span class="label">과목:</span>
+        <span class="info">{{ subject }}</span>
+        <br>
+        <span class="label">이름:</span>
+        <span class="info">{{ name }}</span>
+        <br>
 
-    <span class="label">작성자:</span>
-    <span class="info">{{ owner }}</span>
-    <br>
+        <span class="label">작성자:</span>
+        <span class="info">{{ owner }}</span>
+        <br>
 
-    <span class="label">설명:</span>
-    <span class="info">{{ description }}</span>
-    <br>
+        <span class="label">설명:</span>
+        <span class="info">{{ description }}</span>
+        <br>
 
-    <span class="label">총 문제 개수:</span>
-    <span class="info">{{ flashcards_count }}</span>
-    <br>
+        <span class="label">총 문제 개수:</span>
+        <span class="info">{{ flashcards_count }}</span>
+        <br>
 
-    <span class="label">총 추천 수:</span>
-    <span class="info">{{ total_votes }}</span>
+        <span class="label">총 추천 수:</span>
+        <span class="info">{{ total_votes }}</span>
 
-    <br>
-    <br>
-{#    {% if user.student_id == owner %}#}
-        <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
-{#        <button onclick="location.href='{% url 'card-create' deck.id  %}'">문제 추가</button>#}
-{#    {% endif %}#}
+        <br>
+        <br>
         <!-- 누구든지 볼 수 있는 버튼: 문제 조회 버튼 -->
-        <button onclick="location.href= '{{ request.path|escapejs }}cards/'">문제 조회</button>
+        <button
+                id="quizButton"
+                onclick=redirectToUrl('{{ request.path|escapejs }}cards/')
+                >
+        문제 조회
+        </button>
+
         <!-- 누구든지 볼 수 있는 버튼: 문제 풀기 버튼 -->
-{#        <button onclick="location.href='{% url 'attempt-quiz' deck.id %}'">문제 풀기</button>#}
-</div>
+        <button
+                id="attemptQuizButton"
+                onclick=redirectToUrl('{{ request.path|escapejs }}cards/attempt/{{ flashcard_ids.0 }}')
+                {% if flashcards_count == 0 %}disabled{% endif %}>
+                문제 풀기
+        </button>
+
+        <br>
+
+
+    </div>
+
+    <div class="modal"> <!--모달창-->
+            <div class="modal_body"> <!--모달창 버튼을 눌렀을 때-->
+                <button class="btn-close-modal">X</button> <!--누르면 모달창이 꺼지는 버튼-->
+                <div class="quiz-form">
+                    <h2>Deck 수정</h2>
+                        {% csrf_token %}
+                        <form method="PUT" action="/home/quizzes/{{ deck_id }}">
+                            <div class="form-container"> <!-- 상자를 감싸는 부모 요소 -->
+                                <div class="center-input"> <!-- 입력 요소를 가운데 정렬하기 위한 부모 요소 -->
+                                    <label for="subject">과목:</label>
+                                    <input type="text" id="subject" name="subject" value="{{ subject }}" required>
+                                    <br>
+                                    <label for="name">퀴즈 이름:</label>
+                                    <input type="text" id="name" name="name" value="{{ name }}">
+                                    <br>
+                                    <label for="description">설명:</label>
+                                    <input type="text" id="description" name="description" value="{{ description }}">
+                                </div>
+                                <input type="submit" value="deck 수정">
+                            </div>
+                        </form>
+                    </div>
+                  <!--입력 방법 알려주는 텍스트-->
+                  <h3> </h3>
+                  <h3>*과목명을 입력할 때는 세종대학교 학사정보 시스템의 과목명과 똑같이 작성해 주기 바랍니다.</h3>
+                  <h3>단, 띄어쓰기 없이 작성해 주기 바랍니다.</h3>
+            </div>
+        </div>
+    <!-- 버튼 관련 javascript -->
+    <script>
+        // 동일한 동작을 수행하는 이벤트 리스너를 함수로 정의
+        function handleMouseOver() {
+        if ({{ flashcards_count }} == 0) {
+          alert("문제가 존재하지 않습니다.");
+        }
+        }
+        // 두 개의 버튼에 대해 동일한 이벤트 리스너 등록
+        var buttons = document.querySelectorAll('#attemptQuizButton');
+
+        buttons.forEach(function(button) {
+        button.addEventListener('mouseover', handleMouseOver);
+        });
+
+        function redirectToUrl(url) {
+          location.href = url;
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteButton = document.querySelector('.btn-delete-deck');
+
+    deleteButton.addEventListener("click", async () => {
+        try {
+            // Ask for user confirmation
+            const userConfirmed = confirm("정말로 삭제하시겠습니까?");
+
+            if (!userConfirmed) {
+                return; // If the user cancels, do nothing
+            }
+
+            const deckId = window.location.pathname.split('/').slice(-2, -1)[0];
+
+            // Check if the csrfmiddlewaretoken element exists
+            const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+            const csrfToken = csrfTokenElement ? csrfTokenElement.value : '';
+
+            const response = await fetch(`/home/quizzes/${deckId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+            });
+
+            if (response.ok) {
+                // If the request was successful, go back to the quizzes page and reload it
+                window.location.href = "/home/quizzes/";
+            } else {
+                // If there was an error, handle it accordingly
+                console.error('Failed to delete the deck:', response.statusText);
+
+                // Optionally, display an error message to the user
+                alert('Failed to delete the deck. Please try again.');
+            }
+        } catch (error) {
+            console.error('An error occurred during the DELETE request:', error);
+
+            // Optionally, display an error message to the user
+            alert('An error occurred. Please try again.');
+        }
+    });
+});
+    </script>
 
 
 
+    <!-- 수정 - 모달 창 관련 javascript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.querySelector('.modal');
+            const btnOpenModal = document.querySelector('.btn-open-modal');
+            const btnCloseModal = document.querySelector('.btn-close-modal');
+
+            btnOpenModal.addEventListener("click", () => {
+            modal.style.display = "flex";
+            });
+            btnCloseModal.addEventListener("click", () => {
+            modal.style.display = "none";
+            });
+
+            const form = document.querySelector('.quiz-form form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // 폼 기본 동작 방지
+                try {
+                    // Get form data using FormData
+                    const formData = new FormData(form);
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Make a POST request using fetch
+                    const response = await fetch('/home/quizzes/{{ id }}/', {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        // If the request was successful, hide the modal and reload the page
+                        modal.style.display = "none";
+                        location.reload(); // Reload the page
+                    } else {
+                        // If there was an error, handle it accordingly
+                        console.error('Failed to update a deck:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('An error occurred during the PUT request:', error);
+                }
+            });
+        });
+    </script>
 {% endblock %}

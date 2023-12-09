@@ -1,0 +1,163 @@
+/*attempt_quiz HTML의 css===========================================================*/
+.containers {
+  display: flex; /* 부모 컨테이너를 Flex Container로 설정 */
+  flex-direction: column; /* 세로 방향으로 정렬 (기본값) */
+  align-items: center; /* 수직 정렬을 중앙으로 설정 */
+
+  /* 원하는 가로 여백을 설정하세요 */
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+.outline_container_for_quiz {
+  background-color: rgb(230, 230, 280);
+  width: 1200px; /* 너비 설정 */
+  height: 680px; /* 높이 설정 */
+  position: relative;
+  left: 50px;
+  bottom: 50px;
+  border-radius: 5px;
+}
+.outline_container_for_quiz .input-subject{
+  text-align:left;
+  font-size: 20px;
+  font-weight: 700;
+  position: relative;
+  background-color: white;
+  width: 900px; /* 너비 설정 */
+  height: 50px; /* 높이 설정 */
+  top: 10%; /* 상단을 중앙으로 정렬 */
+  left: 13%; /* 왼쪽을 중앙으로 정렬 */
+  border-radius: 20px;
+  box-shadow: 0 0 20px -5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  padding-top: 12px;
+  padding-left: 40px;
+}
+.outline_container_for_quiz .input-subject input {
+  border: none;
+  border-bottom: 1px solid var(--primary-clr);
+  width: 500px; /* 입력창의 너비를 조절합니다. */
+  height: 30px; /* 입력창의 높이를 조절합니다. */
+  font-size: 20px;;
+}
+.outline_container_for_quiz .input-subject {
+  position: relative;
+  background-color: white;
+  width: 900px;
+  height: 50px;
+  top: 10%;
+  left: 13%;
+  border-radius: 20px;
+  box-shadow: 0 0 20px -5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  padding-top: 12px;
+  padding-left: 40px;
+}
+.outline_container_for_quiz .input-subject button {
+  height: 30px;
+  background-color: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.outline_container_for_quiz .input-subject button:hover {
+  background-color: #6CA0DC; /* 호버 상태에서 버튼 색상 변경 */
+}
+.outline_container_for_quiz .quiz-subject{
+  text-align:left;
+  position: relative;
+  background-color: white;
+  width: 900px; /* 너비 설정 */
+  height: 50px; /* 높이 설정 */
+  top: 10%; /* 상단을 중앙으로 정렬 */
+  left: 13%; /* 왼쪽을 중앙으로 정렬 */
+  border-radius: 20px;
+  box-shadow: 0 0 20px -5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  padding-top: 8px;
+  padding-left: 40px;
+}
+.outline_container_for_quiz .quiz-box{
+  position: relative;
+  background-color: white;
+  width: 900px; /* 너비 설정 */
+  height: 400px; /* 높이 설정 */
+  top: 10%; /* 상단을 중앙으로 정렬 */
+  left: 13%; /* 왼쪽을 중앙으로 정렬 */
+  border-radius: 20px;
+  box-shadow: 0 0 20px -5px rgba(0, 0, 0, 0.5);
+  padding: 25px;
+  display: block;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  transform: rotateY(0deg);
+}
+.answer-text {
+  display: none;
+}
+.quiz-box.flipped {
+  transform: rotateY(180deg);
+}
+
+.quiz-box.flipped .question-text {
+  display: none;
+}
+
+.quiz-box.flipped .answer-text {
+  display: block;
+  transform: rotateY(180deg);
+}
+.outline_container_for_quiz .quiz-initial{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  color: #333; /* 텍스트 색상 설정 */
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase; /* 텍스트를 대문자로 변환 */
+  letter-spacing: 0.5px; /* 글자 간격 조정 */
+}
+.outline_container_for_quiz .quiz-buttons {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+.outline_container_for_quiz .quiz-buttons .button-answer,
+.outline_container_for_quiz .quiz-buttons .button-next {
+  background-color: #4169E1;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  margin-bottom: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  top: 14px;
+}
+
+.outline_container_for_quiz .quiz-buttons .button-good,
+.outline_container_for_quiz .quiz-buttons .button-bad {
+  background-color: #4169E1;
+  color: #fff;
+  padding: 5px 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  top: 18.5px;
+}
+.quiz-buttons .button-answer:hover,
+.quiz-buttons .button-next:hover,
+.quiz-buttons .button-good:hover,
+.quiz-buttons .button-bad:hover {
+  background-color: #6CA0DC; /* 호버 상태에서 버튼 색상 변경 */
+}

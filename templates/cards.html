@@ -4,43 +4,112 @@
 <!-- title, css, javascript 를 위한 block -->
 {% block head_content %}
 {#    title#}
-    <title>Quiz</title>
+    <title>문제 조회</title>
     {% load static %}
 {#    css#}
-{#    <link rel="stylesheet" href="{% static 'home_style.css' %}">#}
-{#    javscript#}
+    <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+    {#    javscript#}
 
 {% endblock %}
 
 {# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
 {% load rest_framework %}
 {% block body_content %}
-    <section class="horizontal-boxes">
-        {% for card in results %}
-            {{ card }}
-            <p>User ID: {{ user.student_id }}</p>
-            <p>Owner ID: {{ card.owner }}</p>
-        {% endfor %}
+    <div class="containers">
+        <section class="horizontal-boxes">
+            <!--화면 중앙에 과목별 전체 퀴즈 항목-->
+            {% if user.student_id == owner %}
+                <button class="btn-open-modal">새로 추가하기</button>
+            {% endif %}
 
-        {% if user.student_id == owner %}
-            <!-- Debugging output -->
-            <p>Hi</p>
+            <div id="search-results">
+                {% for card in data.results %}
+                    <a href="{% url 'card-detail' card.deck card.id %}" class="horizontal-box">
+                        <span>문제: {{ card.question }}</span>
+                        <br>
+                    </a>
+                {% endfor %}
+            </div>
+            <!--paginatinon link-->
+            <div class="pagination">
+              <span class="step-links">
+                {% include 'pagination_links.html' %}
+              </span>
+            </div>
+        </section>
 
-            <!-- 작성자만 볼 수 있는 버튼: flashcard 추가 버튼  -->
-           {# <button onclick="location.href='{% url 'card-create' %}'">문제 추가</button>#}
-        {% endif %}
-        <!--화면 중앙에 과목별 전체 퀴즈 항목-->
-        {% if results %}
-            {% for card in results %}
-                <span>문제: {{ card.question }}</span>
-                    <br>
-                <span>정답: {{ card.answer }}</span>
-                    <br>
-            {% endfor %}
+        <div class="modal"> <!--모달창-->
+            <div class="modal_body"> <!--모달창 버튼을 눌렀을 때-->
+                <button class="btn-close-modal">X</button> <!--누르면 모달창이 꺼지는 버튼-->
+                <div class="quiz-form">
+                    <h2>Flashcard 추가</h2>
+                    {% csrf_token %}
+                    <form method="POST" action="/home/quizzes/{{ deck_id }}/cards/">
+                        <div class="form-container"> <!-- 상자를 감싸는 부모 요소 -->
+                            <div class="center-input"> <!-- 입력 요소를 가운데 정렬하기 위한 부모 요소 -->
+                                <label for="name">문제:</label>
+                                <br>
+                                <textarea type="text" id="question" name="question" rows="4" cols="70">{{ flashcard.question }}</textarea>
+                                <br>
+                                <label for="description">정답:</label>
+                                <br>
+                                <textarea type="text" id="answer" name="answer" rows="4" cols="70">{{ flashcard.answer }}</textarea>
+                            </div>
+                            <input type="submit" value="flashcard 추가">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        {% else %}
-            <span>문제 없음</span>
-        {% endif %}
-    </section>
+    <!-- 추가 - 모달 창 관련 javascript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.querySelector('.modal');
+            const btnOpenModal = document.querySelector('.btn-open-modal');
+            const btnCloseModal = document.querySelector('.btn-close-modal');
 
+            btnOpenModal.addEventListener("click", () => {
+            modal.style.display = "flex";
+            });
+            btnCloseModal.addEventListener("click", () => {
+            modal.style.display = "none";
+            });
+
+            const form = document.querySelector('.quiz-form form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // 폼 기본 동작 방지
+                try {
+                    // Get form data using FormData
+                    const formData = new FormData(form);
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Make a POST request using fetch
+                    const response = await fetch('/home/quizzes/{{ deck_id }}/cards/', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        // If the request was successful, hide the modal and reload the page
+                        modal.style.display = "none";
+                        location.reload(); // Reload the page
+                    } else {
+                        // If there was an error, handle it accordingly
+                        console.error('Failed to update a deck:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('An error occurred during the PUT request:', error);
+                }
+            });
+        });
+    </script>
 {% endblock %}
