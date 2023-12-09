@@ -26,7 +26,7 @@
             </select>
             <div id="search-results">
             {% for my_deck in results %}
-                    <a href="{% url 'deck-detail' my_deck.id %}" class="horizontal-box">
+                    <a href="{% url 'quizzes:deck-detail' my_deck.id %}" class="horizontal-box">
                     <span>과목: {{ my_deck.subject }}</span>
                         <br>
                     <span>이름: {{ my_deck.name }}</span>
@@ -47,7 +47,7 @@
     <script>
         function showDecks(deckType) {
             // Fetch the URL for the corresponding deck type using Django's url template tag
-            const url = "{% url 'my-quiz' %}?deck_type=" + deckType;
+            const url = "{% url 'quizzes:my-quiz' %}?deck_type=" + deckType;
             console.log(deckType)
             // Fetch the decks from the server using AJAX
             fetch(url)
@@ -59,7 +59,7 @@
                     // Loop through the fetched decks and append them to the container
                     for (const deck of data.results) {
                         const deckElement = document.createElement('a');
-                        deckElement.href = "{% url 'deck-detail' 0 %}".replace('0', deck.id);
+                        deckElement.href = "{% url 'quizzes:deck-detail' 0 %}".replace('0', deck.id);
                         deckElement.className = 'horizontal-box';
                         deckElement.innerHTML = `
                             <span>과목: ${deck.subject}</span><br>

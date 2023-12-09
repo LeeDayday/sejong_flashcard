@@ -26,7 +26,7 @@
 
             <div id="search-results">
                 {% for card in data.results %}
-                    <a href="{% url 'card-detail' card.deck card.id %}" class="horizontal-box">
+                    <a href="{% url 'quizzes:card-detail' card.deck card.id %}" class="horizontal-box">
                         <span>문제: {{ card.question }}</span>
                         <br>
                     </a>

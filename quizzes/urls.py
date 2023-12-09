@@ -1,6 +1,10 @@
 from django.urls import path, include
 from utils.rendering import *
-from quizzes.views import (DeckView, DeckDetailView, FlashcardView, FlashcardDetailView, FlashcardAttemptView, VoteFlashcardView, MyDeckView)
+from quizzes.views import (DeckView, DeckDetailView, FlashcardView, FlashcardDetailView,
+                           FlashcardAttemptView, VoteFlashcardView, MyDeckView)
+
+app_name = 'quizzes'
+
 urlpatterns = [
     path('', DeckView.as_view(), name='deck-list'),
     path('myquiz/', MyDeckView.as_view(), name='my-quiz'),

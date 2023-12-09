@@ -39,7 +39,7 @@
             <!--화면 중앙에 과목별 전체 퀴즈 항목-->
             <div id="search-results">
                 {% for deck in results %}
-                    <a href="{% url 'deck-detail' deck.id %}" class="horizontal-box">
+                    <a href="{% url 'quizzes:deck-detail' deck.id %}" class="horizontal-box">
                     <span>과목: {{ deck.subject }}</span>
                         <br>
                     <span>이름: {{ deck.name }}</span>
