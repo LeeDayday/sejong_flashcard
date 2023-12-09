@@ -1,0 +1,92 @@
+{% extends "index_side.html"%}
+
+<!DOCTYPE html>
+{% load static %}
+{% block body_content %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+   <link rel="stylesheet" type="text/css" href="{% static 'contest_date.css' %}" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!-- Linking Google font link for icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <!-- 박스 아이콘 CSS-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+    />
+
+    <!-- 구글 폰트 CSS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+      <!-- title, css 를 위한 block -->
+
+  </head>
+    <table border="1" class="dataframe table table-striped">
+      <thead>
+        <tr style="text-align: right;">
+          <!-- <th></th> -->
+          <th>년/월</th>
+          <th>학사일정</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <style>
+          table {
+              width: 100%;
+        }
+/* Define CSS for button positioning */
+#myButton {
+position: absolute;
+top: 200px; /* Adjust the top value to change the vertical position */
+left: 1620px; /* Adjust the left value to change the horizontal position */
+}
+</style>
+        <ul id="elementList">
+            {% for data in data %}
+                <tr>
+                    <form method="post" action="{% url 'cal:save_school_cal_data'%}">
+                        {% csrf_token %}
+                        <td>{{data.date}}<input type="hidden" name="date" value="{{ data.date }}"></td>
+                        <td>{{ data.content }}<input type="hidden" name="content" value="{{ data.content }}"></td>
+                        <td><input onclick = "buttonClick()" type = submit value = "추가하기"/></td>
+                    </form>
+                    <script>
+                        // Define a JavaScript function to be executed when the button is clicked
+                        function buttonClick() {
+                            alert("해당 학사일정을 달력에 추가하시겠습니까?");
+                        }
+                    </script>
+                </tr>
+            {% endfor %}
+        </ul>
+      </tbody>
+    </table>
+
+{% endblock %}

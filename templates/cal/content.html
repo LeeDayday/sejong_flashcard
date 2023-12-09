@@ -1,0 +1,23 @@
+{% extends 'cal/base.html' %}
+
+{% block title %}
+Content
+{% endblock %}
+
+{% block content %}
+<div class="clearfix">
+  <a class="btn btn-info left" href="{% url 'cal:calendar' %}"> Calendar </a>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <table class="form form-table">
+    {{ form }}
+    <td colspan="2"><button type="submit" class="btn btn-info left"> Submit </button></td>
+  </table>
+    {% if instance.id %}
+        <p><a href="{% url 'cal:content_delete' instance.id %}" class="btn btn-info bottom-right"> Delete </a></p>
+    {% endif %}
+</form>
+
+{% endblock %}

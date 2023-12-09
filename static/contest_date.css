@@ -1,0 +1,266 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  list-style: none;
+}
+:root {
+  /*기본 색상 지정*/
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --main-color: #b93234; /*rgb 색상표 (185,50,52)*/
+  --primary-clr: #b38add;
+}
+body {
+  min-height: 100vh;
+  background: var(--bg-color);
+  color: var(--text-color);
+  /*이미지 안넣음*/
+  /* background-image: url('sejong_logo.jpg');
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: left 20px top 140px; */
+}
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  padding: 30px 12%;
+  transition: all 0.5s ease;
+}
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo i {
+  color: var(--main-color);
+  font-size: 30px;
+  margin-right: 7px;
+}
+.logo span {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.navbar {
+  display: flex;
+}
+.navbar a {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 5px 0;
+  margin: 0px 30px;
+  transition: all 0.5s ease;
+}
+.navbar a:hover {
+  color: var(--main-color);
+}
+.navbar a.active {
+  color: var(--main-color);
+}
+.main {
+  display: flex;
+  align-items: center;
+}
+.main a {
+  margin-right: 25px;
+  margin-left: 10px;
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.5s ease;
+}
+.main a:hover {
+  color: var(--main-color);
+}
+
+/* Sidebar CSS ============================================*/
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: rgba(185, 50, 52, 0.1);
+  backdrop-filter: blur(17px);
+  --webkit-backdrop-filter: blur(17px);
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  transition: width 0.3s ease;
+  z-index: 1001;
+}
+
+.sidebar:hover {
+  width: 260px;
+}
+
+.sidebar .logo {
+  color: #000;
+  display: flex;
+  align-items: center;
+  padding: 25px 10px 15px;
+}
+
+.logo img {
+  width: 43px;
+  border-radius: 50%;
+}
+
+.logo h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-left: 15px;
+  display: none;
+}
+
+.sidebar:hover .logo h2 {
+  display: block;
+}
+
+.sidebar .links {
+  list-style: none;
+  margin-top: 20px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  height: calc(100% - 140px);
+}
+
+.sidebar .links::-webkit-scrollbar {
+  display: none;
+}
+
+.links li {
+  display: flex;
+  border-radius: 4px;
+  align-items: center;
+}
+
+.links li:hover {
+  cursor: pointer;
+  background: #fff;
+}
+
+.links h4 {
+  color: #222;
+  font-weight: 500;
+  display: none;
+  margin-bottom: 10px;
+}
+
+.sidebar:hover .links h4 {
+  display: block;
+}
+
+.links hr {
+  margin: 10px 8px;
+  border: 1px solid #4c4c4c;
+}
+
+.sidebar:hover .links hr {
+  border-color: transparent;
+}
+
+.links li span {
+  padding: 12px 10px;
+}
+
+.links li a {
+  padding: 10px;
+  color: #000;
+  display: none;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+.sidebar:hover .links li a {
+  display: block;
+}
+
+/*팝업창 구현*/
+  .Popup_box#blur.active {
+    pointer-events: none;
+    user-select: none;
+  }
+  .Popup_box .content {
+    position: relative;
+    max-width: 800px;
+  }
+  h2 {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  a {
+    position: relative;
+    padding: 5px;
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #000000;
+  }
+  #popup {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    padding: 40px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    background: #fff;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+  }
+  #popup.active {
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+  }
+ .table{
+    margin-top: 120px;
+    margin-left: 130px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+ }
+
+ table {
+   font-family: Arial, sans-serif;
+   border-collapse: collapse;
+   width: 90%;
+ }
+
+ th, td {
+   border: 1px solid #ddd;
+   text-align: left;
+   padding: 8px;
+ }
+
+ tr:nth-child(even) {
+   background-color: #f2f2f2;
+ }
+
+ th {
+   background-color: #c383f5;
+   color: white;
+ }
+
+
+
+ a:hover {
+  text-decoration: underline;
+}

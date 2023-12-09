@@ -11,4 +11,5 @@ urlpatterns = [
     path('<int:deck_id>/cards/<int:flashcard_id>/delete/', FlashcardDetailView.as_view(), name='card-delete'),
     path('<int:deck_id>/cards/attempt/<int:flashcard_id>', FlashcardAttemptView.as_view(), name='card-attempt'),
     path('<int:deck_id>/cards/<int:flashcard_id>/vote/', VoteFlashcardView.as_view(), name='vote_flashcard'),
+
 ]

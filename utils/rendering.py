@@ -9,8 +9,3 @@ def r_login(request):
 def r_home(request):
     response = render(request, "main.html")
     return response
-
-
-def r_attempt_quizz(request):
-    response = render(request, "attempt_quiz.html")
-    return response
