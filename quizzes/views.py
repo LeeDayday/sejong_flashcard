@@ -249,18 +249,15 @@ class MyDeckView(APIView, PageNumberPagination):
     template_name = 'my_decks.html'
 
     def get(self, request):
-        deck_type = request.GET.get('deck_type', '')
-        #print(deck_type)
+        deck_type = request.GET.get('option', '')
         # 내가 생성한 Deck 조회
         if deck_type == 'my_decks':
             all_decks = Deck.objects.filter(owner=request.user.student_id)
-
         # 내가 투표한 Flashcard의 Deck 조회
         elif deck_type == 'voted_decks':
             voted_flashcards = UserVote.objects.filter(user=request.user)
             voted_deck_ids = voted_flashcards.values_list('flashcard__deck', flat=True).distinct()
             all_decks = Deck.objects.filter(id__in=voted_deck_ids)
-
         else:
             voted_flashcards = UserVote.objects.filter(user=request.user)
             voted_deck_ids = voted_flashcards.values_list('flashcard__deck', flat=True).distinct()
@@ -276,5 +273,4 @@ class MyDeckView(APIView, PageNumberPagination):
             serializer = self.get_paginated_response(DeckSerializer(page, many=True).data)
         else:
             serializer = DeckSerializer(all_decks, many=True)
-        print(serializer.data)
         return Response(serializer.data, template_name='my_decks.html', status=HTTP_200_OK)
