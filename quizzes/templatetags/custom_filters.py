@@ -9,6 +9,6 @@ def extract_page_number(url):
         return None
     parsed_url = urlparse(url)
     path_parts = parsed_url.query.split("=")
-    if path_parts[-1] == '':
-        return None
-    return path_parts[-1]
+    if path_parts[-1].isdigit():
+        return path_parts[-1]
+    return None
