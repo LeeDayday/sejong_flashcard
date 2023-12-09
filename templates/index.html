@@ -116,7 +116,20 @@
         {% block body_content %}{% endblock %}
 
     </main>
+    <script>
+  let prevScrollpos = window.pageYOffset;
+  const header = document.querySelector('header');
 
+  window.onscroll = function() {
+    const currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      header.style.top = "0";
+    } else {
+      header.style.top = `-${header.offsetHeight}px`;
+    }
+    prevScrollpos = currentScrollPos;
+  };
+</script>
   </body>
 
     <!-- 예외처리 -->
