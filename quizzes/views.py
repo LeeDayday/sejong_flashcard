@@ -250,7 +250,7 @@ class MyDeckView(APIView, PageNumberPagination):
     template_name = 'my_decks.html'
 
     def get(self, request):
-        deck_type = request.GET.get('option', '')
+        deck_type = request.GET.get('option', 'my_decks')
         # 내가 생성한 Deck 조회
         if deck_type == 'my_decks':
             all_decks = Deck.objects.filter(owner=request.user.student_id)
@@ -259,12 +259,7 @@ class MyDeckView(APIView, PageNumberPagination):
             voted_flashcards = UserVote.objects.filter(user=request.user)
             voted_deck_ids = voted_flashcards.values_list('flashcard__deck', flat=True).distinct()
             all_decks = Deck.objects.filter(id__in=voted_deck_ids)
-        else:
-            voted_flashcards = UserVote.objects.filter(user=request.user)
-            voted_deck_ids = voted_flashcards.values_list('flashcard__deck', flat=True).distinct()
-            all_decks = Deck.objects.filter(
-                Q(owner=request.user.student_id) | Q(id__in=voted_deck_ids)
-            )
+
         all_decks = all_decks.order_by('-id')
 
         # 페이지네이션 적용
