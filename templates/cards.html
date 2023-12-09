@@ -36,7 +36,7 @@
             <!--paginatinon link-->
             <div class="pagination">
               <span class="step-links">
-                {% include 'pagination_links.html' %}
+                {% include 'pagination_links.html' with count=data.count previous=data.previous next=data.next%}
               </span>
             </div>
         </section>
