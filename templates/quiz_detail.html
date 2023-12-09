@@ -18,6 +18,8 @@
 {% block body_content %}
     <!-- deck 정보  -->
     <div class="quiz-info">
+        <!-- 목록으로 돌아가기  -->
+        <a class="btn btn-info left" href="/home/quizzes"><i class="fa-solid fa-chevron-left"></i></a>
         <!-- 작성자만 볼 수 있는 버튼: 수정/삭제 추가 버튼  -->
         {% if user.student_id == owner %}
             <button class="btn-open-modal">수정하기</button>
