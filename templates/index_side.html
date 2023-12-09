@@ -16,15 +16,10 @@
     <!-- 사이드 메뉴바-->
     <aside class="sidebar">
       <div class="logo">
-
         <img src="{% static "menu-line.png" %}" alt="logo" />
       </div>
       <ul class="links">
         <h4>Calendar</h4>
-        <li>
-          <span class="material-symbols-outlined">calendar_month</span>
-          <a href="{% url "cal:calendar" %}">내 캘린더</a>
-        </li>
         <li>
           <span class="material-symbols-outlined">edit_calendar</span>
           <a href="{% url "cal:school_cal_data" %}">학사일정</a>
@@ -36,31 +31,12 @@
         <hr />
         <h4>Quiz</h4>
           <li>
-          <span class="material-symbols-outlined">person</span>
-          <a href="{% url 'deck-list' %}">퀴즈 조회</a>
-
+              <span class="material-symbols-outlined">person</span>
+              <a href="http://localhost:8000/home/quizzes/myquiz/">내 퀴즈</a>
           </li>
         <li>
           <span class="material-symbols-outlined">quiz</span>
-          <a href="#">퀴즈 풀기</a>
-        </li>
-        <li>
-          <span class="material-symbols-outlined">upload</span>
-          <a href="#">퀴즈 출제</a>
-        </li>
-        <hr />
-        <h4>Account</h4>
-        <li>
-          <span class="material-symbols-outlined">rate_review</span>
-          <a href="#">의견제출</a>
-        </li>
-        <li>
-          <span class="material-symbols-outlined">mail</span>
-          <a href="#">이메일</a>
-        </li>
-        <li>
-          <span class="material-symbols-outlined">info</span>
-          <a href="#">사이트 안내</a>
+          <a href="quizzes/solvequiz/">퀴즈 조회</a>
         </li>
       </ul>
     </aside>
