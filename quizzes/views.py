@@ -95,6 +95,7 @@ class DeckDetailView(APIView, PageNumberPagination):
 
 
 class FlashcardView(APIView, PageNumberPagination):
+    permission_classes = [IsOwnerOrReadOnly]
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
     """
     특정 Deck에 대한 Flashcard 리스트 조회
@@ -108,7 +109,7 @@ class FlashcardView(APIView, PageNumberPagination):
         else:
             serializer = FlashcardSerializer(page, many=True)
         return Response({"data": serializer.data,
-                         "owner": request.user.student_id,
+                         "owner": deck.owner.student_id,
                          "deck_id": deck_id},
                         status=HTTP_200_OK,
                         template_name='cards.html')
