@@ -6,7 +6,7 @@
         {% with total_pages=total_pages|add:1 %}
         {% endwith %}
     {% endif %}
-    {% with total_pages=total_pages|add:0 %} # 정수 변환
+    {% with total_pages=total_pages|add:0 %}
         {% with previous_page=previous|extract_page_number|default_if_none:"1" %}
             {% with next_page=next|extract_page_number|default_if_none:total_pages %}
                 {% with current_page=request.get_full_path|extract_page_number|default_if_none:"1" %}

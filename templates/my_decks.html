@@ -1,0 +1,74 @@
+{#cards page html#}
+{% extends 'index_side.html' %}
+
+<!-- title, css, javascript 를 위한 block -->
+{% block head_content %}
+{#    title#}
+    <title>My Quizzes</title>
+    {% load static %}
+{#    css#}
+    <link rel="stylesheet" href="{% static 'css/quizzes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+{#    javscript#}
+{% endblock %}
+
+
+{# TemplateHTMLRenderer를 사용하기 위해 rest_framework load#}
+{% load rest_framework %}
+{% block body_content %}
+    <div class="containers">
+        <section class="horizontal-boxes">
+            <!--화면 중앙에 과목별 전체 내 퀴즈 항목-->
+       <!--     <button onclick="showDecks('my_decks')">My Decks</button>
+            <button onclick="showDecks('voted_decks')">Voted Decks</button>
+-->
+            <div id="search-results">
+            {% for my_deck in results %}
+                    <a href="{% url 'deck-detail' my_deck.id %}" class="horizontal-box">
+                    <span>과목: {{ my_deck.subject }}</span>
+                        <br>
+                    <span>이름: {{ my_deck.name }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!--paginatinon link-->
+
+                    <div class="pagination">
+                         <span class="step-links">
+                          {% include 'pagination_links.html' %}
+                         </span>
+                    </div>
+
+        </section>
+    </div>
+
+    <script>
+        function showDecks(deckType) {
+            // Fetch the URL for the corresponding deck type using Django's url template tag
+            const url = "{% url 'my-quiz' %}?deck_type=" + deckType;
+
+            // Fetch the decks from the server using AJAX
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the existing content in the container
+                    document.getElementById('search-results').innerHTML = '';
+
+                    // Loop through the fetched decks and append them to the container
+                    for (const deck of data.results) {
+                        const deckElement = document.createElement('a');
+                        deckElement.href = "{% url 'deck-detail' 0 %}".replace('0', deck.id);
+                        deckElement.className = 'horizontal-box';
+                        deckElement.innerHTML = `
+                            <span>과목: ${deck.subject}</span><br>
+                            <span>이름: ${deck.name}</span>
+                        `;
+                        document.getElementById('search-results').appendChild(deckElement);
+                    }
+                })
+                .catch(error => console.error('Error fetching decks:', error));
+        }
+    </script>
+
+{% endblock %}

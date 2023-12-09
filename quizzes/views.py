@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CON
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from utils.permission import IsOwnerOrReadOnly
 from rest_framework.generics import get_object_or_404
+from django.db.models import Q
 
 
 class DeckView(APIView, PageNumberPagination):
@@ -239,9 +240,41 @@ class VoteFlashcardView(APIView):
         return Response({'success': True, 'new_vote_count': flashcard.vote}, status=HTTP_200_OK)
 
 
-class UserVotedFlashcardsView(APIView):
+class MyDeckView(APIView, PageNumberPagination):
+    """
+    내가 생성한 Deck 및 내가 투표한 Flashcard의 Deck 리스트 조회
+    """
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    serializer_class = DeckSerializer
+    template_name = 'my_decks.html'
+
     def get(self, request):
-        # 현재 사용자가 추천한 Flashcard 목록을 가져오기
-        user_votes = UserVote.objects.filter(user=request.user)
-        serializer = UserVoteSerializer(user_votes, many=True)
-        return Response(serializer.data)
+        deck_type = request.GET.get('deck_type', '')
+        #print(deck_type)
+        # 내가 생성한 Deck 조회
+        if deck_type == 'my_decks':
+            all_decks = Deck.objects.filter(owner=request.user.student_id)
+
+        # 내가 투표한 Flashcard의 Deck 조회
+        elif deck_type == 'voted_decks':
+            voted_flashcards = UserVote.objects.filter(user=request.user)
+            voted_deck_ids = voted_flashcards.values_list('flashcard__deck', flat=True).distinct()
+            all_decks = Deck.objects.filter(id__in=voted_deck_ids)
+
+        else:
+            voted_flashcards = UserVote.objects.filter(user=request.user)
+            voted_deck_ids = voted_flashcards.values_list('flashcard__deck', flat=True).distinct()
+            all_decks = Deck.objects.filter(
+                Q(owner=request.user.student_id) | Q(id__in=voted_deck_ids)
+            )
+        all_decks = all_decks.order_by('-id')
+
+        # 페이지네이션 적용
+        page = self.paginate_queryset(all_decks, request)
+
+        if page is not None:
+            serializer = self.get_paginated_response(DeckSerializer(page, many=True).data)
+        else:
+            serializer = DeckSerializer(all_decks, many=True)
+        print(serializer.data)
+        return Response(serializer.data, template_name='my_decks.html', status=HTTP_200_OK)
