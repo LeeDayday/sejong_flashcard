@@ -26,14 +26,13 @@
 <body>
     {# 상단 메뉴바 #}
     <header>
-        <!-- 왼쪽상단 로고표시 -->
-        <a href="#" class="logo">
+        <span  class="logo">
             <i class="ri-school-fill"></i>
             <span>FlashCards & Calendar for Sejong Univ</span>
-        </a>
+        </span>
         <!-- 상단 중앙 메뉴바 -->
         <ul class="navbar">
-            <li><a href="#">Home</a></li>
+            <li><a href={% url 'cal:calendar' %}>Home</a></li>
             <li>
                 <div class="Popup_box" id="blur">
                     <div class="content">
@@ -51,36 +50,39 @@
         </ul>
         <!-- 상단 왼쪽 메뉴바 -->
         <div class="main">
-            <a href='javascript:logout()'>Logout</a>
+            {% if request.session.id %}
+                <a href='javascript:logout()'>Logout</a>
+            {% endif %}
+
         </div>
     </header>
 
     {# 사이드바 #}
     <aside class="sidebar">
-        <div class="logo">
-            <img src="{% static "menu-line.png" %}" alt="logo" />
-        </div>
-        <ul class="links">
-            <h4>Calendar</h4>
-            <li>
-                <span class="material-symbols-outlined">edit_calendar</span>
-                <a href="{% url "cal:school_cal_data" %}">학사일정</a>
-            </li>
-            <li>
-                <span class="material-symbols-outlined">note_add</span>
-                <a href="{% url "cal:contest_data" %}">공모전</a>
-            </li>
-            <hr />
-            <h4>Quiz</h4>
-            <li>
-                <span class="material-symbols-outlined">person</span>
-                <a href="http://localhost:8000/home/quizzes/myquiz/">내 퀴즈</a>
-            </li>
-            <li>
-                <span class="material-symbols-outlined">quiz</span>
-                <a href="quizzes/solvequiz/">퀴즈 조회</a>
-            </li>
-        </ul>
+      <div class="logo">
+        <img src="{% static "menu-line.png" %}" alt="logo" />
+      </div>
+      <ul class="links">
+        <h4>Calendar</h4>
+        <li>
+          <span class="material-symbols-outlined">edit_calendar</span>
+          <a href="{% url "cal:school_cal_data" %}">학사일정</a>
+        </li>
+        <li>
+          <span class="material-symbols-outlined">note_add</span>
+          <a href="{% url "cal:contest_data" %}">공모전</a>
+        </li>
+        <hr />
+        <h4>Quiz</h4>
+          <li>
+              <span class="material-symbols-outlined">person</span>
+              <a href="{% url "quizzes:my-quiz" %}">내 퀴즈</a>
+          </li>
+        <li>
+          <span class="material-symbols-outlined">quiz</span>
+          <a href="{% url "quizzes:deck-list" %}">퀴즈 조회</a>
+        </li>
+      </ul>
     </aside>
         <!-- 팝업1 -->
     <div class="popup" id="popup">

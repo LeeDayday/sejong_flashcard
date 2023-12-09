@@ -18,7 +18,6 @@ from django.contrib import messages
 from .models import NewUserInfo
 from .data import contest_data_list
 
-
 class ContentView(APIView, PageNumberPagination):
     permission_classes = [IsOwnerOrReadOnly]
 
@@ -119,23 +118,31 @@ def content(request, content_id=None):
     else:
         instance = Content(owner=owner)
     form = ContentForm(request.POST or None, instance=instance)
+
     if request.POST and form.is_valid():
-        form.save()
-        return HttpResponseRedirect(reverse('cal:calendar'))
+        if form.cleaned_data['owner'] == owner:
+            form.save()
+            return HttpResponseRedirect(reverse('cal:calendar'))
+        else:
+            messages.error(request, "본인의 아이디만 사용가능합니다!")
     return render(request, 'cal/content.html', {'form': form, 'instance':instance})
 
 
 def content_delete(request, content_id=None):
+    owner = NewUserInfo.objects.latest('updated_at')
     instance = Content()
     if content_id:
-        instance = get_object_or_404(Content, pk=content_id)
+        instance = get_object_or_404(Content, pk=content_id, owner = owner)
     else:
         instance = Content()
-    if request.method == 'POST':
-        instance.delete()
-        messages.success(request, '성공적으로 삭제하였습니다.')
-        return HttpResponseRedirect(reverse('cal:calendar'))
-    return render(request, 'cal/delete.html', {'instance': instance})
+    form = ContentForm(request.POST or None, instance=instance)
+    if request.POST and form.is_valid():
+        if form.cleaned_data['owner'] == owner:
+            instance.delete()
+            return HttpResponseRedirect(reverse('cal:calendar'))
+        else:
+            messages.error(request, "본인의 아이디만 사용가능합니다!")
+    return render(request, 'cal/delete.html', {'form':form, 'instance': instance})
 
 
 def contest_data(request):

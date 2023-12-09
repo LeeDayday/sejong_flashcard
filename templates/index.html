@@ -53,14 +53,13 @@
 
   <body>
         <header>
-        <!-- 왼쪽상단 로고표시 -->
-        <a href="#" class="logo">
+        <span  class="logo">
             <i class="ri-school-fill"></i>
             <span>FlashCards & Calendar for Sejong Univ</span>
-        </a>
+        </span>
         <!-- 상단 중앙 메뉴바 -->
         <ul class="navbar">
-            <li><a href="#">Home</a></li>
+            <li><a href={% url 'cal:calendar' %}>Home</a></li>
             <li>
                 <div class="Popup_box" id="blur">
                     <div class="content">
@@ -78,7 +77,10 @@
         </ul>
         <!-- 상단 왼쪽 메뉴바 -->
         <div class="main">
-            <a href='javascript:logout()'>Logout</a>
+            {% if request.session.id %}
+                <a href='javascript:logout()'>Logout</a>
+            {% endif %}
+
         </div>
     </header>
             <!-- 팝업1 -->
@@ -136,8 +138,6 @@
             location.href = '/f_logout/';
         }
     };
-
-
     </script>
 </script>
 <script type="text/javascript">
