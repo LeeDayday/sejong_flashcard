@@ -147,7 +147,13 @@ def content_delete(request, content_id=None):
 
 def contest_data(request):
     data = contest_data_list()
-    return render(request, 'cal/contest_data.html', {'data': data})
+    data2 = []
+    for i in data:
+        y,m,d = map(int, str(i['date']).split('-'))
+        day = date(y,m,d)
+        if day >= date.today():
+            data2.append(i)
+    return render(request, 'cal/contest_data.html', {'data': data2})
 
 
 def save_contest_data(request):
