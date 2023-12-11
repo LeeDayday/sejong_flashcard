@@ -146,6 +146,7 @@ def content_delete(request, content_id=None):
 
 
 def contest_data(request):
+    # data2 = contest_crawling()
     data = contest_data_list()
     data2 = []
     for i in data:

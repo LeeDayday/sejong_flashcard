@@ -29,7 +29,7 @@ def contest_data_list():
             {'title': '군포시늘푸른노인복지관',
              'content': '군포시늘푸른노인복지관 CI 제작 공모전   분야 : 디자인/캐릭터/웹툰',
              'date': datetime.date(2023, 12, 14),
-             'link': 'https://wwity.com/?c=find&s=1&gbn=view&gp=2&ix=82952'},
+             'link': 'https://www.wevity.com/?c=find&s=1&gbn=viewok&gp=2&ix=82952'},
             {'title': '재단법인 천만장학회',
              'content': '2024 제2회 ChunMan Art for Young 공모전 (시각예술 전 분야)  SPECIAL 분야 : 영상/UCC/사진, 웹/모바일/IT, 예체능/미술/음악, 기타',
              'date':datetime.date(2023, 12, 15),
