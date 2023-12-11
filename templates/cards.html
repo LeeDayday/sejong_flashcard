@@ -19,10 +19,13 @@
 {% block body_content %}
     <div class="containers">
         <section class="horizontal-boxes">
+            <a class="btn btn-info left" href="/home/quizzes/{{ deck_id }}/"><i class="fa-solid fa-chevron-left"></i></a>
+
             <!--화면 중앙에 과목별 전체 퀴즈 항목-->
             {% if user.student_id == owner %}
                 <button class="btn-open-modal">새로 추가하기</button>
                 <br>
+
             {% endif %}
 
             <div id="search-results">
@@ -36,7 +39,7 @@
             <!--paginatinon link-->
             <div class="pagination">
               <span class="step-links">
-                {% include 'pagination_links.html' %}
+                {% include 'pagination_links.html' with count=data.count previous=data.previous next=data.next%}
               </span>
             </div>
         </section>

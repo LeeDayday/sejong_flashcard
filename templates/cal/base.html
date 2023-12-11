@@ -25,15 +25,19 @@
 </head>
 <body>
     {# 상단 메뉴바 #}
+    <style>
+      .navbar{
+          padding-top: 25px;
+      }
+    </style>
     <header>
-        <!-- 왼쪽상단 로고표시 -->
-        <a href="#" class="logo">
+        <span  class="logo">
             <i class="ri-school-fill"></i>
             <span>FlashCards & Calendar for Sejong Univ</span>
-        </a>
+        </span>
         <!-- 상단 중앙 메뉴바 -->
         <ul class="navbar">
-            <li><a href="#">Home</a></li>
+            <li><a href={% url 'cal:calendar' %}>Home</a></li>
             <li>
                 <div class="Popup_box" id="blur">
                     <div class="content">
@@ -51,7 +55,10 @@
         </ul>
         <!-- 상단 왼쪽 메뉴바 -->
         <div class="main">
-            <a href='javascript:logout()'>Logout</a>
+            {% if request.session.id %}
+                <a href='javascript:logout()'>Logout</a>
+            {% endif %}
+
         </div>
     </header>
 
@@ -126,9 +133,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="{% static 'js/script.js' %}"></script>
     {% block script %}
     {% endblock %}
+<script>
+  let prevScrollpos = window.pageYOffset;
+  const header = document.querySelector('header');
+
+  window.onscroll = function() {
+    const currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      header.style.top = "0";
+    } else {
+      header.style.top = `-${header.offsetHeight}px`;
+    }
+    prevScrollpos = currentScrollPos;
+  };
+</script>
+
 </body>
 
 <!-- 예외처리 -->
